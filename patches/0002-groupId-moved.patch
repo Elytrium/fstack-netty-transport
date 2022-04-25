@@ -1,4 +1,4 @@
-From 2c6e769df1caa6a9111ea6e0e0801f8944dcbe2f Mon Sep 17 00:00:00 2001
+From 83cda8c519c4e8b30e27fbeb7fb73b30355478d8 Mon Sep 17 00:00:00 2001
 From: Petr Ilin <hevav@hevav.dev>
 Date: Mon, 25 Apr 2022 20:32:56 +0300
 Subject: [PATCH] groupId moved
@@ -63,7 +63,7 @@ index 0000000000..6c1b6d6bf3
 +.flattened-pom.xml
 \ No newline at end of file
 diff --git a/pom.xml b/pom.xml
-index 717698d993..0399f2df40 100644
+index 717698d993..c5ff20a120 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -23,24 +23,11 @@
@@ -269,7 +269,7 @@ index 717698d993..0399f2df40 100644
      <conscrypt.groupId>org.conscrypt</conscrypt.groupId>
      <conscrypt.artifactId>conscrypt-openjdk-uber</conscrypt.artifactId>
      <conscrypt.version>2.5.2</conscrypt.version>
-@@ -566,54 +399,14 @@
+@@ -566,54 +399,16 @@
      <skipNativeImageTestsuite>true</skipNativeImageTestsuite>
      <skipShadingTestsuite>false</skipShadingTestsuite>
      <skipDeploy>false</skipDeploy>
@@ -322,10 +322,12 @@ index 717698d993..0399f2df40 100644
 -    <module>transport-blockhound-tests</module>
 -    <module>microbench</module>
 -    <module>bom</module>
++    <module>transport-native-unix-common</module>
++    <module>transport-native-unix-common-tests</module>
    </modules>
  
    <dependencyManagement>
-@@ -627,7 +420,7 @@
+@@ -627,7 +422,7 @@
        </dependency>
  
        <dependency>
@@ -334,7 +336,7 @@ index 717698d993..0399f2df40 100644
          <artifactId>netty-dev-tools</artifactId>
          <version>${project.version}</version>
        </dependency>
-@@ -674,23 +467,6 @@
+@@ -674,23 +469,6 @@
          <version>3.0.0-alpha-5</version>
        </dependency>
  
@@ -358,7 +360,7 @@ index 717698d993..0399f2df40 100644
        <!-- Conscrypt - needed for running tests, used for accelerating SSL with OpenSSL. -->
        <dependency>
          <groupId>${conscrypt.groupId}</groupId>
-@@ -891,7 +667,7 @@
+@@ -891,7 +669,7 @@
          <scope>test</scope>
        </dependency>
        <dependency>
@@ -367,7 +369,7 @@ index 717698d993..0399f2df40 100644
          <artifactId>netty-build-common</artifactId>
          <version>${netty.build.version}</version>
          <scope>test</scope>
-@@ -1033,7 +809,7 @@
+@@ -1033,7 +811,7 @@
        <scope>test</scope>
      </dependency>
      <dependency>
@@ -376,7 +378,7 @@ index 717698d993..0399f2df40 100644
        <artifactId>netty-build-common</artifactId>
        <scope>test</scope>
      </dependency>
-@@ -1160,7 +936,6 @@
+@@ -1160,7 +938,6 @@
              <ignoreMissingClassesByRegularExpressions>
                <!-- ignore everything which is not part of netty itself as the plugin can not handle optional dependencies -->
                <ignoreMissingClassesByRegularExpression>^(?!io\.netty\.).*</ignoreMissingClassesByRegularExpression>
@@ -384,7 +386,7 @@ index 717698d993..0399f2df40 100644
              </ignoreMissingClassesByRegularExpressions>
              <excludes>
                <exclude>@io.netty.util.internal.UnstableApi</exclude>
-@@ -1312,7 +1087,7 @@
+@@ -1312,7 +1089,7 @@
              <version>8.29</version>
            </dependency>
            <dependency>
@@ -393,7 +395,7 @@ index 717698d993..0399f2df40 100644
              <artifactId>netty-build-common</artifactId>
              <version>${netty.build.version}</version>
            </dependency>
-@@ -1416,7 +1191,7 @@
+@@ -1416,7 +1193,7 @@
                  <supportedProjectType>bundle</supportedProjectType>
                </supportedProjectTypes>
                <instructions>
@@ -402,7 +404,7 @@ index 717698d993..0399f2df40 100644
                  <!-- enforce JVM vendor package as optional -->
                  <Import-Package>sun.misc.*;resolution:=optional,sun.nio.ch;resolution:=optional,sun.security.*;resolution:=optional,org.eclipse.jetty.npn;version="[1,2)";resolution:=optional,org.eclipse.jetty.alpn;version="[1,2)";resolution:=optional,*</Import-Package>
                  <!-- override "internal" private package convention -->
-@@ -1452,10 +1227,10 @@
+@@ -1452,10 +1229,10 @@
              <manifestEntries>
                <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
                <Bundle-Name>${project.name}</Bundle-Name>
@@ -415,7 +417,7 @@ index 717698d993..0399f2df40 100644
              </manifestEntries>
            </archive>
          </configuration>
-@@ -1579,7 +1354,7 @@
+@@ -1579,7 +1356,7 @@
                  <property name="metaInfDir" value="${project.basedir}/src/main/resources/META-INF" />
                  -->
                  <property name="metaInfDir" value="${project.build.outputDirectory}/META-INF" />
@@ -425,7 +427,7 @@ index 717698d993..0399f2df40 100644
                  <delete file="${versionPropFile}" quiet="true" />
  
 diff --git a/transport-classes-epoll/pom.xml b/transport-classes-epoll/pom.xml
-index 09f96a2819..b1158c247c 100644
+index 09f96a2819..c64478063e 100644
 --- a/transport-classes-epoll/pom.xml
 +++ b/transport-classes-epoll/pom.xml
 @@ -17,17 +17,17 @@
@@ -450,6 +452,15 @@ index 09f96a2819..b1158c247c 100644
    </properties>
  
    <dependencies>
+@@ -47,7 +47,7 @@
+       <version>${project.version}</version>
+     </dependency>
+     <dependency>
+-      <groupId>io.netty</groupId>
++      <groupId>net.elytrium.fstack-netty-transport</groupId>
+       <artifactId>netty-transport-native-unix-common</artifactId>
+       <version>${project.version}</version>
+     </dependency>
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollChannel.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/AbstractEpollChannel.java
 similarity index 99%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollChannel.java
@@ -1079,7 +1090,7 @@ index 7a96dc1e37..3efd71b428 100644
 -package io.netty.channel.epoll;
 +package net.elytrium.netty.transport.fstack.epoll;
 diff --git a/transport-classes-kqueue/pom.xml b/transport-classes-kqueue/pom.xml
-index 49e2342dbe..86a1b2a743 100644
+index 49e2342dbe..d147a41ec3 100644
 --- a/transport-classes-kqueue/pom.xml
 +++ b/transport-classes-kqueue/pom.xml
 @@ -17,17 +17,17 @@
@@ -1104,6 +1115,15 @@ index 49e2342dbe..86a1b2a743 100644
    </properties>
  
    <dependencies>
+@@ -47,7 +47,7 @@
+       <version>${project.version}</version>
+     </dependency>
+     <dependency>
+-      <groupId>io.netty</groupId>
++      <groupId>net.elytrium.fstack-netty-transport</groupId>
+       <artifactId>netty-transport-native-unix-common</artifactId>
+       <version>${project.version}</version>
+     </dependency>
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AbstractKQueueChannel.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/AbstractKQueueChannel.java
 similarity index 99%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AbstractKQueueChannel.java
@@ -1704,7 +1724,7 @@ index 9d1a25b8f4..05460243ed 100644
  
  import io.netty.util.internal.UnstableApi;
 diff --git a/transport-native-epoll/pom.xml b/transport-native-epoll/pom.xml
-index cad13b4b77..8f7a1fa69b 100644
+index cad13b4b77..79ec33aa58 100644
 --- a/transport-native-epoll/pom.xml
 +++ b/transport-native-epoll/pom.xml
 @@ -17,17 +17,17 @@
@@ -1729,25 +1749,40 @@ index cad13b4b77..8f7a1fa69b 100644
      <!-- Needed as we use SelfSignedCertificate in our tests -->
      <argLine.java9.extras>--add-exports java.base/sun.security.x509=ALL-UNNAMED</argLine.java9.extras>
      <unix.common.lib.name>netty-unix-common</unix.common.lib.name>
-@@ -130,7 +130,7 @@
-                   <goal>unpack-dependencies</goal>
-                 </goals>
-                 <configuration>
--                  <includeGroupIds>${project.groupId}</includeGroupIds>
-+                  <includeGroupIds>${nettyGroupId}</includeGroupIds>
-                   <includeArtifactIds>netty-transport-native-unix-common</includeArtifactIds>
-                   <classifier>${jni.classifier}</classifier>
-                   <outputDirectory>${unix.common.lib.dir}</outputDirectory>
-@@ -280,7 +280,7 @@
-                   <goal>unpack-dependencies</goal>
-                 </goals>
-                 <configuration>
--                  <includeGroupIds>${project.groupId}</includeGroupIds>
-+                  <includeGroupIds>${nettyGroupId}</includeGroupIds>
-                   <includeArtifactIds>netty-transport-native-unix-common</includeArtifactIds>
-                   <classifier>${jni.classifier}</classifier>
-                   <outputDirectory>${unix.common.lib.dir}</outputDirectory>
-@@ -406,12 +406,6 @@
+@@ -202,7 +202,7 @@
+   
+       <dependencies>
+         <dependency>
+-          <groupId>io.netty</groupId>
++          <groupId>net.elytrium.fstack-netty-transport</groupId>
+           <artifactId>netty-transport-native-unix-common</artifactId>
+           <version>${project.version}</version>
+           <classifier>${jni.classifier}</classifier>
+@@ -354,7 +354,7 @@
+ 
+       <dependencies>
+         <dependency>
+-          <groupId>io.netty</groupId>
++          <groupId>net.elytrium.fstack-netty-transport</groupId>
+           <artifactId>netty-transport-native-unix-common</artifactId>
+           <version>${project.version}</version>
+           <classifier>${jni.classifier}</classifier>
+@@ -385,7 +385,7 @@
+       <version>${project.version}</version>
+     </dependency>
+     <dependency>
+-      <groupId>io.netty</groupId>
++      <groupId>net.elytrium.fstack-netty-transport</groupId>
+       <artifactId>netty-transport-native-unix-common</artifactId>
+       <version>${project.version}</version>
+     </dependency>
+@@ -401,17 +401,11 @@
+       <scope>test</scope>
+     </dependency>
+     <dependency>
+-      <groupId>io.netty</groupId>
++      <groupId>net.elytrium.fstack-netty-transport</groupId>
+       <artifactId>netty-transport-native-unix-common-tests</artifactId>
        <version>${project.version}</version>
        <scope>test</scope>
      </dependency>
@@ -3098,7 +3133,7 @@ index 09e04e9614..4cdac788cd 100644
  import io.netty.util.NetUtil;
  import org.junit.jupiter.api.Test;
 diff --git a/transport-native-kqueue/pom.xml b/transport-native-kqueue/pom.xml
-index e1cc0e79a5..1ec34274d8 100644
+index e1cc0e79a5..64b9c741dc 100644
 --- a/transport-native-kqueue/pom.xml
 +++ b/transport-native-kqueue/pom.xml
 @@ -17,13 +17,13 @@
@@ -3118,15 +3153,6 @@ index e1cc0e79a5..1ec34274d8 100644
    <packaging>jar</packaging>
  
    <profiles>
-@@ -50,7 +50,7 @@
-                   <goal>unpack-dependencies</goal>
-                 </goals>
-                 <configuration>
--                  <includeGroupIds>${project.groupId}</includeGroupIds>
-+                  <includeGroupIds>${nettyGroupId}</includeGroupIds>
-                   <includeArtifactIds>netty-transport-native-unix-common</includeArtifactIds>
-                   <classifier>${jni.classifier}</classifier>
-                   <outputDirectory>${unix.common.lib.dir}</outputDirectory>
 @@ -110,7 +110,7 @@
                      </manifest>
                      <manifestEntries>
@@ -3136,15 +3162,15 @@ index e1cc0e79a5..1ec34274d8 100644
                        <Automatic-Module-Name>${javaModuleName}</Automatic-Module-Name>
                      </manifestEntries>
                      <index>true</index>
-@@ -159,7 +159,7 @@
-                   <goal>unpack-dependencies</goal>
-                 </goals>
-                 <configuration>
--                  <includeGroupIds>${project.groupId}</includeGroupIds>
-+                  <includeGroupIds>${nettyGroupId}</includeGroupIds>
-                   <includeArtifactIds>netty-transport-native-unix-common</includeArtifactIds>
-                   <classifier>${jni.classifier}</classifier>
-                   <outputDirectory>${unix.common.lib.dir}</outputDirectory>
+@@ -125,7 +125,7 @@
+       </build>
+       <dependencies>
+         <dependency>
+-          <groupId>io.netty</groupId>
++          <groupId>net.elytrium.fstack-netty-transport</groupId>
+           <artifactId>netty-transport-native-unix-common</artifactId>
+           <version>${project.version}</version>
+           <classifier>${jni.classifier}</classifier>
 @@ -217,7 +217,7 @@
                      </manifest>
                      <manifestEntries>
@@ -3154,15 +3180,15 @@ index e1cc0e79a5..1ec34274d8 100644
                        <Automatic-Module-Name>${javaModuleName}</Automatic-Module-Name>
                      </manifestEntries>
                      <index>true</index>
-@@ -265,7 +265,7 @@
-                   <goal>unpack-dependencies</goal>
-                 </goals>
-                 <configuration>
--                  <includeGroupIds>${project.groupId}</includeGroupIds>
-+                  <includeGroupIds>${nettyGroupId}</includeGroupIds>
-                   <includeArtifactIds>netty-transport-native-unix-common</includeArtifactIds>
-                   <classifier>${jni.classifier}</classifier>
-                   <outputDirectory>${unix.common.lib.dir}</outputDirectory>
+@@ -232,7 +232,7 @@
+       </build>
+       <dependencies>
+         <dependency>
+-          <groupId>io.netty</groupId>
++          <groupId>net.elytrium.fstack-netty-transport</groupId>
+           <artifactId>netty-transport-native-unix-common</artifactId>
+           <version>${project.version}</version>
+           <classifier>${jni.classifier}</classifier>
 @@ -322,7 +322,7 @@
                      </manifest>
                      <manifestEntries>
@@ -3172,15 +3198,15 @@ index e1cc0e79a5..1ec34274d8 100644
                      </manifestEntries>
                      <index>true</index>
                      <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-@@ -369,7 +369,7 @@
-                   <goal>unpack-dependencies</goal>
-                 </goals>
-                 <configuration>
--                  <includeGroupIds>${project.groupId}</includeGroupIds>
-+                  <includeGroupIds>${nettyGroupId}</includeGroupIds>
-                   <includeArtifactIds>netty-transport-native-unix-common</includeArtifactIds>
-                   <classifier>${jni.classifier}</classifier>
-                   <outputDirectory>${unix.common.lib.dir}</outputDirectory>
+@@ -336,7 +336,7 @@
+       </build>
+       <dependencies>
+         <dependency>
+-          <groupId>io.netty</groupId>
++          <groupId>net.elytrium.fstack-netty-transport</groupId>
+           <artifactId>netty-transport-native-unix-common</artifactId>
+           <version>${project.version}</version>
+           <classifier>${jni.classifier}</classifier>
 @@ -426,7 +426,7 @@
                      </manifest>
                      <manifestEntries>
@@ -3190,6 +3216,15 @@ index e1cc0e79a5..1ec34274d8 100644
                      </manifestEntries>
                      <index>true</index>
                      <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+@@ -440,7 +440,7 @@
+       </build>
+       <dependencies>
+         <dependency>
+-          <groupId>io.netty</groupId>
++          <groupId>net.elytrium.fstack-netty-transport</groupId>
+           <artifactId>netty-transport-native-unix-common</artifactId>
+           <version>${project.version}</version>
+           <classifier>${jni.classifier}</classifier>
 @@ -477,7 +477,7 @@
    </profiles>
  
@@ -3199,7 +3234,22 @@ index e1cc0e79a5..1ec34274d8 100644
      <!-- Needed as we use SelfSignedCertificate in our tests -->
      <argLine.java9.extras>--add-exports java.base/sun.security.x509=ALL-UNNAMED</argLine.java9.extras>
      <unix.common.lib.name>netty-unix-common</unix.common.lib.name>
-@@ -528,12 +528,6 @@
+@@ -507,7 +507,7 @@
+       <version>${project.version}</version>
+     </dependency>
+     <dependency>
+-      <groupId>io.netty</groupId>
++      <groupId>net.elytrium.fstack-netty-transport</groupId>
+       <artifactId>netty-transport-native-unix-common</artifactId>
+       <version>${project.version}</version>
+     </dependency>
+@@ -523,17 +523,11 @@
+       <scope>test</scope>
+     </dependency>
+     <dependency>
+-      <groupId>io.netty</groupId>
++      <groupId>net.elytrium.fstack-netty-transport</groupId>
+       <artifactId>netty-transport-native-unix-common-tests</artifactId>
        <version>${project.version}</version>
        <scope>test</scope>
      </dependency>
@@ -4181,6 +4231,64 @@ index 1e7f14ced4..4685131c23 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.testsuite.transport.TestsuitePermutation;
+diff --git a/transport-native-unix-common-tests/pom.xml b/transport-native-unix-common-tests/pom.xml
+index 227f993f13..a7a876ae0e 100644
+--- a/transport-native-unix-common-tests/pom.xml
++++ b/transport-native-unix-common-tests/pom.xml
+@@ -17,20 +17,20 @@
+ <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+-    <groupId>io.netty</groupId>
+-    <artifactId>netty-parent</artifactId>
++    <groupId>net.elytrium.fstack-netty-transport</groupId>
++    <artifactId>parent</artifactId>
+     <version>4.1.77.Final-SNAPSHOT</version>
+   </parent>
+   <artifactId>netty-transport-native-unix-common-tests</artifactId>
+ 
+-  <name>Netty/Transport/Native/Unix/Common/Tests</name>
++  <name>Netty/Transport/Native/F-Stack-Unix/Common/Tests</name>
+   <packaging>jar</packaging>
+   <description>
+     Tests for the static library which contains common unix utilities.
+   </description>
+ 
+   <properties>
+-    <javaModuleName>io.netty.transport_native_unix_common_tests</javaModuleName>
++    <javaModuleName>net.elytrium.fstack-netty-transport.transport_native_unix_common_tests</javaModuleName>
+   </properties>
+ 
+   <dependencies>
+diff --git a/transport-native-unix-common/pom.xml b/transport-native-unix-common/pom.xml
+index e1733b41ba..0fb1c63987 100644
+--- a/transport-native-unix-common/pom.xml
++++ b/transport-native-unix-common/pom.xml
+@@ -17,20 +17,20 @@
+ <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+-    <groupId>io.netty</groupId>
+-    <artifactId>netty-parent</artifactId>
++    <groupId>net.elytrium.fstack-netty-transport</groupId>
++    <artifactId>parent</artifactId>
+     <version>4.1.77.Final-SNAPSHOT</version>
+   </parent>
+   <artifactId>netty-transport-native-unix-common</artifactId>
+ 
+-  <name>Netty/Transport/Native/Unix/Common</name>
++  <name>Netty/Transport/Native/F-Stack-Unix/Common</name>
+   <packaging>jar</packaging>
+   <description>
+     Static library which contains common unix utilities.
+   </description>
+ 
+   <properties>
+-    <javaModuleName>io.netty.transport.unix.common</javaModuleName>
++    <javaModuleName>net.elytrium.fstack-netty-transport.unix.common</javaModuleName>
+ 
+     <exe.make>make</exe.make>
+     <exe.compiler>gcc</exe.compiler>
 -- 
 2.35.3
 
