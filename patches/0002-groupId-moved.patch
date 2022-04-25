@@ -1,4 +1,4 @@
-From 83cda8c519c4e8b30e27fbeb7fb73b30355478d8 Mon Sep 17 00:00:00 2001
+From e337f4cb77fddb1b5827b9b2fc2e21dc5a51a9be Mon Sep 17 00:00:00 2001
 From: Petr Ilin <hevav@hevav.dev>
 Date: Mon, 25 Apr 2022 20:32:56 +0300
 Subject: [PATCH] groupId moved
@@ -462,10 +462,10 @@ index 09f96a2819..c64478063e 100644
        <version>${project.version}</version>
      </dependency>
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollChannel.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/AbstractEpollChannel.java
-similarity index 99%
+similarity index 98%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollChannel.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/AbstractEpollChannel.java
-index baaee987e4..1daad0147c 100644
+index baaee987e4..131e5cafe6 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollChannel.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/AbstractEpollChannel.java
 @@ -13,7 +13,7 @@
@@ -477,6 +477,30 @@ index baaee987e4..1daad0147c 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
+@@ -34,10 +34,10 @@ import io.netty.channel.RecvByteBufAllocator;
+ import io.netty.channel.socket.ChannelInputShutdownEvent;
+ import io.netty.channel.socket.ChannelInputShutdownReadComplete;
+ import io.netty.channel.socket.SocketChannelConfig;
+-import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.IovArray;
+-import io.netty.channel.unix.Socket;
+-import io.netty.channel.unix.UnixChannel;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.Socket;
++import net.elytrium.netty.transport.fstack.unix.UnixChannel;
+ import io.netty.util.ReferenceCountUtil;
+ import io.netty.util.concurrent.Future;
+ 
+@@ -53,7 +53,7 @@ import java.nio.channels.UnresolvedAddressException;
+ import java.util.concurrent.TimeUnit;
+ 
+ import static io.netty.channel.internal.ChannelUtils.WRITE_STATUS_SNDBUF_FULL;
+-import static io.netty.channel.unix.UnixChannelUtil.computeRemoteAddr;
++import static net.elytrium.netty.transport.fstack.unix.UnixChannelUtil.computeRemoteAddr;
+ import static io.netty.util.internal.ObjectUtil.checkNotNull;
+ 
+ abstract class AbstractEpollChannel extends AbstractChannel implements UnixChannel {
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollServerChannel.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/AbstractEpollServerChannel.java
 similarity index 99%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollServerChannel.java
@@ -497,7 +521,7 @@ diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/Abstra
 similarity index 99%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollStreamChannel.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/AbstractEpollStreamChannel.java
-index 0b7044bb8f..f4dcc487a2 100644
+index 0b7044bb8f..984fff822d 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollStreamChannel.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/AbstractEpollStreamChannel.java
 @@ -13,7 +13,7 @@
@@ -509,14 +533,38 @@ index 0b7044bb8f..f4dcc487a2 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
+@@ -31,10 +31,10 @@ import io.netty.channel.FileRegion;
+ import io.netty.channel.RecvByteBufAllocator;
+ import io.netty.channel.internal.ChannelUtils;
+ import io.netty.channel.socket.DuplexChannel;
+-import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.IovArray;
+-import io.netty.channel.unix.SocketWritableByteChannel;
+-import io.netty.channel.unix.UnixChannelUtil;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.SocketWritableByteChannel;
++import net.elytrium.netty.transport.fstack.unix.UnixChannelUtil;
+ import io.netty.util.internal.PlatformDependent;
+ import io.netty.util.internal.StringUtil;
+ import io.netty.util.internal.UnstableApi;
+@@ -51,7 +51,7 @@ import java.util.concurrent.Executor;
+ 
+ import static io.netty.channel.internal.ChannelUtils.MAX_BYTES_PER_GATHERING_WRITE_ATTEMPTED_LOW_THRESHOLD;
+ import static io.netty.channel.internal.ChannelUtils.WRITE_STATUS_SNDBUF_FULL;
+-import static io.netty.channel.unix.FileDescriptor.pipe;
++import static net.elytrium.netty.transport.fstack.unix.FileDescriptor.pipe;
+ import static io.netty.util.internal.ObjectUtil.checkNotNull;
+ import static io.netty.util.internal.ObjectUtil.checkPositiveOrZero;
+ 
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/Epoll.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Epoll.java
-similarity index 98%
+similarity index 97%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/Epoll.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Epoll.java
-index 69620b12a4..2a6cc6422f 100644
+index 69620b12a4..2141815939 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/Epoll.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Epoll.java
-@@ -13,7 +13,7 @@
+@@ -13,10 +13,10 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -524,12 +572,16 @@ index 69620b12a4..2a6cc6422f 100644
 +package net.elytrium.netty.transport.fstack.epoll;
  
  import io.netty.channel.ChannelOption;
- import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
+ import io.netty.util.internal.SystemPropertyUtil;
+ 
+ /**
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollChannelConfig.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollChannelConfig.java
-similarity index 99%
+similarity index 96%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollChannelConfig.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollChannelConfig.java
-index 03c5ce8cb8..fe9f8f6dfb 100644
+index 03c5ce8cb8..86723e6b75 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollChannelConfig.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollChannelConfig.java
 @@ -13,7 +13,7 @@
@@ -541,14 +593,33 @@ index 03c5ce8cb8..fe9f8f6dfb 100644
  
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelException;
+@@ -22,15 +22,15 @@ import io.netty.channel.DefaultChannelConfig;
+ import io.netty.channel.MessageSizeEstimator;
+ import io.netty.channel.RecvByteBufAllocator;
+ import io.netty.channel.WriteBufferWaterMark;
+-import io.netty.channel.unix.IntegerUnixChannelOption;
+-import io.netty.channel.unix.RawUnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.IntegerUnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.RawUnixChannelOption;
+ import io.netty.util.internal.ObjectUtil;
+ 
+ import java.io.IOException;
+ import java.nio.ByteBuffer;
+ import java.util.Map;
+ 
+-import static io.netty.channel.unix.Limits.SSIZE_MAX;
++import static net.elytrium.netty.transport.fstack.unix.Limits.SSIZE_MAX;
+ 
+ public class EpollChannelConfig extends DefaultChannelConfig {
+     private volatile long maxBytesPerGatheringWrite = SSIZE_MAX;
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollChannelOption.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollChannelOption.java
-similarity index 98%
+similarity index 96%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollChannelOption.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollChannelOption.java
-index b10938eef4..e35a32703b 100644
+index b10938eef4..92cc5f35d6 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollChannelOption.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollChannelOption.java
-@@ -13,7 +13,7 @@
+@@ -13,10 +13,10 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -556,12 +627,16 @@ index b10938eef4..e35a32703b 100644
 +package net.elytrium.netty.transport.fstack.epoll;
  
  import io.netty.channel.ChannelOption;
- import io.netty.channel.unix.UnixChannelOption;
+-import io.netty.channel.unix.UnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.UnixChannelOption;
+ import java.net.InetAddress;
+ import java.util.Map;
+ 
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDatagramChannel.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDatagramChannel.java
-similarity index 99%
+similarity index 96%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDatagramChannel.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDatagramChannel.java
-index 0ca449b665..cb39bdd59a 100644
+index 0ca449b665..8f986e9ebb 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDatagramChannel.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDatagramChannel.java
 @@ -13,7 +13,7 @@
@@ -573,15 +648,95 @@ index 0ca449b665..cb39bdd59a 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
-@@ -47,7 +47,7 @@ import java.net.PortUnreachableException;
+@@ -28,10 +28,9 @@ import io.netty.channel.DefaultAddressedEnvelope;
+ import io.netty.channel.socket.DatagramChannel;
+ import io.netty.channel.socket.DatagramPacket;
+ import io.netty.channel.socket.InternetProtocolFamily;
+-import io.netty.channel.unix.Errors;
+-import io.netty.channel.unix.Errors.NativeIoException;
+-import io.netty.channel.unix.Socket;
+-import io.netty.channel.unix.UnixChannelUtil;
++import net.elytrium.netty.transport.fstack.unix.Errors;
++import net.elytrium.netty.transport.fstack.unix.Errors.NativeIoException;
++import net.elytrium.netty.transport.fstack.unix.UnixChannelUtil;
+ import io.netty.util.ReferenceCountUtil;
+ import io.netty.util.UncheckedBooleanSupplier;
+ import io.netty.util.internal.ObjectUtil;
+@@ -46,8 +45,9 @@ import java.net.NetworkInterface;
+ import java.net.PortUnreachableException;
  import java.net.SocketAddress;
  import java.nio.ByteBuffer;
++import net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket;
  
 -import static io.netty.channel.epoll.LinuxSocket.newSocketDgram;
 +import static net.elytrium.netty.transport.fstack.epoll.LinuxSocket.newSocketDgram;
  
  /**
   * {@link DatagramChannel} implementation that uses linux EPOLL Edge-Triggered Mode for
+@@ -66,7 +66,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+     private volatile boolean connected;
+ 
+     /**
+-     * Returns {@code true} if {@link io.netty.channel.unix.SegmentedDatagramPacket} is supported natively.
++     * Returns {@code true} if {@link SegmentedDatagramPacket} is supported natively.
+      *
+      * @return {@code true} if supported, {@code false} otherwise.
+      */
+@@ -309,7 +309,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+                 // Check if sendmmsg(...) is supported which is only the case for GLIBC 2.14+
+                 if (Native.IS_SUPPORTING_SENDMMSG && in.size() > 1 ||
+                         // We only handle UDP_SEGMENT in sendmmsg.
+-                        in.current() instanceof io.netty.channel.unix.SegmentedDatagramPacket) {
++                        in.current() instanceof SegmentedDatagramPacket) {
+                     NativeDatagramPacketArray array = cleanDatagramPacketArray();
+                     array.add(in, isConnected(), maxMessagesPerWrite);
+                     int cnt = array.count();
+@@ -387,12 +387,12 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+ 
+     @Override
+     protected Object filterOutboundMessage(Object msg) {
+-        if (msg instanceof io.netty.channel.unix.SegmentedDatagramPacket) {
++        if (msg instanceof SegmentedDatagramPacket) {
+             if (!Native.IS_SUPPORTING_UDP_SEGMENT) {
+                 throw new UnsupportedOperationException(
+                         "unsupported message type: " + StringUtil.simpleClassName(msg) + EXPECTED_TYPES);
+             }
+-            io.netty.channel.unix.SegmentedDatagramPacket packet = (io.netty.channel.unix.SegmentedDatagramPacket) msg;
++            SegmentedDatagramPacket packet = (SegmentedDatagramPacket) msg;
+             ByteBuf content = packet.content();
+             return UnixChannelUtil.isBufferCopyNeededForWrite(content) ?
+                     packet.replace(newDirectBuffer(packet, content)) : msg;
+@@ -579,9 +579,9 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+ 
+     private static void addDatagramPacketToOut(DatagramPacket packet,
+                                               RecyclableArrayList out) {
+-        if (packet instanceof io.netty.channel.unix.SegmentedDatagramPacket) {
+-            io.netty.channel.unix.SegmentedDatagramPacket segmentedDatagramPacket =
+-                    (io.netty.channel.unix.SegmentedDatagramPacket) packet;
++        if (packet instanceof SegmentedDatagramPacket) {
++            SegmentedDatagramPacket segmentedDatagramPacket =
++                    (SegmentedDatagramPacket) packet;
+             ByteBuf content = segmentedDatagramPacket.content();
+             InetSocketAddress recipient = segmentedDatagramPacket.recipient();
+             InetSocketAddress sender = segmentedDatagramPacket.sender();
+@@ -647,7 +647,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+             byteBuf.writerIndex(bytesReceived);
+             InetSocketAddress local = localAddress();
+             DatagramPacket packet = msg.newDatagramPacket(byteBuf, local);
+-            if (!(packet instanceof io.netty.channel.unix.SegmentedDatagramPacket)) {
++            if (!(packet instanceof SegmentedDatagramPacket)) {
+                 processPacket(pipeline(), allocHandle, bytesReceived, packet);
+                 byteBuf = null;
+             } else {
+@@ -697,7 +697,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+             if (received == 1) {
+                 // Single packet fast-path
+                 DatagramPacket packet = packets[0].newDatagramPacket(byteBuf, local);
+-                if (!(packet instanceof io.netty.channel.unix.SegmentedDatagramPacket)) {
++                if (!(packet instanceof SegmentedDatagramPacket)) {
+                     processPacket(pipeline(), allocHandle, datagramSize, packet);
+                     byteBuf = null;
+                     return true;
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDatagramChannelConfig.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDatagramChannelConfig.java
 similarity index 99%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDatagramChannelConfig.java
@@ -599,10 +754,10 @@ index 66d1d7fb06..dcc7407990 100644
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainDatagramChannel.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainDatagramChannel.java
-similarity index 98%
+similarity index 95%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainDatagramChannel.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainDatagramChannel.java
-index 09fe483ed6..e293d7a62e 100644
+index 09fe483ed6..768c59c05f 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainDatagramChannel.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainDatagramChannel.java
 @@ -13,7 +13,7 @@
@@ -614,6 +769,29 @@ index 09fe483ed6..e293d7a62e 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
+@@ -22,14 +22,14 @@ import io.netty.channel.ChannelMetadata;
+ import io.netty.channel.ChannelOutboundBuffer;
+ import io.netty.channel.ChannelPipeline;
+ import io.netty.channel.DefaultAddressedEnvelope;
+-import io.netty.channel.unix.DomainDatagramChannel;
+-import io.netty.channel.unix.DomainDatagramChannelConfig;
+-import io.netty.channel.unix.DomainDatagramPacket;
+-import io.netty.channel.unix.DomainDatagramSocketAddress;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.IovArray;
+-import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.UnixChannelUtil;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramChannel;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramChannelConfig;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramPacket;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.UnixChannelUtil;
+ import io.netty.util.CharsetUtil;
+ import io.netty.util.UncheckedBooleanSupplier;
+ import io.netty.util.internal.StringUtil;
 @@ -39,8 +39,6 @@ import java.io.IOException;
  import java.net.SocketAddress;
  import java.nio.ByteBuffer;
@@ -633,10 +811,10 @@ index 09fe483ed6..e293d7a62e 100644
  
      public EpollDomainDatagramChannel(int fd) {
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainDatagramChannelConfig.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainDatagramChannelConfig.java
-similarity index 99%
+similarity index 97%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainDatagramChannelConfig.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainDatagramChannelConfig.java
-index 91b37de3c4..491c06ab73 100644
+index 91b37de3c4..9d7309ae98 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainDatagramChannelConfig.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainDatagramChannelConfig.java
 @@ -13,7 +13,7 @@
@@ -648,14 +826,23 @@ index 91b37de3c4..491c06ab73 100644
  
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelException;
+@@ -22,7 +22,7 @@ import io.netty.channel.FixedRecvByteBufAllocator;
+ import io.netty.channel.MessageSizeEstimator;
+ import io.netty.channel.RecvByteBufAllocator;
+ import io.netty.channel.WriteBufferWaterMark;
+-import io.netty.channel.unix.DomainDatagramChannelConfig;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramChannelConfig;
+ import io.netty.util.internal.UnstableApi;
+ 
+ import java.io.IOException;
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainSocketChannel.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainSocketChannel.java
-similarity index 97%
+similarity index 93%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainSocketChannel.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainSocketChannel.java
-index 02b6d6025f..7f47ef5cbe 100644
+index 02b6d6025f..69f37d6522 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainSocketChannel.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainSocketChannel.java
-@@ -13,7 +13,7 @@
+@@ -13,22 +13,22 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -664,7 +851,18 @@ index 02b6d6025f..7f47ef5cbe 100644
  
  import io.netty.channel.Channel;
  import io.netty.channel.ChannelConfig;
-@@ -28,7 +28,7 @@ import io.netty.util.internal.UnstableApi;
+ import io.netty.channel.ChannelOutboundBuffer;
+ import io.netty.channel.ChannelPipeline;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.DomainSocketChannel;
+-import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketChannel;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
+ import io.netty.util.internal.UnstableApi;
+ 
  import java.io.IOException;
  import java.net.SocketAddress;
  
@@ -674,10 +872,10 @@ index 02b6d6025f..7f47ef5cbe 100644
  public final class EpollDomainSocketChannel extends AbstractEpollStreamChannel implements DomainSocketChannel {
      private final EpollDomainSocketChannelConfig config = new EpollDomainSocketChannelConfig(this);
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainSocketChannelConfig.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainSocketChannelConfig.java
-similarity index 99%
+similarity index 95%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainSocketChannelConfig.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainSocketChannelConfig.java
-index 407e2ca398..a52c0cc872 100644
+index 407e2ca398..2305204b3f 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDomainSocketChannelConfig.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDomainSocketChannelConfig.java
 @@ -13,7 +13,7 @@
@@ -689,30 +887,53 @@ index 407e2ca398..a52c0cc872 100644
  
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelOption;
+@@ -21,8 +21,8 @@ import io.netty.channel.MessageSizeEstimator;
+ import io.netty.channel.RecvByteBufAllocator;
+ import io.netty.channel.WriteBufferWaterMark;
+ import io.netty.channel.socket.DuplexChannelConfig;
+-import io.netty.channel.unix.DomainSocketChannelConfig;
+-import io.netty.channel.unix.DomainSocketReadMode;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketChannelConfig;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketReadMode;
+ import io.netty.util.internal.ObjectUtil;
+ 
+ import java.io.IOException;
+@@ -31,7 +31,7 @@ import java.util.Map;
+ import static io.netty.channel.ChannelOption.ALLOW_HALF_CLOSURE;
+ import static io.netty.channel.ChannelOption.SO_RCVBUF;
+ import static io.netty.channel.ChannelOption.SO_SNDBUF;
+-import static io.netty.channel.unix.UnixChannelOption.DOMAIN_SOCKET_READ_MODE;
++import static net.elytrium.netty.transport.fstack.unix.UnixChannelOption.DOMAIN_SOCKET_READ_MODE;
+ 
+ public final class EpollDomainSocketChannelConfig extends EpollChannelConfig
+         implements DomainSocketChannelConfig, DuplexChannelConfig {
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollEventArray.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollEventArray.java
-similarity index 98%
+similarity index 97%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollEventArray.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollEventArray.java
-index 6c8067988f..b5faed3787 100644
+index 6c8067988f..dff7d59ad1 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollEventArray.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollEventArray.java
-@@ -13,7 +13,7 @@
+@@ -13,9 +13,9 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.epoll;
 +package net.elytrium.netty.transport.fstack.epoll;
  
- import io.netty.channel.unix.Buffer;
+-import io.netty.channel.unix.Buffer;
++import net.elytrium.netty.transport.fstack.unix.Buffer;
  import io.netty.util.internal.PlatformDependent;
+ import io.netty.util.internal.UnstableApi;
+ 
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollEventLoop.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollEventLoop.java
-similarity index 99%
+similarity index 98%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollEventLoop.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollEventLoop.java
-index 4a58c60fcd..c6f43f30e2 100644
+index 4a58c60fcd..a2c51e2b3a 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollEventLoop.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollEventLoop.java
-@@ -13,14 +13,14 @@
+@@ -13,16 +13,16 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -725,10 +946,14 @@ index 4a58c60fcd..c6f43f30e2 100644
  import io.netty.channel.SelectStrategy;
  import io.netty.channel.SingleThreadEventLoop;
 -import io.netty.channel.epoll.AbstractEpollChannel.AbstractEpollUnsafe;
+-import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.IovArray;
 +import net.elytrium.netty.transport.fstack.epoll.AbstractEpollChannel.AbstractEpollUnsafe;
- import io.netty.channel.unix.FileDescriptor;
- import io.netty.channel.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
  import io.netty.util.IntSupplier;
+ import io.netty.util.collection.IntObjectHashMap;
+ import io.netty.util.collection.IntObjectMap;
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollEventLoopGroup.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollEventLoopGroup.java
 similarity index 99%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollEventLoopGroup.java
@@ -762,13 +987,13 @@ index 32474a6265..ee4116ec1b 100644
  /**
   * The <a href="https://linux.die.net//man/7/epoll">epoll</a> mode to use.
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollRecvByteAllocatorHandle.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollRecvByteAllocatorHandle.java
-similarity index 98%
+similarity index 96%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollRecvByteAllocatorHandle.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollRecvByteAllocatorHandle.java
-index dc5a0b9979..be662766e4 100644
+index dc5a0b9979..ccb71e3ca1 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollRecvByteAllocatorHandle.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollRecvByteAllocatorHandle.java
-@@ -13,7 +13,7 @@
+@@ -13,13 +13,13 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -777,6 +1002,13 @@ index dc5a0b9979..be662766e4 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
+ import io.netty.channel.RecvByteBufAllocator.DelegatingHandle;
+ import io.netty.channel.RecvByteBufAllocator.ExtendedHandle;
+-import io.netty.channel.unix.PreferredDirectByteBufAllocator;
++import net.elytrium.netty.transport.fstack.unix.PreferredDirectByteBufAllocator;
+ import io.netty.util.UncheckedBooleanSupplier;
+ 
+ class EpollRecvByteAllocatorHandle extends DelegatingHandle implements ExtendedHandle {
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollRecvByteAllocatorStreamingHandle.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollRecvByteAllocatorStreamingHandle.java
 similarity index 96%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollRecvByteAllocatorStreamingHandle.java
@@ -810,13 +1042,13 @@ index 3f8fe19d60..55ab6f91a2 100644
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelException;
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollServerDomainSocketChannel.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollServerDomainSocketChannel.java
-similarity index 95%
+similarity index 90%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollServerDomainSocketChannel.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollServerDomainSocketChannel.java
-index 0f06c7f9e9..c328c5ecf0 100644
+index 0f06c7f9e9..10d80cdb31 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollServerDomainSocketChannel.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollServerDomainSocketChannel.java
-@@ -13,7 +13,7 @@
+@@ -13,19 +13,19 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -824,8 +1056,15 @@ index 0f06c7f9e9..c328c5ecf0 100644
 +package net.elytrium.netty.transport.fstack.epoll;
  
  import io.netty.channel.Channel;
- import io.netty.channel.unix.DomainSocketAddress;
-@@ -25,7 +25,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.ServerDomainSocketChannel;
+-import io.netty.channel.unix.Socket;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.ServerDomainSocketChannel;
++import net.elytrium.netty.transport.fstack.unix.Socket;
+ import io.netty.util.internal.logging.InternalLogger;
+ import io.netty.util.internal.logging.InternalLoggerFactory;
+ 
  import java.io.File;
  import java.net.SocketAddress;
  
@@ -835,10 +1074,10 @@ index 0f06c7f9e9..c328c5ecf0 100644
  public final class EpollServerDomainSocketChannel extends AbstractEpollServerChannel
          implements ServerDomainSocketChannel {
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollServerSocketChannel.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollServerSocketChannel.java
-similarity index 91%
+similarity index 89%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollServerSocketChannel.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollServerSocketChannel.java
-index a2f188d221..22e08e2c3b 100644
+index a2f188d221..2d49b0ba25 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollServerSocketChannel.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollServerSocketChannel.java
 @@ -13,7 +13,7 @@
@@ -850,16 +1089,18 @@ index a2f188d221..22e08e2c3b 100644
  
  import io.netty.channel.Channel;
  import io.netty.channel.EventLoop;
-@@ -28,8 +28,7 @@ import java.util.Collection;
+@@ -28,9 +28,8 @@ import java.util.Collection;
  import java.util.Collections;
  import java.util.Map;
  
 -import static io.netty.channel.epoll.LinuxSocket.newSocketStream;
 -import static io.netty.channel.epoll.Native.IS_SUPPORTING_TCP_FASTOPEN_SERVER;
+-import static io.netty.channel.unix.NativeInetAddress.address;
 +import static net.elytrium.netty.transport.fstack.epoll.LinuxSocket.newSocketStream;
- import static io.netty.channel.unix.NativeInetAddress.address;
++import static net.elytrium.netty.transport.fstack.unix.NativeInetAddress.address;
  
  /**
+  * {@link ServerSocketChannel} implementation that uses linux EPOLL Edge-Triggered Mode for
 @@ -46,7 +45,7 @@ public final class EpollServerSocketChannel extends AbstractEpollServerChannel i
      }
  
@@ -954,13 +1195,13 @@ index e6e4ab6e0a..ff1152c634 100644
  /**
   * <p>
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/LinuxSocket.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/LinuxSocket.java
-similarity index 99%
+similarity index 98%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/LinuxSocket.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/LinuxSocket.java
-index d12e60c66f..099c75226e 100644
+index d12e60c66f..fb0ee8ab72 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/LinuxSocket.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/LinuxSocket.java
-@@ -13,7 +13,7 @@
+@@ -13,13 +13,13 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -969,14 +1210,32 @@ index d12e60c66f..099c75226e 100644
  
  import io.netty.channel.ChannelException;
  import io.netty.channel.DefaultFileRegion;
+-import io.netty.channel.unix.NativeInetAddress;
+-import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.Socket;
++import net.elytrium.netty.transport.fstack.unix.NativeInetAddress;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.Socket;
+ import io.netty.channel.socket.InternetProtocolFamily;
+ import io.netty.util.internal.PlatformDependent;
+ import io.netty.util.internal.SocketUtils;
+@@ -32,7 +32,7 @@ import java.net.NetworkInterface;
+ import java.net.UnknownHostException;
+ import java.util.Enumeration;
+ 
+-import static io.netty.channel.unix.Errors.ioResult;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ioResult;
+ 
+ /**
+  * A socket which provides access Linux native methods.
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/Native.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Native.java
-similarity index 92%
+similarity index 89%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/Native.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Native.java
-index 85829ec15a..bcf72e87b2 100644
+index 85829ec15a..fa687cc83e 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/Native.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Native.java
-@@ -13,7 +13,7 @@
+@@ -13,13 +13,13 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -984,8 +1243,18 @@ index 85829ec15a..bcf72e87b2 100644
 +package net.elytrium.netty.transport.fstack.epoll;
  
  import io.netty.channel.DefaultFileRegion;
- import io.netty.channel.unix.FileDescriptor;
-@@ -31,16 +31,16 @@ import java.io.IOException;
+-import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.Socket;
+-import io.netty.channel.unix.Unix;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.Socket;
++import net.elytrium.netty.transport.fstack.unix.Unix;
+ import io.netty.util.internal.ClassInitializerUtil;
+ import io.netty.util.internal.NativeLibraryLoader;
+ import io.netty.util.internal.PlatformDependent;
+@@ -31,18 +31,18 @@ import java.io.IOException;
  import java.nio.channels.FileChannel;
  import java.nio.channels.Selector;
  
@@ -999,6 +1268,8 @@ index 85829ec15a..bcf72e87b2 100644
 -import static io.netty.channel.epoll.NativeStaticallyReferencedJniMethods.kernelVersion;
 -import static io.netty.channel.epoll.NativeStaticallyReferencedJniMethods.tcpFastopenMode;
 -import static io.netty.channel.epoll.NativeStaticallyReferencedJniMethods.tcpMd5SigMaxKeyLen;
+-import static io.netty.channel.unix.Errors.ioResult;
+-import static io.netty.channel.unix.Errors.newIOException;
 +import static net.elytrium.netty.transport.fstack.epoll.NativeStaticallyReferencedJniMethods.epollerr;
 +import static net.elytrium.netty.transport.fstack.epoll.NativeStaticallyReferencedJniMethods.epollet;
 +import static net.elytrium.netty.transport.fstack.epoll.NativeStaticallyReferencedJniMethods.epollin;
@@ -1009,17 +1280,19 @@ index 85829ec15a..bcf72e87b2 100644
 +import static net.elytrium.netty.transport.fstack.epoll.NativeStaticallyReferencedJniMethods.kernelVersion;
 +import static net.elytrium.netty.transport.fstack.epoll.NativeStaticallyReferencedJniMethods.tcpFastopenMode;
 +import static net.elytrium.netty.transport.fstack.epoll.NativeStaticallyReferencedJniMethods.tcpMd5SigMaxKeyLen;
- import static io.netty.channel.unix.Errors.ioResult;
- import static io.netty.channel.unix.Errors.newIOException;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ioResult;
++import static net.elytrium.netty.transport.fstack.unix.Errors.newIOException;
  
+ /**
+  * Native helper methods
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/NativeDatagramPacketArray.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/NativeDatagramPacketArray.java
-similarity index 99%
+similarity index 93%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/NativeDatagramPacketArray.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/NativeDatagramPacketArray.java
-index 448a131fca..4beb1fc3bd 100644
+index 448a131fca..a42a5f900d 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/NativeDatagramPacketArray.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/NativeDatagramPacketArray.java
-@@ -13,7 +13,7 @@
+@@ -13,15 +13,15 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1028,6 +1301,39 @@ index 448a131fca..4beb1fc3bd 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.channel.ChannelOutboundBuffer;
+ import io.netty.channel.ChannelOutboundBuffer.MessageProcessor;
+ import io.netty.channel.socket.DatagramPacket;
+-import io.netty.channel.unix.IovArray;
+-import io.netty.channel.unix.Limits;
+-import io.netty.channel.unix.SegmentedDatagramPacket;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.Limits;
++import net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket;
+ import io.netty.util.internal.UnstableApi;
+ 
+ import java.net.Inet6Address;
+@@ -29,8 +29,8 @@ import java.net.InetAddress;
+ import java.net.InetSocketAddress;
+ import java.net.UnknownHostException;
+ 
+-import static io.netty.channel.unix.Limits.UIO_MAX_IOV;
+-import static io.netty.channel.unix.NativeInetAddress.copyIpv4MappedIpv6Address;
++import static net.elytrium.netty.transport.fstack.unix.Limits.UIO_MAX_IOV;
++import static net.elytrium.netty.transport.fstack.unix.NativeInetAddress.copyIpv4MappedIpv6Address;
+ 
+ /**
+  * Support <a href="https://linux.die.net//man/2/sendmmsg">sendmmsg(...)</a> on linux with GLIBC 2.14+
+@@ -121,8 +121,8 @@ final class NativeDatagramPacketArray {
+                 DatagramPacket packet = (DatagramPacket) msg;
+                 ByteBuf buf = packet.content();
+                 int segmentSize = 0;
+-                if (packet instanceof io.netty.channel.unix.SegmentedDatagramPacket) {
+-                    int seg = ((io.netty.channel.unix.SegmentedDatagramPacket) packet).segmentSize();
++                if (packet instanceof SegmentedDatagramPacket) {
++                    int seg = ((SegmentedDatagramPacket) packet).segmentSize();
+                     // We only need to tell the kernel that we want to use UDP_SEGMENT if there are multiple
+                     // segments in the packet.
+                     if (buf.readableBytes() > seg) {
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/NativeStaticallyReferencedJniMethods.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/NativeStaticallyReferencedJniMethods.java
 similarity index 97%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/NativeStaticallyReferencedJniMethods.java
@@ -1045,13 +1351,13 @@ index b52721b26f..f4574ebad4 100644
  /**
   * This class is necessary to break the following cyclic dependency:
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/SegmentedDatagramPacket.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/SegmentedDatagramPacket.java
-similarity index 98%
+similarity index 92%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/SegmentedDatagramPacket.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/SegmentedDatagramPacket.java
-index 50bca1f997..e69a80ba42 100644
+index 50bca1f997..51dc957ff0 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/SegmentedDatagramPacket.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/SegmentedDatagramPacket.java
-@@ -13,7 +13,7 @@
+@@ -13,17 +13,17 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1060,6 +1366,18 @@ index 50bca1f997..e69a80ba42 100644
  
  import io.netty.buffer.ByteBuf;
  
+ import java.net.InetSocketAddress;
+ 
+ /**
+- * @deprecated use {@link io.netty.channel.unix.SegmentedDatagramPacket}.
++ * @deprecated use {@link net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket}.
+  */
+ @Deprecated
+-public final class SegmentedDatagramPacket extends io.netty.channel.unix.SegmentedDatagramPacket {
++public final class SegmentedDatagramPacket extends net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket {
+ 
+     /**
+      * Create a new instance.
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/TcpMd5Util.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/TcpMd5Util.java
 similarity index 98%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/TcpMd5Util.java
@@ -1128,7 +1446,7 @@ diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/Abst
 similarity index 99%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AbstractKQueueChannel.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/AbstractKQueueChannel.java
-index 30c9be5b51..fedc63328f 100644
+index 30c9be5b51..91d2504ce8 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AbstractKQueueChannel.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/AbstractKQueueChannel.java
 @@ -13,7 +13,7 @@
@@ -1140,6 +1458,26 @@ index 30c9be5b51..fedc63328f 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
+@@ -34,8 +34,8 @@ import io.netty.channel.RecvByteBufAllocator;
+ import io.netty.channel.socket.ChannelInputShutdownEvent;
+ import io.netty.channel.socket.ChannelInputShutdownReadComplete;
+ import io.netty.channel.socket.SocketChannelConfig;
+-import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.UnixChannel;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.UnixChannel;
+ import io.netty.util.ReferenceCountUtil;
+ import io.netty.util.concurrent.Future;
+ import io.netty.util.internal.UnstableApi;
+@@ -52,7 +52,7 @@ import java.nio.channels.UnresolvedAddressException;
+ import java.util.concurrent.TimeUnit;
+ 
+ import static io.netty.channel.internal.ChannelUtils.WRITE_STATUS_SNDBUF_FULL;
+-import static io.netty.channel.unix.UnixChannelUtil.computeRemoteAddr;
++import static net.elytrium.netty.transport.fstack.unix.UnixChannelUtil.computeRemoteAddr;
+ import static io.netty.util.internal.ObjectUtil.checkNotNull;
+ 
+ abstract class AbstractKQueueChannel extends AbstractChannel implements UnixChannel {
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AbstractKQueueDatagramChannel.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/AbstractKQueueDatagramChannel.java
 similarity index 97%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AbstractKQueueDatagramChannel.java
@@ -1176,7 +1514,7 @@ diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/Abst
 similarity index 99%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AbstractKQueueStreamChannel.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/AbstractKQueueStreamChannel.java
-index dd6db6a265..29256ed9a2 100644
+index dd6db6a265..bc28f81276 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AbstractKQueueStreamChannel.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/AbstractKQueueStreamChannel.java
 @@ -13,7 +13,7 @@
@@ -1188,6 +1526,19 @@ index dd6db6a265..29256ed9a2 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
+@@ -30,9 +30,9 @@ import io.netty.channel.EventLoop;
+ import io.netty.channel.FileRegion;
+ import io.netty.channel.internal.ChannelUtils;
+ import io.netty.channel.socket.DuplexChannel;
+-import io.netty.channel.unix.IovArray;
+-import io.netty.channel.unix.SocketWritableByteChannel;
+-import io.netty.channel.unix.UnixChannelUtil;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.SocketWritableByteChannel;
++import net.elytrium.netty.transport.fstack.unix.UnixChannelUtil;
+ import io.netty.util.internal.StringUtil;
+ import io.netty.util.internal.UnstableApi;
+ import io.netty.util.internal.logging.InternalLogger;
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AcceptFilter.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/AcceptFilter.java
 similarity index 97%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/AcceptFilter.java
@@ -1205,13 +1556,13 @@ index 5b390c8d66..6d1af4f078 100644
  import io.netty.util.internal.ObjectUtil;
  import io.netty.util.internal.UnstableApi;
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/BsdSocket.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/BsdSocket.java
-similarity index 97%
+similarity index 93%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/BsdSocket.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/BsdSocket.java
-index 97fe4a43c5..456c17e633 100644
+index 97fe4a43c5..a3838420f2 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/BsdSocket.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/BsdSocket.java
-@@ -13,7 +13,7 @@
+@@ -13,24 +13,24 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1220,25 +1571,39 @@ index 97fe4a43c5..456c17e633 100644
  
  import io.netty.channel.DefaultFileRegion;
  import io.netty.channel.socket.InternetProtocolFamily;
-@@ -26,8 +26,8 @@ import java.net.Inet6Address;
+-import io.netty.channel.unix.IovArray;
+-import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.Socket;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.Socket;
+ 
+ import java.io.IOException;
+ import java.net.Inet6Address;
  import java.net.InetAddress;
  import java.net.InetSocketAddress;
  
 -import static io.netty.channel.kqueue.AcceptFilter.PLATFORM_UNSUPPORTED;
 -import static io.netty.channel.kqueue.Native.CONNECT_TCP_FASTOPEN;
+-import static io.netty.channel.unix.Errors.ERRNO_EINPROGRESS_NEGATIVE;
+-import static io.netty.channel.unix.Errors.ioResult;
+-import static io.netty.channel.unix.NativeInetAddress.ipv4MappedIpv6Address;
 +import static net.elytrium.netty.transport.fstack.kqueue.AcceptFilter.PLATFORM_UNSUPPORTED;
 +import static net.elytrium.netty.transport.fstack.kqueue.Native.CONNECT_TCP_FASTOPEN;
- import static io.netty.channel.unix.Errors.ERRNO_EINPROGRESS_NEGATIVE;
- import static io.netty.channel.unix.Errors.ioResult;
- import static io.netty.channel.unix.NativeInetAddress.ipv4MappedIpv6Address;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ERRNO_EINPROGRESS_NEGATIVE;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ioResult;
++import static net.elytrium.netty.transport.fstack.unix.NativeInetAddress.ipv4MappedIpv6Address;
+ import static io.netty.util.internal.ObjectUtil.checkNotNull;
+ 
+ /**
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueue.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueue.java
-similarity index 98%
+similarity index 97%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueue.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueue.java
-index c5ba0bb05a..486918cd04 100644
+index c5ba0bb05a..a1496aec1c 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueue.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueue.java
-@@ -13,7 +13,7 @@
+@@ -13,10 +13,10 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1246,12 +1611,16 @@ index c5ba0bb05a..486918cd04 100644
 +package net.elytrium.netty.transport.fstack.kqueue;
  
  import io.netty.channel.ChannelOption;
- import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
+ import io.netty.util.internal.SystemPropertyUtil;
+ import io.netty.util.internal.UnstableApi;
+ 
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueChannelConfig.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueChannelConfig.java
-similarity index 97%
+similarity index 94%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueChannelConfig.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueChannelConfig.java
-index 4f5ff99e3c..635729a01e 100644
+index 4f5ff99e3c..00b6c2acf2 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueChannelConfig.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueChannelConfig.java
 @@ -13,7 +13,7 @@
@@ -1263,23 +1632,35 @@ index 4f5ff99e3c..635729a01e 100644
  
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelException;
-@@ -30,7 +30,7 @@ import java.io.IOException;
+@@ -22,16 +22,16 @@ import io.netty.channel.DefaultChannelConfig;
+ import io.netty.channel.MessageSizeEstimator;
+ import io.netty.channel.RecvByteBufAllocator;
+ import io.netty.channel.WriteBufferWaterMark;
+-import io.netty.channel.unix.IntegerUnixChannelOption;
+-import io.netty.channel.unix.RawUnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.IntegerUnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.RawUnixChannelOption;
+ import io.netty.util.internal.UnstableApi;
+ 
+ import java.io.IOException;
  import java.nio.ByteBuffer;
  import java.util.Map;
  
 -import static io.netty.channel.kqueue.KQueueChannelOption.RCV_ALLOC_TRANSPORT_PROVIDES_GUESS;
+-import static io.netty.channel.unix.Limits.SSIZE_MAX;
 +import static net.elytrium.netty.transport.fstack.kqueue.KQueueChannelOption.RCV_ALLOC_TRANSPORT_PROVIDES_GUESS;
- import static io.netty.channel.unix.Limits.SSIZE_MAX;
++import static net.elytrium.netty.transport.fstack.unix.Limits.SSIZE_MAX;
  import static java.lang.Math.min;
  
+ @UnstableApi
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueChannelOption.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueChannelOption.java
-similarity index 97%
+similarity index 93%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueChannelOption.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueChannelOption.java
-index d8242c7371..c55bed4788 100644
+index d8242c7371..37f9b7b117 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueChannelOption.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueChannelOption.java
-@@ -13,7 +13,7 @@
+@@ -13,11 +13,11 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1288,11 +1669,16 @@ index d8242c7371..c55bed4788 100644
  
  import io.netty.channel.ChannelOption;
  import io.netty.channel.RecvByteBufAllocator;
+-import io.netty.channel.unix.UnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.UnixChannelOption;
+ import io.netty.util.internal.UnstableApi;
+ 
+ @UnstableApi
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDatagramChannel.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDatagramChannel.java
-similarity index 99%
+similarity index 97%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDatagramChannel.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDatagramChannel.java
-index 7c8dfc9b1a..c5d6b1b7fb 100644
+index 7c8dfc9b1a..2356b61388 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDatagramChannel.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDatagramChannel.java
 @@ -13,7 +13,7 @@
@@ -1304,6 +1690,21 @@ index 7c8dfc9b1a..c5d6b1b7fb 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
+@@ -26,10 +26,10 @@ import io.netty.channel.socket.DatagramChannel;
+ import io.netty.channel.socket.DatagramChannelConfig;
+ import io.netty.channel.socket.DatagramPacket;
+ import io.netty.channel.socket.InternetProtocolFamily;
+-import io.netty.channel.unix.DatagramSocketAddress;
+-import io.netty.channel.unix.Errors;
+-import io.netty.channel.unix.IovArray;
+-import io.netty.channel.unix.UnixChannelUtil;
++import net.elytrium.netty.transport.fstack.unix.DatagramSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.Errors;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.UnixChannelUtil;
+ import io.netty.util.UncheckedBooleanSupplier;
+ import io.netty.util.internal.ObjectUtil;
+ import io.netty.util.internal.StringUtil;
 @@ -43,7 +43,7 @@ import java.net.SocketAddress;
  import java.net.SocketException;
  import java.nio.ByteBuffer;
@@ -1314,10 +1715,10 @@ index 7c8dfc9b1a..c5d6b1b7fb 100644
  @UnstableApi
  public final class KQueueDatagramChannel extends AbstractKQueueDatagramChannel implements DatagramChannel {
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDatagramChannelConfig.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDatagramChannelConfig.java
-similarity index 99%
+similarity index 98%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDatagramChannelConfig.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDatagramChannelConfig.java
-index ee6b070e66..4a591815a5 100644
+index ee6b070e66..c9efd5d501 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDatagramChannelConfig.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDatagramChannelConfig.java
 @@ -13,7 +13,7 @@
@@ -1329,14 +1730,23 @@ index ee6b070e66..4a591815a5 100644
  
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelException;
+@@ -40,7 +40,7 @@ import static io.netty.channel.ChannelOption.SO_BROADCAST;
+ import static io.netty.channel.ChannelOption.SO_RCVBUF;
+ import static io.netty.channel.ChannelOption.SO_REUSEADDR;
+ import static io.netty.channel.ChannelOption.SO_SNDBUF;
+-import static io.netty.channel.unix.UnixChannelOption.SO_REUSEPORT;
++import static net.elytrium.netty.transport.fstack.unix.UnixChannelOption.SO_REUSEPORT;
+ 
+ @UnstableApi
+ public final class KQueueDatagramChannelConfig extends KQueueChannelConfig implements DatagramChannelConfig {
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainDatagramChannel.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramChannel.java
-similarity index 98%
+similarity index 94%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainDatagramChannel.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramChannel.java
-index c8a2488bb2..8a400b1c6d 100644
+index c8a2488bb2..703c05e1e7 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainDatagramChannel.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramChannel.java
-@@ -13,7 +13,7 @@
+@@ -13,21 +13,21 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1345,6 +1755,28 @@ index c8a2488bb2..8a400b1c6d 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
+ import io.netty.channel.AddressedEnvelope;
+ import io.netty.channel.ChannelPipeline;
+ import io.netty.channel.DefaultAddressedEnvelope;
+-import io.netty.channel.unix.DomainDatagramChannel;
+-import io.netty.channel.unix.DomainDatagramChannelConfig;
+-import io.netty.channel.unix.DomainDatagramPacket;
+-import io.netty.channel.unix.DomainDatagramSocketAddress;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.IovArray;
+-import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.UnixChannelUtil;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramChannel;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramChannelConfig;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramPacket;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.UnixChannelUtil;
+ import io.netty.util.CharsetUtil;
+ import io.netty.util.UncheckedBooleanSupplier;
+ import io.netty.util.internal.StringUtil;
 @@ -37,7 +37,7 @@ import java.io.IOException;
  import java.net.SocketAddress;
  import java.nio.ByteBuffer;
@@ -1355,10 +1787,10 @@ index c8a2488bb2..8a400b1c6d 100644
  @UnstableApi
  public final class KQueueDomainDatagramChannel extends AbstractKQueueDatagramChannel implements DomainDatagramChannel {
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainDatagramChannelConfig.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramChannelConfig.java
-similarity index 99%
+similarity index 97%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainDatagramChannelConfig.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramChannelConfig.java
-index 55d73e92f7..d27728cda9 100644
+index 55d73e92f7..789a7f91f6 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainDatagramChannelConfig.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramChannelConfig.java
 @@ -13,7 +13,7 @@
@@ -1370,14 +1802,23 @@ index 55d73e92f7..d27728cda9 100644
  
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelException;
+@@ -22,7 +22,7 @@ import io.netty.channel.FixedRecvByteBufAllocator;
+ import io.netty.channel.MessageSizeEstimator;
+ import io.netty.channel.RecvByteBufAllocator;
+ import io.netty.channel.WriteBufferWaterMark;
+-import io.netty.channel.unix.DomainDatagramChannelConfig;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramChannelConfig;
+ import io.netty.util.internal.UnstableApi;
+ 
+ import java.io.IOException;
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainSocketChannel.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketChannel.java
-similarity index 97%
+similarity index 93%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainSocketChannel.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketChannel.java
-index cf56612ea2..3c7f3c736e 100644
+index cf56612ea2..847d551aa7 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainSocketChannel.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketChannel.java
-@@ -13,7 +13,7 @@
+@@ -13,22 +13,22 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1386,7 +1827,18 @@ index cf56612ea2..3c7f3c736e 100644
  
  import io.netty.channel.Channel;
  import io.netty.channel.ChannelConfig;
-@@ -28,7 +28,7 @@ import io.netty.util.internal.UnstableApi;
+ import io.netty.channel.ChannelOutboundBuffer;
+ import io.netty.channel.ChannelPipeline;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.DomainSocketChannel;
+-import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketChannel;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
+ import io.netty.util.internal.UnstableApi;
+ 
  import java.io.IOException;
  import java.net.SocketAddress;
  
@@ -1396,10 +1848,10 @@ index cf56612ea2..3c7f3c736e 100644
  @UnstableApi
  public final class KQueueDomainSocketChannel extends AbstractKQueueStreamChannel implements DomainSocketChannel {
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainSocketChannelConfig.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketChannelConfig.java
-similarity index 99%
+similarity index 95%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainSocketChannelConfig.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketChannelConfig.java
-index 0a7f3d0215..a921d2bcf0 100644
+index 0a7f3d0215..a9b8c211b9 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDomainSocketChannelConfig.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketChannelConfig.java
 @@ -13,7 +13,7 @@
@@ -1411,30 +1863,53 @@ index 0a7f3d0215..a921d2bcf0 100644
  
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelOption;
+@@ -21,8 +21,8 @@ import io.netty.channel.MessageSizeEstimator;
+ import io.netty.channel.RecvByteBufAllocator;
+ import io.netty.channel.WriteBufferWaterMark;
+ import io.netty.channel.socket.DuplexChannelConfig;
+-import io.netty.channel.unix.DomainSocketChannelConfig;
+-import io.netty.channel.unix.DomainSocketReadMode;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketChannelConfig;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketReadMode;
+ import io.netty.util.internal.ObjectUtil;
+ import io.netty.util.internal.UnstableApi;
+ 
+@@ -32,7 +32,7 @@ import java.util.Map;
+ import static io.netty.channel.ChannelOption.ALLOW_HALF_CLOSURE;
+ import static io.netty.channel.ChannelOption.SO_RCVBUF;
+ import static io.netty.channel.ChannelOption.SO_SNDBUF;
+-import static io.netty.channel.unix.UnixChannelOption.DOMAIN_SOCKET_READ_MODE;
++import static net.elytrium.netty.transport.fstack.unix.UnixChannelOption.DOMAIN_SOCKET_READ_MODE;
+ 
+ @UnstableApi
+ public final class KQueueDomainSocketChannelConfig extends KQueueChannelConfig
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueEventArray.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueEventArray.java
-similarity index 99%
+similarity index 98%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueEventArray.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueEventArray.java
-index 787dc9c620..417e747819 100644
+index 787dc9c620..8504bfad2a 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueEventArray.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueEventArray.java
-@@ -13,7 +13,7 @@
+@@ -13,9 +13,9 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.kqueue;
 +package net.elytrium.netty.transport.fstack.kqueue;
  
- import io.netty.channel.unix.Buffer;
+-import io.netty.channel.unix.Buffer;
++import net.elytrium.netty.transport.fstack.unix.Buffer;
  import io.netty.util.internal.PlatformDependent;
+ 
+ import java.nio.ByteBuffer;
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueEventLoop.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueEventLoop.java
-similarity index 99%
+similarity index 98%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueEventLoop.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueEventLoop.java
-index 34b854510c..28f4eb9464 100644
+index 34b854510c..d3c81ed369 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueEventLoop.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueEventLoop.java
-@@ -13,14 +13,14 @@
+@@ -13,16 +13,16 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1447,10 +1922,14 @@ index 34b854510c..28f4eb9464 100644
  import io.netty.channel.SelectStrategy;
  import io.netty.channel.SingleThreadEventLoop;
 -import io.netty.channel.kqueue.AbstractKQueueChannel.AbstractKQueueUnsafe;
+-import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.IovArray;
 +import net.elytrium.netty.transport.fstack.kqueue.AbstractKQueueChannel.AbstractKQueueUnsafe;
- import io.netty.channel.unix.FileDescriptor;
- import io.netty.channel.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
  import io.netty.util.IntSupplier;
+ import io.netty.util.collection.IntObjectHashMap;
+ import io.netty.util.collection.IntObjectMap;
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueEventLoopGroup.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueEventLoopGroup.java
 similarity index 99%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueEventLoopGroup.java
@@ -1468,13 +1947,13 @@ index 30c726da50..4d2b5b5fdc 100644
  import io.netty.channel.DefaultSelectStrategyFactory;
  import io.netty.channel.EventLoop;
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueRecvByteAllocatorHandle.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueRecvByteAllocatorHandle.java
-similarity index 98%
+similarity index 96%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueRecvByteAllocatorHandle.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueRecvByteAllocatorHandle.java
-index cd81d120c8..f83c455519 100644
+index cd81d120c8..6ef5ead056 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueRecvByteAllocatorHandle.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueRecvByteAllocatorHandle.java
-@@ -13,7 +13,7 @@
+@@ -13,14 +13,14 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1483,6 +1962,14 @@ index cd81d120c8..f83c455519 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufAllocator;
+ import io.netty.channel.ChannelConfig;
+ import io.netty.channel.RecvByteBufAllocator.DelegatingHandle;
+ import io.netty.channel.RecvByteBufAllocator.ExtendedHandle;
+-import io.netty.channel.unix.PreferredDirectByteBufAllocator;
++import net.elytrium.netty.transport.fstack.unix.PreferredDirectByteBufAllocator;
+ import io.netty.util.UncheckedBooleanSupplier;
+ 
+ import static java.lang.Math.max;
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerChannelConfig.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerChannelConfig.java
 similarity index 99%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerChannelConfig.java
@@ -1500,13 +1987,13 @@ index 99974c0ce0..cac3113a8c 100644
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelException;
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerDomainSocketChannel.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerDomainSocketChannel.java
-similarity index 95%
+similarity index 91%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerDomainSocketChannel.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerDomainSocketChannel.java
-index 75e4dfbe8a..91f8a532cc 100644
+index 75e4dfbe8a..04dc52de08 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerDomainSocketChannel.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerDomainSocketChannel.java
-@@ -13,7 +13,7 @@
+@@ -13,11 +13,11 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1514,7 +2001,13 @@ index 75e4dfbe8a..91f8a532cc 100644
 +package net.elytrium.netty.transport.fstack.kqueue;
  
  import io.netty.channel.Channel;
- import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.ServerDomainSocketChannel;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.ServerDomainSocketChannel;
+ import io.netty.util.internal.UnstableApi;
+ import io.netty.util.internal.logging.InternalLogger;
+ import io.netty.util.internal.logging.InternalLoggerFactory;
 @@ -25,7 +25,7 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
  import java.io.File;
  import java.net.SocketAddress;
@@ -1525,10 +2018,10 @@ index 75e4dfbe8a..91f8a532cc 100644
  @UnstableApi
  public final class KQueueServerDomainSocketChannel extends AbstractKQueueServerChannel
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerSocketChannel.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerSocketChannel.java
-similarity index 95%
+similarity index 92%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerSocketChannel.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerSocketChannel.java
-index e55593b997..dfe15ecd69 100644
+index e55593b997..7fd0edf60c 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerSocketChannel.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerSocketChannel.java
 @@ -13,7 +13,7 @@
@@ -1540,20 +2033,22 @@ index e55593b997..dfe15ecd69 100644
  
  import io.netty.channel.Channel;
  import io.netty.channel.EventLoop;
-@@ -23,7 +23,7 @@ import io.netty.util.internal.UnstableApi;
+@@ -23,8 +23,8 @@ import io.netty.util.internal.UnstableApi;
  import java.net.InetSocketAddress;
  import java.net.SocketAddress;
  
 -import static io.netty.channel.kqueue.BsdSocket.newSocketStream;
+-import static io.netty.channel.unix.NativeInetAddress.address;
 +import static net.elytrium.netty.transport.fstack.kqueue.BsdSocket.newSocketStream;
- import static io.netty.channel.unix.NativeInetAddress.address;
++import static net.elytrium.netty.transport.fstack.unix.NativeInetAddress.address;
  
  @UnstableApi
+ public final class KQueueServerSocketChannel extends AbstractKQueueServerChannel implements ServerSocketChannel {
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerSocketChannelConfig.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerSocketChannelConfig.java
-similarity index 97%
+similarity index 96%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerSocketChannelConfig.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerSocketChannelConfig.java
-index 5fd44dd8b0..63fc2d7550 100644
+index 5fd44dd8b0..a0f5c01a50 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueServerSocketChannelConfig.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueServerSocketChannelConfig.java
 @@ -13,7 +13,7 @@
@@ -1565,20 +2060,22 @@ index 5fd44dd8b0..63fc2d7550 100644
  
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.channel.ChannelException;
-@@ -27,7 +27,7 @@ import io.netty.util.internal.UnstableApi;
+@@ -27,8 +27,8 @@ import io.netty.util.internal.UnstableApi;
  import java.io.IOException;
  import java.util.Map;
  
 -import static io.netty.channel.kqueue.KQueueChannelOption.SO_ACCEPTFILTER;
+-import static io.netty.channel.unix.UnixChannelOption.SO_REUSEPORT;
 +import static net.elytrium.netty.transport.fstack.kqueue.KQueueChannelOption.SO_ACCEPTFILTER;
- import static io.netty.channel.unix.UnixChannelOption.SO_REUSEPORT;
++import static net.elytrium.netty.transport.fstack.unix.UnixChannelOption.SO_REUSEPORT;
  
  @UnstableApi
+ public class KQueueServerSocketChannelConfig extends KQueueServerChannelConfig {
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueSocketChannel.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketChannel.java
-similarity index 99%
+similarity index 97%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueSocketChannel.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketChannel.java
-index 486a895f7e..caa263773a 100644
+index 486a895f7e..4624a0f0e1 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueSocketChannel.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketChannel.java
 @@ -13,7 +13,7 @@
@@ -1590,6 +2087,15 @@ index 486a895f7e..caa263773a 100644
  
  import io.netty.buffer.ByteBuf;
  import io.netty.channel.Channel;
+@@ -21,7 +21,7 @@ import io.netty.channel.ChannelOutboundBuffer;
+ import io.netty.channel.socket.InternetProtocolFamily;
+ import io.netty.channel.socket.ServerSocketChannel;
+ import io.netty.channel.socket.SocketChannel;
+-import io.netty.channel.unix.IovArray;
++import net.elytrium.netty.transport.fstack.unix.IovArray;
+ import io.netty.util.concurrent.GlobalEventExecutor;
+ import io.netty.util.internal.UnstableApi;
+ 
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueSocketChannelConfig.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketChannelConfig.java
 similarity index 98%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/KQueueSocketChannelConfig.java
@@ -1634,13 +2140,13 @@ index e4a4a41ce8..3620aad414 100644
  /**
   * This class is necessary to break the following cyclic dependency:
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/Native.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/Native.java
-similarity index 77%
+similarity index 74%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/Native.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/Native.java
-index 20a09f49b1..8d284a8cf6 100644
+index 20a09f49b1..a5e966328b 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/Native.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/Native.java
-@@ -13,7 +13,7 @@
+@@ -13,12 +13,12 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1648,8 +2154,16 @@ index 20a09f49b1..8d284a8cf6 100644
 +package net.elytrium.netty.transport.fstack.kqueue;
  
  import io.netty.channel.DefaultFileRegion;
- import io.netty.channel.unix.FileDescriptor;
-@@ -29,24 +29,24 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
+-import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.Unix;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.Unix;
+ import io.netty.util.internal.ClassInitializerUtil;
+ import io.netty.util.internal.NativeLibraryLoader;
+ import io.netty.util.internal.PlatformDependent;
+@@ -29,25 +29,25 @@ import io.netty.util.internal.logging.InternalLoggerFactory;
  import java.io.IOException;
  import java.nio.channels.FileChannel;
  
@@ -1671,6 +2185,7 @@ index 20a09f49b1..8d284a8cf6 100644
 -import static io.netty.channel.kqueue.KQueueStaticallyReferencedJniMethods.noteConnReset;
 -import static io.netty.channel.kqueue.KQueueStaticallyReferencedJniMethods.noteDisconnected;
 -import static io.netty.channel.kqueue.KQueueStaticallyReferencedJniMethods.noteReadClosed;
+-import static io.netty.channel.unix.Errors.newIOException;
 +import static net.elytrium.netty.transport.fstack.kqueue.KQueueStaticallyReferencedJniMethods.connectDataIdempotent;
 +import static net.elytrium.netty.transport.fstack.kqueue.KQueueStaticallyReferencedJniMethods.connectResumeOnReadWrite;
 +import static net.elytrium.netty.transport.fstack.kqueue.KQueueStaticallyReferencedJniMethods.evAdd;
@@ -1689,25 +2204,35 @@ index 20a09f49b1..8d284a8cf6 100644
 +import static net.elytrium.netty.transport.fstack.kqueue.KQueueStaticallyReferencedJniMethods.noteConnReset;
 +import static net.elytrium.netty.transport.fstack.kqueue.KQueueStaticallyReferencedJniMethods.noteDisconnected;
 +import static net.elytrium.netty.transport.fstack.kqueue.KQueueStaticallyReferencedJniMethods.noteReadClosed;
- import static io.netty.channel.unix.Errors.newIOException;
++import static net.elytrium.netty.transport.fstack.unix.Errors.newIOException;
  
  /**
+  * Native helper methods
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/NativeLongArray.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/NativeLongArray.java
-similarity index 98%
+similarity index 94%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/NativeLongArray.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/NativeLongArray.java
-index 5c44c57ca4..b1a1298c15 100644
+index 5c44c57ca4..e022e43319 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/NativeLongArray.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/NativeLongArray.java
-@@ -13,7 +13,7 @@
+@@ -13,14 +13,14 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.kqueue;
 +package net.elytrium.netty.transport.fstack.kqueue;
  
- import io.netty.channel.unix.Buffer;
+-import io.netty.channel.unix.Buffer;
++import net.elytrium.netty.transport.fstack.unix.Buffer;
  import io.netty.util.internal.PlatformDependent;
+ 
+ import java.nio.ByteBuffer;
+ 
+-import static io.netty.channel.unix.Limits.SIZEOF_JLONG;
++import static net.elytrium.netty.transport.fstack.unix.Limits.SIZEOF_JLONG;
+ import static io.netty.util.internal.ObjectUtil.checkPositive;
+ 
+ final class NativeLongArray {
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/package-info.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/package-info.java
 similarity index 93%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/package-info.java
@@ -1796,7 +2321,7 @@ index cad13b4b77..79ec33aa58 100644
        <groupId>io.github.artsok</groupId>
        <artifactId>rerunner-jupiter</artifactId>
 diff --git a/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c b/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c
-index 62e656f0b1..b00760f3f2 100644
+index 62e656f0b1..67e675f043 100644
 --- a/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c
 +++ b/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c
 @@ -35,7 +35,7 @@
@@ -1808,6 +2333,24 @@ index 62e656f0b1..b00760f3f2 100644
  
  // TCP_FASTOPEN is defined in linux 3.7. We define this here so older kernels can compile.
  #ifndef TCP_FASTOPEN
+@@ -725,7 +725,7 @@ static JNINativeMethod* createDynamicMethodsTable(const char* packagePrefix) {
+     memcpy(dynamicMethods, fixed_method_table, sizeof(fixed_method_table));
+   
+     JNINativeMethod* dynamicMethod = &dynamicMethods[fixed_method_table_size];
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/PeerCredentials;", dynamicTypeName, error);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/PeerCredentials;", dynamicTypeName, error);
+     NETTY_JNI_UTIL_PREPEND("(I)L", dynamicTypeName,  dynamicMethod->signature, error);
+     dynamicMethod->name = "getPeerCredentials";
+     dynamicMethod->fnPtr = (void *) netty_epoll_linuxsocket_getPeerCredentials;
+@@ -767,7 +767,7 @@ jint netty_epoll_linuxsocket_JNI_OnLoad(JNIEnv* env, const char* packagePrefix)
+         goto done;
+     }
+ 
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/PeerCredentials", nettyClassName, done);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/PeerCredentials", nettyClassName, done);
+     NETTY_JNI_UTIL_LOAD_CLASS(env, peerCredentialsClass, nettyClassName, done);
+     netty_jni_util_free_dynamic_name(&nettyClassName);
+ 
 diff --git a/transport-native-epoll/src/main/c/netty_epoll_native.c b/transport-native-epoll/src/main/c/netty_epoll_native.c
 index 82ff4e6dbb..f1281dcf79 100644
 --- a/transport-native-epoll/src/main/c/netty_epoll_native.c
@@ -1858,29 +2401,32 @@ index 82ff4e6dbb..f1281dcf79 100644
      netty_jni_util_free_dynamic_name(&nettyClassName);
  
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollAbstractDomainSocketEchoTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollAbstractDomainSocketEchoTest.java
-similarity index 96%
+similarity index 90%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollAbstractDomainSocketEchoTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollAbstractDomainSocketEchoTest.java
-index 8745836dbe..0b3c148246 100644
+index 8745836dbe..74e44d2321 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollAbstractDomainSocketEchoTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollAbstractDomainSocketEchoTest.java
-@@ -13,7 +13,7 @@
+@@ -13,9 +13,9 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.epoll;
 +package java.net.elytrium.channel.epoll;
  
- import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
  import java.net.SocketAddress;
+ import java.util.UUID;
+ 
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollChannelConfigTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollChannelConfigTest.java
-similarity index 98%
+similarity index 92%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollChannelConfigTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollChannelConfigTest.java
-index 88719784d5..f50076a0eb 100644
+index 88719784d5..b97d01c99b 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollChannelConfigTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollChannelConfigTest.java
-@@ -13,7 +13,7 @@
+@@ -13,13 +13,13 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -1889,6 +2435,15 @@ index 88719784d5..f50076a0eb 100644
  
  import io.netty.channel.ChannelException;
  
+-import io.netty.channel.unix.Buffer;
+-import io.netty.channel.unix.IntegerUnixChannelOption;
+-import io.netty.channel.unix.RawUnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.Buffer;
++import net.elytrium.netty.transport.fstack.unix.IntegerUnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.RawUnixChannelOption;
+ import org.junit.jupiter.api.Test;
+ 
+ import java.nio.ByteBuffer;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollCompositeBufferGatheringWriteTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollCompositeBufferGatheringWriteTest.java
 similarity index 97%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollCompositeBufferGatheringWriteTest.java
@@ -1922,10 +2477,10 @@ index 1a3beaa331..f86030ee3e 100644
  
  import org.junit.jupiter.api.Test;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramChannelTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDatagramChannelTest.java
-similarity index 99%
+similarity index 97%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramChannelTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDatagramChannelTest.java
-index e83fb4ba01..7752116e83 100644
+index e83fb4ba01..e17106a51b 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramChannelTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDatagramChannelTest.java
 @@ -13,7 +13,7 @@
@@ -1937,6 +2492,15 @@ index e83fb4ba01..7752116e83 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.channel.ChannelFuture;
+@@ -21,7 +21,7 @@ import io.netty.channel.ChannelHandlerContext;
+ import io.netty.channel.ChannelInboundHandlerAdapter;
+ import io.netty.channel.EventLoopGroup;
+ import io.netty.channel.socket.InternetProtocolFamily;
+-import io.netty.channel.unix.Socket;
++import net.elytrium.netty.transport.fstack.unix.Socket;
+ import org.junit.jupiter.api.BeforeEach;
+ import org.junit.jupiter.api.Test;
+ 
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramConnectNotExistsTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDatagramConnectNotExistsTest.java
 similarity index 96%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramConnectNotExistsTest.java
@@ -2050,10 +2614,10 @@ index aa7b6d0b05..efbd9e172f 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.testsuite.transport.TestsuitePermutation;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramUnicastTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDatagramUnicastTest.java
-similarity index 99%
+similarity index 97%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramUnicastTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDatagramUnicastTest.java
-index ba1970f951..1902594f49 100644
+index ba1970f951..85f4805b79 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramUnicastTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDatagramUnicastTest.java
 @@ -13,7 +13,7 @@
@@ -2065,14 +2629,31 @@ index ba1970f951..1902594f49 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.buffer.ByteBuf;
+@@ -28,6 +28,7 @@ import io.netty.channel.socket.DatagramPacket;
+ import io.netty.channel.socket.InternetProtocolFamily;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.socket.DatagramUnicastInetTest;
++import net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket;
+ import org.junit.jupiter.api.Test;
+ import org.junit.jupiter.api.TestInfo;
+ 
+@@ -169,7 +170,7 @@ public class EpollDatagramUnicastTest extends DatagramUnicastInetTest {
+             } else {
+                 buffer = Unpooled.directBuffer(bufferCapacity).writeZero(bufferCapacity);
+             }
+-            cc.writeAndFlush(new io.netty.channel.unix.SegmentedDatagramPacket(buffer, segmentSize, addr)).sync();
++            cc.writeAndFlush(new SegmentedDatagramPacket(buffer, segmentSize, addr)).sync();
+ 
+             if (!latch.await(10, TimeUnit.SECONDS)) {
+                 Throwable error = errorRef.get();
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDetectPeerCloseWithoutReadTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDetectPeerCloseWithoutReadTest.java
-similarity index 96%
+similarity index 90%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDetectPeerCloseWithoutReadTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDetectPeerCloseWithoutReadTest.java
-index cc41026f3f..29eabceb3a 100644
+index cc41026f3f..76994d37a4 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDetectPeerCloseWithoutReadTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDetectPeerCloseWithoutReadTest.java
-@@ -13,7 +13,7 @@
+@@ -13,12 +13,12 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -2081,14 +2662,20 @@ index cc41026f3f..29eabceb3a 100644
  
  import io.netty.channel.Channel;
  import io.netty.channel.EventLoopGroup;
+ import io.netty.channel.ServerChannel;
+-import io.netty.channel.unix.tests.DetectPeerCloseWithoutReadTest;
++import net.elytrium.netty.transport.fstack.unix.tests.DetectPeerCloseWithoutReadTest;
+ 
+ public class EpollDetectPeerCloseWithoutReadTest extends DetectPeerCloseWithoutReadTest {
+     @Override
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainDatagramPathTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainDatagramPathTest.java
-similarity index 98%
+similarity index 96%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainDatagramPathTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainDatagramPathTest.java
-index be2f902f92..b0084285fb 100644
+index be2f902f92..50d6b2c29a 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainDatagramPathTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainDatagramPathTest.java
-@@ -13,7 +13,7 @@
+@@ -13,13 +13,13 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -2097,11 +2684,18 @@ index be2f902f92..b0084285fb 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.buffer.Unpooled;
+ import io.netty.channel.Channel;
+ import io.netty.channel.ChannelInboundHandlerAdapter;
+-import io.netty.channel.unix.DomainDatagramPacket;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramPacket;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.socket.AbstractClientSocketTest;
+ import io.netty.util.CharsetUtil;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainDatagramUnicastTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainDatagramUnicastTest.java
-similarity index 99%
+similarity index 96%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainDatagramUnicastTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainDatagramUnicastTest.java
-index 371488dd27..efa36e4c0e 100644
+index 371488dd27..142b5c6b26 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainDatagramUnicastTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainDatagramUnicastTest.java
 @@ -13,7 +13,7 @@
@@ -2113,6 +2707,19 @@ index 371488dd27..efa36e4c0e 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.buffer.ByteBuf;
+@@ -22,9 +22,9 @@ import io.netty.channel.ChannelFuture;
+ import io.netty.channel.ChannelHandlerContext;
+ import io.netty.channel.ChannelInboundHandlerAdapter;
+ import io.netty.channel.SimpleChannelInboundHandler;
+-import io.netty.channel.unix.DomainDatagramChannel;
+-import io.netty.channel.unix.DomainDatagramPacket;
+-import io.netty.channel.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramChannel;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramPacket;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.socket.DatagramUnicastTest;
+ import org.junit.jupiter.api.Test;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketDataReadInitialStateTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainSocketDataReadInitialStateTest.java
 similarity index 97%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketDataReadInitialStateTest.java
@@ -2146,10 +2753,10 @@ index 3e8c64233d..7dafd9f479 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketFdTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainSocketFdTest.java
-similarity index 99%
+similarity index 96%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketFdTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainSocketFdTest.java
-index 6013908e56..a805103e39 100644
+index 6013908e56..64a0355796 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketFdTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainSocketFdTest.java
 @@ -13,7 +13,7 @@
@@ -2161,6 +2768,17 @@ index 6013908e56..a805103e39 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
+@@ -22,8 +22,8 @@ import io.netty.channel.ChannelFuture;
+ import io.netty.channel.ChannelFutureListener;
+ import io.netty.channel.ChannelHandlerContext;
+ import io.netty.channel.ChannelInboundHandlerAdapter;
+-import io.netty.channel.unix.DomainSocketReadMode;
+-import io.netty.channel.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketReadMode;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.socket.AbstractSocketTest;
+ import org.junit.jupiter.api.Test;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketFileRegionTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainSocketFileRegionTest.java
 similarity index 96%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketFileRegionTest.java
@@ -2242,13 +2860,13 @@ index 8a18feb5c5..6446ff88e3 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketShutdownOutputByPeerTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainSocketShutdownOutputByPeerTest.java
-similarity index 98%
+similarity index 95%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketShutdownOutputByPeerTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainSocketShutdownOutputByPeerTest.java
-index 8b0077c8c6..2c31ccfb80 100644
+index 8b0077c8c6..b41a6c87e9 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketShutdownOutputByPeerTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainSocketShutdownOutputByPeerTest.java
-@@ -14,7 +14,7 @@
+@@ -14,10 +14,10 @@
   * under the License.
   */
  
@@ -2256,7 +2874,11 @@ index 8b0077c8c6..2c31ccfb80 100644
 +package java.net.elytrium.channel.epoll;
  
  import io.netty.bootstrap.ServerBootstrap;
- import io.netty.channel.unix.Buffer;
+-import io.netty.channel.unix.Buffer;
++import net.elytrium.netty.transport.fstack.unix.Buffer;
+ import io.netty.testsuite.transport.TestsuitePermutation.BootstrapFactory;
+ import io.netty.testsuite.transport.socket.AbstractSocketShutdownOutputByPeerTest;
+ 
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketSslClientRenegotiateTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollDomainSocketSslClientRenegotiateTest.java
 similarity index 97%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDomainSocketSslClientRenegotiateTest.java
@@ -2450,10 +3072,10 @@ index 916cd21a75..1b05a91252 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollEventLoopTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollEventLoopTest.java
-similarity index 99%
+similarity index 98%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollEventLoopTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollEventLoopTest.java
-index 42e9fe61eb..3560356923 100644
+index 42e9fe61eb..22fd31618b 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollEventLoopTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollEventLoopTest.java
 @@ -13,7 +13,7 @@
@@ -2465,38 +3087,53 @@ index 42e9fe61eb..3560356923 100644
  
  import io.netty.testsuite.transport.AbstractSingleThreadEventLoopTest;
  import io.netty.channel.DefaultSelectStrategyFactory;
+@@ -21,7 +21,7 @@ import io.netty.channel.EventLoop;
+ import io.netty.channel.EventLoopGroup;
+ import io.netty.channel.ServerChannel;
+ import io.netty.channel.socket.ServerSocketChannel;
+-import io.netty.channel.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
+ import io.netty.util.concurrent.DefaultThreadFactory;
+ import io.netty.util.concurrent.Future;
+ import io.netty.util.concurrent.RejectedExecutionHandlers;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollJdkLoopbackSocketSslEchoTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollJdkLoopbackSocketSslEchoTest.java
-similarity index 95%
+similarity index 88%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollJdkLoopbackSocketSslEchoTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollJdkLoopbackSocketSslEchoTest.java
-index 3a1c246128..1e0f3354f5 100644
+index 3a1c246128..1370aecc25 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollJdkLoopbackSocketSslEchoTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollJdkLoopbackSocketSslEchoTest.java
-@@ -13,7 +13,7 @@
+@@ -13,9 +13,9 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.epoll;
 +package java.net.elytrium.channel.epoll;
  
- import io.netty.channel.unix.tests.UnixTestUtils;
+-import io.netty.channel.unix.tests.UnixTestUtils;
++import net.elytrium.netty.transport.fstack.unix.tests.UnixTestUtils;
+ 
+ import java.net.SocketAddress;
  
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollKQueueIovArrayTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollKQueueIovArrayTest.java
-similarity index 95%
+similarity index 88%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollKQueueIovArrayTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollKQueueIovArrayTest.java
-index 96a4f05038..7a0daf176f 100644
+index 96a4f05038..5491ff136c 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollKQueueIovArrayTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollKQueueIovArrayTest.java
-@@ -13,7 +13,7 @@
+@@ -13,9 +13,9 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.epoll;
 +package java.net.elytrium.channel.epoll;
  
- import io.netty.channel.unix.tests.IovArrayTest;
+-import io.netty.channel.unix.tests.IovArrayTest;
++import net.elytrium.netty.transport.fstack.unix.tests.IovArrayTest;
  import org.junit.jupiter.api.BeforeAll;
+ 
+ public class EpollKQueueIovArrayTest extends IovArrayTest {
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollLTSocketAutoReadTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollLTSocketAutoReadTest.java
 similarity index 97%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollLTSocketAutoReadTest.java
@@ -2834,13 +3471,13 @@ index 78e7527fce..c31f7b8040 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketRstTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketRstTest.java
-similarity index 97%
+similarity index 91%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketRstTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketRstTest.java
-index 3fa8b446e8..4e3b470cdc 100644
+index 3fa8b446e8..f0482663d5 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketRstTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketRstTest.java
-@@ -13,7 +13,7 @@
+@@ -13,13 +13,13 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -2849,6 +3486,14 @@ index 3fa8b446e8..4e3b470cdc 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
+ import io.netty.channel.Channel;
+-import io.netty.channel.unix.Errors;
+-import io.netty.channel.unix.Errors.NativeIoException;
++import net.elytrium.netty.transport.fstack.unix.Errors;
++import net.elytrium.netty.transport.fstack.unix.Errors.NativeIoException;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.socket.SocketRstTest;
+ 
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketShutdownOutputByPeerTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketShutdownOutputByPeerTest.java
 similarity index 96%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketShutdownOutputByPeerTest.java
@@ -3010,26 +3655,35 @@ index 6bbcb2e660..391df30888 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.channel.ChannelInboundHandlerAdapter;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketTest.java
-similarity index 98%
+similarity index 88%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketTest.java
-index 79731bd995..08982f918e 100644
+index 79731bd995..b2d74c4e41 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketTest.java
-@@ -13,7 +13,7 @@
+@@ -13,12 +13,12 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.epoll;
 +package java.net.elytrium.channel.epoll;
  
- import io.netty.channel.unix.DomainSocketAddress;
- import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.tests.SocketTest;
+-import io.netty.channel.unix.tests.UnixTestUtils;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.tests.SocketTest;
++import net.elytrium.netty.transport.fstack.unix.tests.UnixTestUtils;
+ import org.junit.jupiter.api.BeforeAll;
+ import org.junit.jupiter.api.Test;
+ 
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketTestPermutation.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketTestPermutation.java
-similarity index 97%
+similarity index 96%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketTestPermutation.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketTestPermutation.java
-index aea11e24ae..982f753950 100644
+index aea11e24ae..08cb334744 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSocketTestPermutation.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSocketTestPermutation.java
 @@ -13,7 +13,7 @@
@@ -3041,6 +3695,17 @@ index aea11e24ae..982f753950 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
+@@ -25,8 +25,8 @@ import io.netty.channel.socket.InternetProtocolFamily;
+ import io.netty.channel.socket.nio.NioDatagramChannel;
+ import io.netty.channel.socket.nio.NioServerSocketChannel;
+ import io.netty.channel.socket.nio.NioSocketChannel;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.tests.UnixTestUtils;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.tests.UnixTestUtils;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.TestsuitePermutation.BootstrapFactory;
+ import io.netty.testsuite.transport.socket.SocketTestPermutation;
 @@ -37,8 +37,8 @@ import java.util.Arrays;
  import java.util.Collections;
  import java.util.List;
@@ -3056,7 +3721,7 @@ diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSp
 similarity index 99%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSpliceTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSpliceTest.java
-index fee628b046..fc2eaf9130 100644
+index fee628b046..9a57bc7438 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollSpliceTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollSpliceTest.java
 @@ -13,7 +13,7 @@
@@ -3068,22 +3733,34 @@ index fee628b046..fc2eaf9130 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
+@@ -26,7 +26,7 @@ import io.netty.channel.ChannelHandlerContext;
+ import io.netty.channel.ChannelInboundHandlerAdapter;
+ import io.netty.channel.EventLoopGroup;
+ import io.netty.channel.SimpleChannelInboundHandler;
+-import io.netty.channel.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
+ import io.netty.util.NetUtil;
+ import io.netty.util.internal.PlatformDependent;
+ import org.junit.jupiter.api.Test;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollTest.java
-similarity index 98%
+similarity index 96%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollTest.java
-index 3e09949053..90d97e2864 100644
+index 3e09949053..6debb951af 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollTest.java
-@@ -13,7 +13,7 @@
+@@ -13,9 +13,9 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.epoll;
 +package java.net.elytrium.channel.epoll;
  
- import io.netty.channel.unix.FileDescriptor;
+-import io.netty.channel.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
  import org.junit.jupiter.api.Test;
+ import org.junit.jupiter.api.Timeout;
+ 
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollWriteBeforeRegisteredTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/EpollWriteBeforeRegisteredTest.java
 similarity index 96%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollWriteBeforeRegisteredTest.java
@@ -3101,26 +3778,33 @@ index 7e93faf0cd..37e5e4a6dc 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.testsuite.transport.TestsuitePermutation;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/LinuxSocketTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/LinuxSocketTest.java
-similarity index 98%
+similarity index 93%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/LinuxSocketTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/LinuxSocketTest.java
-index 4fe962e857..8111c65275 100644
+index 4fe962e857..651afc42b5 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/LinuxSocketTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/LinuxSocketTest.java
-@@ -13,7 +13,7 @@
+@@ -13,11 +13,11 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.epoll;
 +package java.net.elytrium.channel.epoll;
  
- import io.netty.channel.unix.DomainSocketAddress;
- import io.netty.channel.unix.Errors.NativeIoException;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.Errors.NativeIoException;
+-import io.netty.channel.unix.Socket;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.Errors.NativeIoException;
++import net.elytrium.netty.transport.fstack.unix.Socket;
+ import java.util.UUID;
+ import org.junit.jupiter.api.Assertions;
+ import org.junit.jupiter.api.BeforeAll;
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/NativeTest.java b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/NativeTest.java
-similarity index 97%
+similarity index 93%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/NativeTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/channel/epoll/NativeTest.java
-index 09e04e9614..4cdac788cd 100644
+index 09e04e9614..65a67ebc9b 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/NativeTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/channel/epoll/NativeTest.java
 @@ -13,7 +13,7 @@
@@ -3132,6 +3816,15 @@ index 09e04e9614..4cdac788cd 100644
  
  import io.netty.util.NetUtil;
  import org.junit.jupiter.api.Test;
+@@ -22,7 +22,7 @@ import java.net.Inet6Address;
+ import java.net.InetSocketAddress;
+ import java.nio.ByteBuffer;
+ 
+-import static io.netty.channel.unix.NativeInetAddress.address;
++import static net.elytrium.netty.transport.fstack.unix.NativeInetAddress.address;
+ import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
+ public class NativeTest {
 diff --git a/transport-native-kqueue/pom.xml b/transport-native-kqueue/pom.xml
 index e1cc0e79a5..64b9c741dc 100644
 --- a/transport-native-kqueue/pom.xml
@@ -3263,7 +3956,7 @@ index e1cc0e79a5..64b9c741dc 100644
  
    <build>
 diff --git a/transport-native-kqueue/src/main/c/netty_kqueue_bsdsocket.c b/transport-native-kqueue/src/main/c/netty_kqueue_bsdsocket.c
-index 6e0822f4c9..8e81175927 100644
+index 6e0822f4c9..25d16edfed 100644
 --- a/transport-native-kqueue/src/main/c/netty_kqueue_bsdsocket.c
 +++ b/transport-native-kqueue/src/main/c/netty_kqueue_bsdsocket.c
 @@ -33,7 +33,7 @@
@@ -3275,6 +3968,24 @@ index 6e0822f4c9..8e81175927 100644
  
  // Those are initialized in the init(...) method and cached for performance reasons
  static jclass stringClass = NULL;
+@@ -294,7 +294,7 @@ static JNINativeMethod* createDynamicMethodsTable(const char* packagePrefix) {
+     netty_jni_util_free_dynamic_name(&dynamicTypeName);
+ 
+     ++dynamicMethod;
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/PeerCredentials;", dynamicTypeName, error);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/PeerCredentials;", dynamicTypeName, error);
+     NETTY_JNI_UTIL_PREPEND("(I)L", dynamicTypeName,  dynamicMethod->signature, error);
+     dynamicMethod->name = "getPeerCredentials";
+     dynamicMethod->fnPtr = (void *) netty_kqueue_bsdsocket_getPeerCredentials;
+@@ -346,7 +346,7 @@ jint netty_kqueue_bsdsocket_JNI_OnLoad(JNIEnv* env, const char* packagePrefix) {
+   
+     NETTY_JNI_UTIL_LOAD_CLASS(env, stringClass, "java/lang/String", done);
+ 
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/PeerCredentials", nettyClassName, done);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/PeerCredentials", nettyClassName, done);
+     NETTY_JNI_UTIL_LOAD_CLASS(env, peerCredentialsClass, nettyClassName, done);
+     netty_jni_util_free_dynamic_name(&nettyClassName);
+   
 diff --git a/transport-native-kqueue/src/main/c/netty_kqueue_eventarray.c b/transport-native-kqueue/src/main/c/netty_kqueue_eventarray.c
 index e254a961ff..0853beba44 100644
 --- a/transport-native-kqueue/src/main/c/netty_kqueue_eventarray.c
@@ -3304,26 +4015,29 @@ index cd162380a6..cc18ca3457 100644
  // Currently only macOS supports EVFILT_SOCK, and it is currently only available in internal APIs.
  // To make compiling easier we redefine the values here if they are not present.
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueAbstractDomainSocketEchoTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueAbstractDomainSocketEchoTest.java
-similarity index 95%
+similarity index 88%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueAbstractDomainSocketEchoTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueAbstractDomainSocketEchoTest.java
-index f1ada13b38..b976c36f2a 100644
+index f1ada13b38..213f5c43c8 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueAbstractDomainSocketEchoTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueAbstractDomainSocketEchoTest.java
-@@ -13,7 +13,7 @@
+@@ -13,9 +13,9 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.kqueue;
 +package net.elytrium.netty.transport.fstack.kqueue;
  
- import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
  import java.net.SocketAddress;
+ import java.util.UUID;
+ 
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueChannelConfigTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueChannelConfigTest.java
-similarity index 98%
+similarity index 94%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueChannelConfigTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueChannelConfigTest.java
-index 150a23749a..7e84ad802d 100644
+index 150a23749a..d34fdf404e 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueChannelConfigTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueChannelConfigTest.java
 @@ -13,7 +13,7 @@
@@ -3335,6 +4049,19 @@ index 150a23749a..7e84ad802d 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.channel.ChannelException;
+@@ -21,9 +21,9 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
+ import io.netty.channel.ChannelOption;
+ import io.netty.channel.EventLoopGroup;
+ 
+-import io.netty.channel.unix.Buffer;
+-import io.netty.channel.unix.IntegerUnixChannelOption;
+-import io.netty.channel.unix.RawUnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.Buffer;
++import net.elytrium.netty.transport.fstack.unix.IntegerUnixChannelOption;
++import net.elytrium.netty.transport.fstack.unix.RawUnixChannelOption;
+ import org.junit.jupiter.api.BeforeEach;
+ import org.junit.jupiter.api.Test;
+ 
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueCompositeBufferGatheringWriteTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueCompositeBufferGatheringWriteTest.java
 similarity index 96%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueCompositeBufferGatheringWriteTest.java
@@ -3416,13 +4143,13 @@ index 48004910d3..42b457590a 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.channel.socket.InternetProtocolFamily;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDetectPeerCloseWithoutReadTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDetectPeerCloseWithoutReadTest.java
-similarity index 96%
+similarity index 89%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDetectPeerCloseWithoutReadTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDetectPeerCloseWithoutReadTest.java
-index 6bcf9bbd56..76e8a15f0e 100644
+index 6bcf9bbd56..69e3ac7832 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDetectPeerCloseWithoutReadTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDetectPeerCloseWithoutReadTest.java
-@@ -13,7 +13,7 @@
+@@ -13,12 +13,12 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -3431,14 +4158,20 @@ index 6bcf9bbd56..76e8a15f0e 100644
  
  import io.netty.channel.Channel;
  import io.netty.channel.EventLoopGroup;
+ import io.netty.channel.ServerChannel;
+-import io.netty.channel.unix.tests.DetectPeerCloseWithoutReadTest;
++import net.elytrium.netty.transport.fstack.unix.tests.DetectPeerCloseWithoutReadTest;
+ 
+ public class KQueueDetectPeerCloseWithoutReadTest extends DetectPeerCloseWithoutReadTest {
+     @Override
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainDatagramPathTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramPathTest.java
-similarity index 98%
+similarity index 96%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainDatagramPathTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramPathTest.java
-index e3a44e53b3..cc14b135c5 100644
+index e3a44e53b3..7b2b59ed8c 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainDatagramPathTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramPathTest.java
-@@ -13,7 +13,7 @@
+@@ -13,13 +13,13 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -3447,11 +4180,18 @@ index e3a44e53b3..cc14b135c5 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.buffer.Unpooled;
+ import io.netty.channel.Channel;
+ import io.netty.channel.ChannelInboundHandlerAdapter;
+-import io.netty.channel.unix.DomainDatagramPacket;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramPacket;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.socket.AbstractClientSocketTest;
+ import io.netty.util.CharsetUtil;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainDatagramUnicastTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramUnicastTest.java
-similarity index 99%
+similarity index 96%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainDatagramUnicastTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramUnicastTest.java
-index b4b7413c6f..5f5d6c6bde 100644
+index b4b7413c6f..fd6117062d 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainDatagramUnicastTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainDatagramUnicastTest.java
 @@ -13,7 +13,7 @@
@@ -3463,6 +4203,19 @@ index b4b7413c6f..5f5d6c6bde 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.buffer.ByteBuf;
+@@ -22,9 +22,9 @@ import io.netty.channel.ChannelFuture;
+ import io.netty.channel.ChannelHandlerContext;
+ import io.netty.channel.ChannelInboundHandlerAdapter;
+ import io.netty.channel.SimpleChannelInboundHandler;
+-import io.netty.channel.unix.DomainDatagramChannel;
+-import io.netty.channel.unix.DomainDatagramPacket;
+-import io.netty.channel.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramChannel;
++import net.elytrium.netty.transport.fstack.unix.DomainDatagramPacket;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.socket.DatagramUnicastTest;
+ import org.junit.jupiter.api.Test;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketDataReadInitialStateTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketDataReadInitialStateTest.java
 similarity index 96%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketDataReadInitialStateTest.java
@@ -3496,10 +4249,10 @@ index f3a74679bf..427b31a094 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketFdTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketFdTest.java
-similarity index 98%
+similarity index 95%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketFdTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketFdTest.java
-index df1a4a054f..2dc2bc992a 100644
+index df1a4a054f..3ceb1a07b1 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketFdTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketFdTest.java
 @@ -13,7 +13,7 @@
@@ -3511,6 +4264,17 @@ index df1a4a054f..2dc2bc992a 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
+@@ -22,8 +22,8 @@ import io.netty.channel.ChannelFuture;
+ import io.netty.channel.ChannelFutureListener;
+ import io.netty.channel.ChannelHandlerContext;
+ import io.netty.channel.ChannelInboundHandlerAdapter;
+-import io.netty.channel.unix.DomainSocketReadMode;
+-import io.netty.channel.unix.FileDescriptor;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketReadMode;
++import net.elytrium.netty.transport.fstack.unix.FileDescriptor;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.socket.AbstractSocketTest;
+ import org.junit.jupiter.api.Test;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketFileRegionTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketFileRegionTest.java
 similarity index 95%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketFileRegionTest.java
@@ -3592,13 +4356,13 @@ index f8407e0d43..c4d6e5fc38 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketShutdownOutputByPeerTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketShutdownOutputByPeerTest.java
-similarity index 97%
+similarity index 95%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketShutdownOutputByPeerTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketShutdownOutputByPeerTest.java
-index 39e68aebfb..e5d5b74d4d 100644
+index 39e68aebfb..3983f4c26f 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketShutdownOutputByPeerTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketShutdownOutputByPeerTest.java
-@@ -13,7 +13,7 @@
+@@ -13,10 +13,10 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -3606,7 +4370,11 @@ index 39e68aebfb..e5d5b74d4d 100644
 +package net.elytrium.netty.transport.fstack.kqueue;
  
  import io.netty.bootstrap.ServerBootstrap;
- import io.netty.channel.unix.Buffer;
+-import io.netty.channel.unix.Buffer;
++import net.elytrium.netty.transport.fstack.unix.Buffer;
+ import io.netty.testsuite.transport.TestsuitePermutation.BootstrapFactory;
+ import io.netty.testsuite.transport.socket.AbstractSocketShutdownOutputByPeerTest;
+ 
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketSslClientRenegotiateTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueDomainSocketSslClientRenegotiateTest.java
 similarity index 96%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueDomainSocketSslClientRenegotiateTest.java
@@ -3800,36 +4568,42 @@ index 97e1c5e94d..b82c67e9e9 100644
  import io.netty.channel.EventLoop;
  import io.netty.channel.EventLoopGroup;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueIovArrayTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueIovArrayTest.java
-similarity index 94%
+similarity index 87%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueIovArrayTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueIovArrayTest.java
-index a34b9ac9f6..c349fbdb64 100644
+index a34b9ac9f6..1842563754 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueIovArrayTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueIovArrayTest.java
-@@ -13,7 +13,7 @@
+@@ -13,9 +13,9 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.kqueue;
 +package net.elytrium.netty.transport.fstack.kqueue;
  
- import io.netty.channel.unix.tests.IovArrayTest;
+-import io.netty.channel.unix.tests.IovArrayTest;
++import net.elytrium.netty.transport.fstack.unix.tests.IovArrayTest;
  import org.junit.jupiter.api.BeforeAll;
+ 
+ public class KQueueIovArrayTest extends IovArrayTest {
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueJdkLoopbackSocketSslEchoTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueJdkLoopbackSocketSslEchoTest.java
-similarity index 94%
+similarity index 87%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueJdkLoopbackSocketSslEchoTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueJdkLoopbackSocketSslEchoTest.java
-index 2f966a9f5b..7b61bfc310 100644
+index 2f966a9f5b..a0dc0b01bb 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueJdkLoopbackSocketSslEchoTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueJdkLoopbackSocketSslEchoTest.java
-@@ -13,7 +13,7 @@
+@@ -13,9 +13,9 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.kqueue;
 +package net.elytrium.netty.transport.fstack.kqueue;
  
- import io.netty.channel.unix.tests.UnixTestUtils;
+-import io.netty.channel.unix.tests.UnixTestUtils;
++import net.elytrium.netty.transport.fstack.unix.tests.UnixTestUtils;
+ 
+ import java.net.SocketAddress;
  
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueRcvAllocatorOverrideSocketSslEchoTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueRcvAllocatorOverrideSocketSslEchoTest.java
 similarity index 96%
@@ -4040,13 +4814,13 @@ index 4c9c76c08b..586bcc1492 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketRstTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketRstTest.java
-similarity index 97%
+similarity index 90%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketRstTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketRstTest.java
-index 6c485ab2dd..acf4b51228 100644
+index 6c485ab2dd..30bc6f9640 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketRstTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketRstTest.java
-@@ -13,7 +13,7 @@
+@@ -13,13 +13,13 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
@@ -4055,6 +4829,14 @@ index 6c485ab2dd..acf4b51228 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
+ import io.netty.channel.Channel;
+-import io.netty.channel.unix.Errors;
+-import io.netty.channel.unix.Errors.NativeIoException;
++import net.elytrium.netty.transport.fstack.unix.Errors;
++import net.elytrium.netty.transport.fstack.unix.Errors.NativeIoException;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.socket.SocketRstTest;
+ 
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketShutdownOutputByPeerTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketShutdownOutputByPeerTest.java
 similarity index 95%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketShutdownOutputByPeerTest.java
@@ -4184,26 +4966,35 @@ index 9d58392604..4bd5431bc8 100644
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketTest.java
-similarity index 98%
+similarity index 90%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketTest.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketTest.java
-index 84a87e92d1..bfa6eb57a0 100644
+index 84a87e92d1..90d5506bad 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketTest.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketTest.java
-@@ -13,7 +13,7 @@
+@@ -13,12 +13,12 @@
   * License for the specific language governing permissions and limitations
   * under the License.
   */
 -package io.netty.channel.kqueue;
 +package net.elytrium.netty.transport.fstack.kqueue;
  
- import io.netty.channel.unix.DomainSocketAddress;
- import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.PeerCredentials;
+-import io.netty.channel.unix.tests.SocketTest;
+-import io.netty.channel.unix.tests.UnixTestUtils;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.PeerCredentials;
++import net.elytrium.netty.transport.fstack.unix.tests.SocketTest;
++import net.elytrium.netty.transport.fstack.unix.tests.UnixTestUtils;
+ import org.junit.jupiter.api.BeforeAll;
+ import org.junit.jupiter.api.Test;
+ 
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketTestPermutation.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketTestPermutation.java
-similarity index 99%
+similarity index 97%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketTestPermutation.java
 rename to transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketTestPermutation.java
-index 0b7c84dba0..4d9f12d338 100644
+index 0b7c84dba0..8db1bb7b55 100644
 --- a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueSocketTestPermutation.java
 +++ b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueSocketTestPermutation.java
 @@ -13,7 +13,7 @@
@@ -4215,6 +5006,17 @@ index 0b7c84dba0..4d9f12d338 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.bootstrap.ServerBootstrap;
+@@ -25,8 +25,8 @@ import io.netty.channel.socket.InternetProtocolFamily;
+ import io.netty.channel.socket.nio.NioDatagramChannel;
+ import io.netty.channel.socket.nio.NioServerSocketChannel;
+ import io.netty.channel.socket.nio.NioSocketChannel;
+-import io.netty.channel.unix.DomainSocketAddress;
+-import io.netty.channel.unix.tests.UnixTestUtils;
++import net.elytrium.netty.transport.fstack.unix.DomainSocketAddress;
++import net.elytrium.netty.transport.fstack.unix.tests.UnixTestUtils;
+ import io.netty.testsuite.transport.TestsuitePermutation;
+ import io.netty.testsuite.transport.TestsuitePermutation.BootstrapFactory;
+ import io.netty.testsuite.transport.socket.SocketTestPermutation;
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KqueueWriteBeforeRegisteredTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KqueueWriteBeforeRegisteredTest.java
 similarity index 95%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KqueueWriteBeforeRegisteredTest.java
@@ -4260,6 +5062,83 @@ index 227f993f13..a7a876ae0e 100644
    </properties>
  
    <dependencies>
+diff --git a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/DetectPeerCloseWithoutReadTest.java b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/DetectPeerCloseWithoutReadTest.java
+similarity index 99%
+rename from transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/DetectPeerCloseWithoutReadTest.java
+rename to transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/DetectPeerCloseWithoutReadTest.java
+index f6aef2d2a6..a0f9316137 100644
+--- a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/DetectPeerCloseWithoutReadTest.java
++++ b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/DetectPeerCloseWithoutReadTest.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix.tests;
++package net.elytrium.netty.transport.fstack.unix.tests;
+ 
+ import io.netty.bootstrap.Bootstrap;
+ import io.netty.bootstrap.ServerBootstrap;
+diff --git a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/IovArrayTest.java b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/IovArrayTest.java
+similarity index 97%
+rename from transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/IovArrayTest.java
+rename to transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/IovArrayTest.java
+index 2dd711dd27..797e27dca4 100644
+--- a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/IovArrayTest.java
++++ b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/IovArrayTest.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix.tests;
++package net.elytrium.netty.transport.fstack.unix.tests;
+ 
+ import io.netty.buffer.ByteBuf;
+ import io.netty.buffer.Unpooled;
+diff --git a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/SocketTest.java b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/SocketTest.java
+similarity index 98%
+rename from transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/SocketTest.java
+rename to transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/SocketTest.java
+index 115ab35395..d54b373dfb 100644
+--- a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/SocketTest.java
++++ b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/SocketTest.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix.tests;
++package net.elytrium.netty.transport.fstack.unix.tests;
+ 
+ import io.netty.channel.unix.Buffer;
+ import io.netty.channel.unix.Socket;
+diff --git a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/UnixTestUtils.java b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/UnixTestUtils.java
+similarity index 98%
+rename from transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/UnixTestUtils.java
+rename to transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/UnixTestUtils.java
+index 3453c236bc..08aaf4ecd4 100644
+--- a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/UnixTestUtils.java
++++ b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/UnixTestUtils.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix.tests;
++package net.elytrium.netty.transport.fstack.unix.tests;
+ 
+ import io.netty.channel.unix.DomainSocketAddress;
+ import io.netty.util.internal.PlatformDependent;
+diff --git a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/package-info.java b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/package-info.java
+similarity index 92%
+rename from transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/package-info.java
+rename to transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/package-info.java
+index cda48b0405..df0d8fb22a 100644
+--- a/transport-native-unix-common-tests/src/main/java/io/netty/channel/unix/tests/package-info.java
++++ b/transport-native-unix-common-tests/src/main/java/net/elytrium/netty/transport/fstack/unix/tests/package-info.java
+@@ -17,4 +17,4 @@
+ /**
+  * Unix specific transport tests.
+  */
+-package io.netty.channel.unix.tests;
++package net.elytrium.netty.transport.fstack.unix.tests;
 diff --git a/transport-native-unix-common/pom.xml b/transport-native-unix-common/pom.xml
 index e1733b41ba..0fb1c63987 100644
 --- a/transport-native-unix-common/pom.xml
@@ -4289,6 +5168,783 @@ index e1733b41ba..0fb1c63987 100644
  
      <exe.make>make</exe.make>
      <exe.compiler>gcc</exe.compiler>
+diff --git a/transport-native-unix-common/src/main/c/netty_unix_buffer.c b/transport-native-unix-common/src/main/c/netty_unix_buffer.c
+index 9f957eb36a..834d4a5c62 100644
+--- a/transport-native-unix-common/src/main/c/netty_unix_buffer.c
++++ b/transport-native-unix-common/src/main/c/netty_unix_buffer.c
+@@ -18,7 +18,7 @@
+ #include "netty_unix_buffer.h"
+ #include "netty_jni_util.h"
+ 
+-#define BUFFER_CLASSNAME "io/netty/channel/unix/Buffer"
++#define BUFFER_CLASSNAME "net/elytrium/netty/transport/fstack/unix/Buffer"
+ 
+ // JNI Registered Methods Begin
+ static jlong netty_unix_buffer_memoryAddress0(JNIEnv* env, jclass clazz, jobject buffer) {
+diff --git a/transport-native-unix-common/src/main/c/netty_unix_errors.c b/transport-native-unix-common/src/main/c/netty_unix_errors.c
+index 73d77411c8..8bb9c8e447 100644
+--- a/transport-native-unix-common/src/main/c/netty_unix_errors.c
++++ b/transport-native-unix-common/src/main/c/netty_unix_errors.c
+@@ -22,7 +22,7 @@
+ #include "netty_unix_util.h"
+ #include "netty_jni_util.h"
+ 
+-#define ERRORS_CLASSNAME "io/netty/channel/unix/ErrorsStaticallyReferencedJniMethods"
++#define ERRORS_CLASSNAME "net/elytrium/netty/transport/fstack/unix/ErrorsStaticallyReferencedJniMethods"
+ 
+ static jclass oomErrorClass = NULL;
+ static jclass runtimeExceptionClass = NULL;
+diff --git a/transport-native-unix-common/src/main/c/netty_unix_filedescriptor.c b/transport-native-unix-common/src/main/c/netty_unix_filedescriptor.c
+index a626e4d155..729f2ea554 100644
+--- a/transport-native-unix-common/src/main/c/netty_unix_filedescriptor.c
++++ b/transport-native-unix-common/src/main/c/netty_unix_filedescriptor.c
+@@ -27,7 +27,7 @@
+ #include "netty_unix_util.h"
+ #include "netty_jni_util.h"
+ 
+-#define FILEDESCRIPTOR_CLASSNAME "io/netty/channel/unix/FileDescriptor"
++#define FILEDESCRIPTOR_CLASSNAME "net/elytrium/netty/transport/fstack/unix/FileDescriptor"
+ 
+ static jmethodID posId = NULL;
+ static jmethodID limitId = NULL;
+diff --git a/transport-native-unix-common/src/main/c/netty_unix_limits.c b/transport-native-unix-common/src/main/c/netty_unix_limits.c
+index ae0e63b374..4d754ef3ab 100644
+--- a/transport-native-unix-common/src/main/c/netty_unix_limits.c
++++ b/transport-native-unix-common/src/main/c/netty_unix_limits.c
+@@ -22,7 +22,7 @@
+ #include "netty_unix_util.h"
+ #include "netty_jni_util.h"
+ 
+-#define LIMITS_CLASSNAME "io/netty/channel/unix/LimitsStaticallyReferencedJniMethods"
++#define LIMITS_CLASSNAME "net/elytrium/netty/transport/fstack/unix/LimitsStaticallyReferencedJniMethods"
+ 
+ // Define IOV_MAX if not found to limit the iov size on writev calls
+ // See https://github.com/netty/netty/issues/2647
+diff --git a/transport-native-unix-common/src/main/c/netty_unix_socket.c b/transport-native-unix-common/src/main/c/netty_unix_socket.c
+index 8641a09e1e..69f57d7101 100644
+--- a/transport-native-unix-common/src/main/c/netty_unix_socket.c
++++ b/transport-native-unix-common/src/main/c/netty_unix_socket.c
+@@ -32,7 +32,7 @@
+ #include "netty_unix_util.h"
+ #include "netty_jni_util.h"
+ 
+-#define SOCKET_CLASSNAME "io/netty/channel/unix/Socket"
++#define SOCKET_CLASSNAME "net/elytrium/netty/transport/fstack/unix/Socket"
+ // Define SO_REUSEPORT if not found to fix build issues.
+ // See https://github.com/netty/netty/issues/2558
+ #ifndef SO_REUSEPORT
+@@ -1166,28 +1166,28 @@ static JNINativeMethod* createDynamicMethodsTable(const char* packagePrefix) {
+     memcpy(dynamicMethods, fixed_method_table, sizeof(fixed_method_table));
+ 
+     JNINativeMethod* dynamicMethod = &dynamicMethods[fixed_method_table_size];
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/DatagramSocketAddress;", dynamicTypeName, error);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/DatagramSocketAddress;", dynamicTypeName, error);
+     NETTY_JNI_UTIL_PREPEND("(ILjava/nio/ByteBuffer;II)L", dynamicTypeName,  dynamicMethod->signature, error);
+     dynamicMethod->name = "recvFrom";
+     dynamicMethod->fnPtr = (void *) netty_unix_socket_recvFrom;
+     netty_jni_util_free_dynamic_name(&dynamicTypeName);
+ 
+     ++dynamicMethod;
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/DatagramSocketAddress;", dynamicTypeName, error);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/DatagramSocketAddress;", dynamicTypeName, error);
+     NETTY_JNI_UTIL_PREPEND("(IJII)L", dynamicTypeName,  dynamicMethod->signature, error);
+     dynamicMethod->name = "recvFromAddress";
+     dynamicMethod->fnPtr = (void *) netty_unix_socket_recvFromAddress;
+     netty_jni_util_free_dynamic_name(&dynamicTypeName);
+ 
+     ++dynamicMethod;
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/DomainDatagramSocketAddress;", dynamicTypeName, error);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/DomainDatagramSocketAddress;", dynamicTypeName, error);
+     NETTY_JNI_UTIL_PREPEND("(ILjava/nio/ByteBuffer;II)L", dynamicTypeName,  dynamicMethod->signature, error);
+     dynamicMethod->name = "recvFromDomainSocket";
+     dynamicMethod->fnPtr = (void *) netty_unix_socket_recvFromDomainSocket;
+     netty_jni_util_free_dynamic_name(&dynamicTypeName);
+ 
+     ++dynamicMethod;
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/DomainDatagramSocketAddress;", dynamicTypeName, error);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/DomainDatagramSocketAddress;", dynamicTypeName, error);
+     NETTY_JNI_UTIL_PREPEND("(IJII)L", dynamicTypeName,  dynamicMethod->signature, error);
+     dynamicMethod->name = "recvFromAddressDomainSocket";
+     dynamicMethod->fnPtr = (void *) netty_unix_socket_recvFromAddressDomainSocket;
+@@ -1220,7 +1220,7 @@ jint netty_unix_socket_JNI_OnLoad(JNIEnv* env, const char* packagePrefix) {
+         goto done;
+     }
+   
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/DatagramSocketAddress", nettyClassName, done);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/DatagramSocketAddress", nettyClassName, done);
+     NETTY_JNI_UTIL_LOAD_CLASS(env, datagramSocketAddressClass, nettyClassName, done);
+ 
+     // Respect shading...
+@@ -1229,7 +1229,7 @@ jint netty_unix_socket_JNI_OnLoad(JNIEnv* env, const char* packagePrefix) {
+     netty_jni_util_free_dynamic_name(&nettyClassName);
+     NETTY_JNI_UTIL_GET_METHOD(env, datagramSocketAddressClass, datagramSocketAddrMethodId, "<init>", parameters, done);
+ 
+-    NETTY_JNI_UTIL_PREPEND(packagePrefix, "io/netty/channel/unix/DomainDatagramSocketAddress", nettyClassName, done);
++    NETTY_JNI_UTIL_PREPEND(packagePrefix, "net/elytrium/netty/transport/fstack/unix/DomainDatagramSocketAddress", nettyClassName, done);
+     NETTY_JNI_UTIL_LOAD_CLASS(env, domainDatagramSocketAddressClass, nettyClassName, done);
+ 
+     char parameters1[1024] = {0};
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Buffer.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Buffer.java
+similarity index 97%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/Buffer.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Buffer.java
+index 6a177a9630..30dc99055b 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Buffer.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Buffer.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.util.internal.PlatformDependent;
+ import io.netty.util.internal.UnstableApi;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DatagramSocketAddress.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DatagramSocketAddress.java
+similarity index 97%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/DatagramSocketAddress.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DatagramSocketAddress.java
+index 523bbce127..650aef2088 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DatagramSocketAddress.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DatagramSocketAddress.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import java.net.Inet6Address;
+ import java.net.InetAddress;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramChannel.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramChannel.java
+similarity index 96%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramChannel.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramChannel.java
+index a26ef95d23..7a0503e302 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramChannel.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramChannel.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.channel.Channel;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramChannelConfig.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramChannelConfig.java
+similarity index 98%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramChannelConfig.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramChannelConfig.java
+index 68b1a97de7..be1a8f049a 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramChannelConfig.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramChannelConfig.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBufAllocator;
+ import io.netty.channel.ChannelConfig;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramPacket.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramPacket.java
+similarity index 98%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramPacket.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramPacket.java
+index 39a1cd3570..b88e60b45e 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramPacket.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramPacket.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBuf;
+ import io.netty.buffer.ByteBufHolder;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramSocketAddress.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramSocketAddress.java
+similarity index 97%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramSocketAddress.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramSocketAddress.java
+index b67c6701e1..2488decc58 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainDatagramSocketAddress.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainDatagramSocketAddress.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.util.CharsetUtil;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketAddress.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketAddress.java
+similarity index 97%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketAddress.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketAddress.java
+index c73dba47c6..49f44d060f 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketAddress.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketAddress.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.util.internal.ObjectUtil;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketChannel.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketChannel.java
+similarity index 95%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketChannel.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketChannel.java
+index 97bebaafd7..94ae481594 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketChannel.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketChannel.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.channel.socket.DuplexChannel;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketChannelConfig.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketChannelConfig.java
+similarity index 98%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketChannelConfig.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketChannelConfig.java
+index 56696deeae..02b0d8cfe8 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketChannelConfig.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketChannelConfig.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBufAllocator;
+ import io.netty.channel.ChannelConfig;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketReadMode.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketReadMode.java
+similarity index 95%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketReadMode.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketReadMode.java
+index 60d2680062..dba7c1fc2c 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/DomainSocketReadMode.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/DomainSocketReadMode.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBuf;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Errors.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Errors.java
+similarity index 76%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/Errors.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Errors.java
+index b1012175d6..710f702a76 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Errors.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Errors.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.util.internal.EmptyArrays;
+ 
+@@ -26,38 +26,24 @@ import java.nio.channels.ClosedChannelException;
+ import java.nio.channels.ConnectionPendingException;
+ import java.nio.channels.NotYetConnectedException;
+ 
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errnoEAGAIN;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errnoEBADF;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errnoECONNRESET;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errnoEINPROGRESS;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errnoENOENT;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errnoENOTCONN;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errnoEPIPE;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errnoEWOULDBLOCK;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errorEALREADY;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errorECONNREFUSED;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errorEISCONN;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.errorENETUNREACH;
+-import static io.netty.channel.unix.ErrorsStaticallyReferencedJniMethods.strError;
+-
+ /**
+  * <strong>Internal usage only!</strong>
+  * <p>Static members which call JNI methods must be defined in {@link ErrorsStaticallyReferencedJniMethods}.
+  */
+ public final class Errors {
+     // As all our JNI methods return -errno on error we need to compare with the negative errno codes.
+-    public static final int ERRNO_ENOENT_NEGATIVE = -errnoENOENT();
+-    public static final int ERRNO_ENOTCONN_NEGATIVE = -errnoENOTCONN();
+-    public static final int ERRNO_EBADF_NEGATIVE = -errnoEBADF();
+-    public static final int ERRNO_EPIPE_NEGATIVE = -errnoEPIPE();
+-    public static final int ERRNO_ECONNRESET_NEGATIVE = -errnoECONNRESET();
+-    public static final int ERRNO_EAGAIN_NEGATIVE = -errnoEAGAIN();
+-    public static final int ERRNO_EWOULDBLOCK_NEGATIVE = -errnoEWOULDBLOCK();
+-    public static final int ERRNO_EINPROGRESS_NEGATIVE = -errnoEINPROGRESS();
+-    public static final int ERROR_ECONNREFUSED_NEGATIVE = -errorECONNREFUSED();
+-    public static final int ERROR_EISCONN_NEGATIVE = -errorEISCONN();
+-    public static final int ERROR_EALREADY_NEGATIVE = -errorEALREADY();
+-    public static final int ERROR_ENETUNREACH_NEGATIVE = -errorENETUNREACH();
++    public static final int ERRNO_ENOENT_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errnoENOENT();
++    public static final int ERRNO_ENOTCONN_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errnoENOTCONN();
++    public static final int ERRNO_EBADF_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errnoEBADF();
++    public static final int ERRNO_EPIPE_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errnoEPIPE();
++    public static final int ERRNO_ECONNRESET_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errnoECONNRESET();
++    public static final int ERRNO_EAGAIN_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errnoEAGAIN();
++    public static final int ERRNO_EWOULDBLOCK_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errnoEWOULDBLOCK();
++    public static final int ERRNO_EINPROGRESS_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errnoEINPROGRESS();
++    public static final int ERROR_ECONNREFUSED_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errorECONNREFUSED();
++    public static final int ERROR_EISCONN_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errorEISCONN();
++    public static final int ERROR_EALREADY_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errorEALREADY();
++    public static final int ERROR_ENETUNREACH_NEGATIVE = -ErrorsStaticallyReferencedJniMethods.errorENETUNREACH();
+ 
+     /**
+      * Holds the mappings for errno codes to String messages.
+@@ -115,7 +101,7 @@ public final class Errors {
+     static {
+         for (int i = 0; i < ERRORS.length; i++) {
+             // This is ok as strerror returns 'Unknown error i' when the message is not known.
+-            ERRORS[i] = strError(i);
++            ERRORS[i] = ErrorsStaticallyReferencedJniMethods.strError(i);
+         }
+     }
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/ErrorsStaticallyReferencedJniMethods.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/ErrorsStaticallyReferencedJniMethods.java
+similarity index 97%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/ErrorsStaticallyReferencedJniMethods.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/ErrorsStaticallyReferencedJniMethods.java
+index 972deb4f61..562000b08a 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/ErrorsStaticallyReferencedJniMethods.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/ErrorsStaticallyReferencedJniMethods.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ /**
+  * This class is necessary to break the following cyclic dependency:
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/FileDescriptor.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/FileDescriptor.java
+similarity index 96%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/FileDescriptor.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/FileDescriptor.java
+index e397aa3fae..9688c9afad 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/FileDescriptor.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/FileDescriptor.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ 
+ import java.io.File;
+@@ -21,9 +21,9 @@ import java.io.IOException;
+ import java.nio.ByteBuffer;
+ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+ 
+-import static io.netty.channel.unix.Errors.ioResult;
+-import static io.netty.channel.unix.Errors.newIOException;
+-import static io.netty.channel.unix.Limits.IOV_MAX;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ioResult;
++import static net.elytrium.netty.transport.fstack.unix.Errors.newIOException;
++import static net.elytrium.netty.transport.fstack.unix.Limits.IOV_MAX;
+ import static io.netty.util.internal.ObjectUtil.checkNotNull;
+ import static io.netty.util.internal.ObjectUtil.checkPositiveOrZero;
+ import static java.lang.Math.min;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/GenericUnixChannelOption.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/GenericUnixChannelOption.java
+similarity index 96%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/GenericUnixChannelOption.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/GenericUnixChannelOption.java
+index 6c3f6f9cd1..276c54a02e 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/GenericUnixChannelOption.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/GenericUnixChannelOption.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ /**
+  * A generic socket option. See <a href="https://linux.die.net/man/2/setsockopt">man setsockopt</a>.
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/IntegerUnixChannelOption.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/IntegerUnixChannelOption.java
+similarity index 95%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/IntegerUnixChannelOption.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/IntegerUnixChannelOption.java
+index bfc61836d2..08de367ce4 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/IntegerUnixChannelOption.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/IntegerUnixChannelOption.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ /**
+  * A {@link GenericUnixChannelOption} which uses an {@link Integer} as {@code optval}.
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/IovArray.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/IovArray.java
+similarity index 97%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/IovArray.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/IovArray.java
+index 6071cccc9f..5578a0cb53 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/IovArray.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/IovArray.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBuf;
+ import io.netty.buffer.Unpooled;
+@@ -23,8 +23,8 @@ import io.netty.util.internal.PlatformDependent;
+ import java.nio.ByteBuffer;
+ import java.nio.ByteOrder;
+ 
+-import static io.netty.channel.unix.Limits.IOV_MAX;
+-import static io.netty.channel.unix.Limits.SSIZE_MAX;
++import static net.elytrium.netty.transport.fstack.unix.Limits.IOV_MAX;
++import static net.elytrium.netty.transport.fstack.unix.Limits.SSIZE_MAX;
+ import static io.netty.util.internal.ObjectUtil.checkPositive;
+ import static java.lang.Math.min;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Limits.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Limits.java
+similarity index 54%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/Limits.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Limits.java
+index 606c829c0a..c3a3902ac4 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Limits.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Limits.java
+@@ -13,19 +13,14 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
+-
+-import static io.netty.channel.unix.LimitsStaticallyReferencedJniMethods.iovMax;
+-import static io.netty.channel.unix.LimitsStaticallyReferencedJniMethods.sizeOfjlong;
+-import static io.netty.channel.unix.LimitsStaticallyReferencedJniMethods.ssizeMax;
+-import static io.netty.channel.unix.LimitsStaticallyReferencedJniMethods.uioMaxIov;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ public final class Limits {
+-    public static final int IOV_MAX = iovMax();
+-    public static final int UIO_MAX_IOV = uioMaxIov();
+-    public static final long SSIZE_MAX = ssizeMax();
++    public static final int IOV_MAX = LimitsStaticallyReferencedJniMethods.iovMax();
++    public static final int UIO_MAX_IOV = LimitsStaticallyReferencedJniMethods.uioMaxIov();
++    public static final long SSIZE_MAX = LimitsStaticallyReferencedJniMethods.ssizeMax();
+ 
+-    public static final int SIZEOF_JLONG = sizeOfjlong();
++    public static final int SIZEOF_JLONG = LimitsStaticallyReferencedJniMethods.sizeOfjlong();
+ 
+     private Limits() { }
+ }
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/LimitsStaticallyReferencedJniMethods.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/LimitsStaticallyReferencedJniMethods.java
+similarity index 96%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/LimitsStaticallyReferencedJniMethods.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/LimitsStaticallyReferencedJniMethods.java
+index 5480eea5bb..190973c69d 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/LimitsStaticallyReferencedJniMethods.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/LimitsStaticallyReferencedJniMethods.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ /**
+  * This class is necessary to break the following cyclic dependency:
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/NativeInetAddress.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/NativeInetAddress.java
+similarity index 98%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/NativeInetAddress.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/NativeInetAddress.java
+index d4c6904817..36f78e208f 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/NativeInetAddress.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/NativeInetAddress.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import java.net.Inet6Address;
+ import java.net.InetAddress;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/PeerCredentials.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/PeerCredentials.java
+similarity index 97%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/PeerCredentials.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/PeerCredentials.java
+index f05e92aee0..3d2982455c 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/PeerCredentials.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/PeerCredentials.java
+@@ -14,7 +14,7 @@
+  * under the License.
+  */
+ 
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.util.internal.UnstableApi;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/PreferredDirectByteBufAllocator.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/PreferredDirectByteBufAllocator.java
+similarity index 98%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/PreferredDirectByteBufAllocator.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/PreferredDirectByteBufAllocator.java
+index 41b2997b76..2e3b1b1d0e 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/PreferredDirectByteBufAllocator.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/PreferredDirectByteBufAllocator.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBuf;
+ import io.netty.buffer.ByteBufAllocator;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/RawUnixChannelOption.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/RawUnixChannelOption.java
+similarity index 97%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/RawUnixChannelOption.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/RawUnixChannelOption.java
+index 1ba237d943..066fd94351 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/RawUnixChannelOption.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/RawUnixChannelOption.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ 
+ import io.netty.util.internal.ObjectUtil;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/SegmentedDatagramPacket.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/SegmentedDatagramPacket.java
+similarity index 98%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/SegmentedDatagramPacket.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/SegmentedDatagramPacket.java
+index 01f21ce994..2545410f8b 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/SegmentedDatagramPacket.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/SegmentedDatagramPacket.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBuf;
+ import io.netty.channel.socket.DatagramPacket;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/ServerDomainSocketChannel.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/ServerDomainSocketChannel.java
+similarity index 95%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/ServerDomainSocketChannel.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/ServerDomainSocketChannel.java
+index 78b5c48d66..5b71330467 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/ServerDomainSocketChannel.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/ServerDomainSocketChannel.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.channel.ServerChannel;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Socket.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Socket.java
+similarity index 96%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/Socket.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Socket.java
+index 4fb894dc56..e6bde4b849 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Socket.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Socket.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.channel.ChannelException;
+ import io.netty.channel.socket.InternetProtocolFamily;
+@@ -29,15 +29,15 @@ import java.net.SocketAddress;
+ import java.nio.ByteBuffer;
+ import java.nio.channels.ClosedChannelException;
+ 
+-import static io.netty.channel.unix.Errors.ERRNO_EAGAIN_NEGATIVE;
+-import static io.netty.channel.unix.Errors.ERRNO_EINPROGRESS_NEGATIVE;
+-import static io.netty.channel.unix.Errors.ERRNO_EWOULDBLOCK_NEGATIVE;
+-import static io.netty.channel.unix.Errors.ERROR_ECONNREFUSED_NEGATIVE;
+-import static io.netty.channel.unix.Errors.handleConnectErrno;
+-import static io.netty.channel.unix.Errors.ioResult;
+-import static io.netty.channel.unix.Errors.newIOException;
+-import static io.netty.channel.unix.NativeInetAddress.address;
+-import static io.netty.channel.unix.NativeInetAddress.ipv4MappedIpv6Address;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ERRNO_EAGAIN_NEGATIVE;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ERRNO_EINPROGRESS_NEGATIVE;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ERRNO_EWOULDBLOCK_NEGATIVE;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ERROR_ECONNREFUSED_NEGATIVE;
++import static net.elytrium.netty.transport.fstack.unix.Errors.handleConnectErrno;
++import static net.elytrium.netty.transport.fstack.unix.Errors.ioResult;
++import static net.elytrium.netty.transport.fstack.unix.Errors.newIOException;
++import static net.elytrium.netty.transport.fstack.unix.NativeInetAddress.address;
++import static net.elytrium.netty.transport.fstack.unix.NativeInetAddress.ipv4MappedIpv6Address;
+ 
+ /**
+  * Provides a JNI bridge to native socket operations.
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/SocketWritableByteChannel.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/SocketWritableByteChannel.java
+similarity index 98%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/SocketWritableByteChannel.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/SocketWritableByteChannel.java
+index 903ee1319f..9d4118ba45 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/SocketWritableByteChannel.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/SocketWritableByteChannel.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBufAllocator;
+ import io.netty.util.internal.ObjectUtil;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Unix.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Unix.java
+similarity index 98%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/Unix.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Unix.java
+index e1fbb13b62..7bec765469 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Unix.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Unix.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.util.internal.ClassInitializerUtil;
+ import io.netty.util.internal.UnstableApi;
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannel.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannel.java
+similarity index 94%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannel.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannel.java
+index 6119918c4a..110d78b261 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannel.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannel.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.channel.Channel;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannelOption.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannelOption.java
+similarity index 96%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannelOption.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannelOption.java
+index 2249ae102a..b7217150d5 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannelOption.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannelOption.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.channel.ChannelOption;
+ 
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannelUtil.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannelUtil.java
+similarity index 94%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannelUtil.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannelUtil.java
+index ada5111b0b..914845fdb2 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannelUtil.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannelUtil.java
+@@ -13,7 +13,7 @@
+  * License for the specific language governing permissions and limitations
+  * under the License.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBuf;
+ import io.netty.util.internal.PlatformDependent;
+@@ -22,8 +22,6 @@ import java.net.InetAddress;
+ import java.net.InetSocketAddress;
+ import java.net.UnknownHostException;
+ 
+-import static io.netty.channel.unix.Limits.IOV_MAX;
+-
+ public final class UnixChannelUtil {
+ 
+     private UnixChannelUtil() {
+@@ -34,7 +32,7 @@ public final class UnixChannelUtil {
+      * (We check this because otherwise we need to make it a new direct buffer.)
+      */
+     public static boolean isBufferCopyNeededForWrite(ByteBuf byteBuf) {
+-        return isBufferCopyNeededForWrite(byteBuf, IOV_MAX);
++        return isBufferCopyNeededForWrite(byteBuf, Limits.IOV_MAX);
+     }
+ 
+     static boolean isBufferCopyNeededForWrite(ByteBuf byteBuf, int iovMax) {
+diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/package-info.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/package-info.java
+similarity index 93%
+rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/package-info.java
+rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/package-info.java
+index e2cc3c45da..9e0cc8968a 100644
+--- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/package-info.java
++++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/package-info.java
+@@ -17,4 +17,4 @@
+ /**
+  * Unix specific transport.
+  */
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+diff --git a/transport-native-unix-common/src/test/java/io/netty/channel/unix/UnixChannelUtilTest.java b/transport-native-unix-common/src/test/java/net/elytrium/netty/transport/fstack/unix/UnixChannelUtilTest.java
+similarity index 95%
+rename from transport-native-unix-common/src/test/java/io/netty/channel/unix/UnixChannelUtilTest.java
+rename to transport-native-unix-common/src/test/java/net/elytrium/netty/transport/fstack/unix/UnixChannelUtilTest.java
+index 83895ad40f..6ecc5f6c5c 100644
+--- a/transport-native-unix-common/src/test/java/io/netty/channel/unix/UnixChannelUtilTest.java
++++ b/transport-native-unix-common/src/test/java/net/elytrium/netty/transport/fstack/unix/UnixChannelUtilTest.java
+@@ -14,7 +14,7 @@
+  * under the License.
+  */
+ 
+-package io.netty.channel.unix;
++package net.elytrium.netty.transport.fstack.unix;
+ 
+ import io.netty.buffer.ByteBuf;
+ import io.netty.buffer.ByteBufAllocator;
+@@ -27,7 +27,7 @@ import java.util.Collections;
+ import java.util.LinkedList;
+ import java.util.List;
+ 
+-import static io.netty.channel.unix.UnixChannelUtil.isBufferCopyNeededForWrite;
++import static net.elytrium.netty.transport.fstack.unix.UnixChannelUtil.isBufferCopyNeededForWrite;
+ import static org.junit.jupiter.api.Assertions.assertEquals;
+ import static org.junit.jupiter.api.Assertions.assertFalse;
+ import static org.junit.jupiter.api.Assertions.assertTrue;
 -- 
 2.35.3
 
