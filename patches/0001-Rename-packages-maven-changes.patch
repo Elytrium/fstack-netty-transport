@@ -1,7 +1,7 @@
-From f03ecdc1f9d492862de0d776d95d8a79e8cb3605 Mon Sep 17 00:00:00 2001
+From d6721190804ee1057d3579a0e5c4f5b30a9f7cc3 Mon Sep 17 00:00:00 2001
 From: Petr Ilin <hevav@hevav.dev>
 Date: Mon, 25 Apr 2022 20:32:56 +0300
-Subject: [PATCH] groupId moved
+Subject: [PATCH] Rename packages, maven changes.
 
 
 diff --git a/pom.xml b/pom.xml
