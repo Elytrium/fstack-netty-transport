@@ -19,7 +19,7 @@ case "$1" in
 *)
   echo "The project build tools script."
   echo "View below for details of the available commands."
-  echo "Original script provided by WaterfallMC."
+  echo "Original scripts provided by PaperMC."
   echo ""
   echo "Commands:"
   echo "  * rb, rbp, rebuild | Rebuilds the patches."
