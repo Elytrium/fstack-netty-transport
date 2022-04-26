@@ -21,11 +21,11 @@
   if [ -n "$fstack_changes" ]; then
     changes="$changes\n\nF-Stack Changes:\n$fstack_changes"
     if [ -n "$updated" ]; then
-      updated="$updated/F-Stack"
+      updated="$updated, F-Stack"
     else
       updated="F-Stack"
     fi
   fi
 
-  echo -e "Updated Upstream ($updated)${changes}" | git commit -F -
+  echo -e "Updated Upstream. ($updated)${changes}" | git commit -F -
 ) || exit 1
