@@ -2,5 +2,5 @@
   path = netty
   url = https://github.com/netty/netty
 [submodule "f-stack"]
-	path = f-stack
-	url = https://github.com/F-Stack/f-stack
+  path = f-stack
+  url = https://github.com/F-Stack/f-stack

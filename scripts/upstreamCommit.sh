@@ -3,12 +3,29 @@
 (
   set -e
 
-  netty_raw_changes=$(cd netty && git log --oneline "$(git ls-tree HEAD netty | cut -d ' ' -f3 | cut -f1)"...HEAD)
+  function changelog() {
+    current_last_commit=$(git ls-tree HEAD "$1" | cut -d ' ' -f3 | cut -f1)
+    cd "$1" && git log --oneline "${current_last_commit}"...HEAD
+  }
 
-  netty_changes=""
-  if [ -n "$netty_raw_changes" ]; then
-    netty_changes="\n\nNetty Changes:\n$netty_raw_changes"
+  updated=""
+  changes=""
+
+  netty_changes=$(changelog netty)
+  if [ -n "$netty_changes" ]; then
+    changes="\n\nNetty Changes:\n$netty_changes"
+    updated="Netty"
   fi
 
-  echo -e "Updated Upstream${netty_changes}" | git commit -F -
+  fstack_changes=$(changelog f-stack)
+  if [ -n "$fstack_changes" ]; then
+    changes="$changes\n\nF-Stack Changes:\n$fstack_changes"
+    if [ -n "$updated" ]; then
+      updated="$updated/F-Stack"
+    else
+      updated="F-Stack"
+    fi
+  fi
+
+  echo -e "Updated Upstream ($updated)${changes}" | git commit -F -
 ) || exit 1

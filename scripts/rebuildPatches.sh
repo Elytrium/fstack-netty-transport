@@ -11,7 +11,7 @@
 
   cd "$basedir/patches/" || exit 1
   if [ -d "$basedir/fstack-netty-transport/.git/rebase-apply" ]; then
-    echo "REBASE DETECTED - PARTIAL SAVE"
+    echo "  REBASE DETECTED - PARTIAL SAVE"
     last=$(cat "$basedir/fstack-netty-transport/.git/rebase-apply/last")
     next=$(cat "$basedir/fstack-netty-transport/.git/rebase-apply/next")
     for i in $(seq -f "%04g" 1 1 "$last"); do
@@ -47,5 +47,5 @@
     fi
   done
 
-  echo "Patches successfully saved."
+  echo "  Patches successfully saved."
 )
