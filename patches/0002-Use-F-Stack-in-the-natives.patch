@@ -1,4 +1,4 @@
-From 9bb9220dad840939c688ee88f77043a609370ae4 Mon Sep 17 00:00:00 2001
+From 149641f3b13bfb0767376f4cf25b20d53e34a784 Mon Sep 17 00:00:00 2001
 From: Petr Ilin <hevav@hevav.dev>
 Date: Wed, 27 Apr 2022 13:17:49 +0300
 Subject: [PATCH] Use F-Stack in the natives.
@@ -16,6 +16,32 @@ index 68c4381447..d948924524 100644
    </properties>
  
    <modules>
+diff --git a/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Native.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Native.java
+index d09c19b2e3..2a045815da 100644
+--- a/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Native.java
++++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Native.java
+@@ -316,6 +316,8 @@ public final class Native {
+         if (!"linux".equals(name)) {
+             throw new IllegalStateException("Only supported on Linux");
+         }
++        System.loadLibrary("libdpdk");
++        System.loadLibrary("libfstack");
+         String staticLibName = "fstack_netty_transport_native_epoll";
+         String sharedLibName = staticLibName + '_' + PlatformDependent.normalizedArch();
+         ClassLoader cl = PlatformDependent.getClassLoader(Native.class);
+diff --git a/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/Native.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/Native.java
+index 02c0846c84..a867c3fd7b 100644
+--- a/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/Native.java
++++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/Native.java
+@@ -148,6 +148,8 @@ final class Native {
+         if (!"osx".equals(name) && !name.contains("bsd")) {
+             throw new IllegalStateException("Only supported on OSX/BSD");
+         }
++        System.loadLibrary("libdpdk");
++        System.loadLibrary("libfstack");
+         String staticLibName = "fstack_netty_transport_native_kqueue";
+         String sharedLibName = staticLibName + '_' + PlatformDependent.normalizedArch();
+         ClassLoader cl = PlatformDependent.getClassLoader(Native.class);
 diff --git a/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c b/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c
 index 67e675f043..2250d407a9 100644
 --- a/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c
