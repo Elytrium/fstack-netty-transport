@@ -1,4 +1,4 @@
-From d6721190804ee1057d3579a0e5c4f5b30a9f7cc3 Mon Sep 17 00:00:00 2001
+From 9d7b93340158ea1df875152e4e49aa1b8e164b8c Mon Sep 17 00:00:00 2001
 From: Petr Ilin <hevav@hevav.dev>
 Date: Mon, 25 Apr 2022 20:32:56 +0300
 Subject: [PATCH] Rename packages, maven changes.
@@ -209,6 +209,28 @@ index 6453ed0545..68c4381447 100644
                  <mkdir dir="${metaInfDir}" />
                  <delete file="${versionPropFile}" quiet="true" />
  
+diff --git a/testsuite-shading/pom.xml b/testsuite-shading/pom.xml
+index e358278656..b28d4642cc 100644
+--- a/testsuite-shading/pom.xml
++++ b/testsuite-shading/pom.xml
+@@ -261,7 +261,7 @@
+         </os>
+       </activation>
+       <properties>
+-        <nativeTransportLib>netty_transport_native_kqueue_${os.detected.arch}.jnilib</nativeTransportLib>
++        <nativeTransportLib>fstack_netty_transport_native_kqueue_${os.detected.arch}.jnilib</nativeTransportLib>
+         <nativeTcnativeLib>netty_tcnative_osx_${os.detected.arch}.jnilib</nativeTcnativeLib>
+         <skipShadingTestsuite>false</skipShadingTestsuite>
+       </properties>
+@@ -304,7 +304,7 @@
+         </os>
+       </activation>
+       <properties>
+-        <nativeTransportLib>netty_transport_native_epoll_${os.detected.arch}.so</nativeTransportLib>
++        <nativeTransportLib>fstack_netty_transport_native_epoll_${os.detected.arch}.so</nativeTransportLib>
+         <nativeTcnativeLib>netty_tcnative_linux_${os.detected.arch}.so</nativeTcnativeLib>
+         <skipShadingTestsuite>false</skipShadingTestsuite>
+       </properties>
 diff --git a/transport-classes-epoll/pom.xml b/transport-classes-epoll/pom.xml
 index 09f96a2819..c64478063e 100644
 --- a/transport-classes-epoll/pom.xml
@@ -988,7 +1010,7 @@ diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/Native
 similarity index 89%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/Native.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Native.java
-index 85829ec15a..fa687cc83e 100644
+index 85829ec15a..d09c19b2e3 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/Native.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/Native.java
 @@ -13,13 +13,13 @@
@@ -1041,6 +1063,15 @@ index 85829ec15a..fa687cc83e 100644
  
  /**
   * Native helper methods
+@@ -316,7 +316,7 @@ public final class Native {
+         if (!"linux".equals(name)) {
+             throw new IllegalStateException("Only supported on Linux");
+         }
+-        String staticLibName = "netty_transport_native_epoll";
++        String staticLibName = "fstack_netty_transport_native_epoll";
+         String sharedLibName = staticLibName + '_' + PlatformDependent.normalizedArch();
+         ClassLoader cl = PlatformDependent.getClassLoader(Native.class);
+         try {
 diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/NativeDatagramPacketArray.java b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/NativeDatagramPacketArray.java
 similarity index 92%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/NativeDatagramPacketArray.java
@@ -1899,7 +1930,7 @@ diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/Nati
 similarity index 74%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/Native.java
 rename to transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/Native.java
-index 20a09f49b1..a5e966328b 100644
+index 20a09f49b1..02c0846c84 100644
 --- a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/Native.java
 +++ b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/Native.java
 @@ -13,12 +13,12 @@
@@ -1964,6 +1995,15 @@ index 20a09f49b1..a5e966328b 100644
  
  /**
   * Native helper methods
+@@ -148,7 +148,7 @@ final class Native {
+         if (!"osx".equals(name) && !name.contains("bsd")) {
+             throw new IllegalStateException("Only supported on OSX/BSD");
+         }
+-        String staticLibName = "netty_transport_native_kqueue";
++        String staticLibName = "fstack_netty_transport_native_kqueue";
+         String sharedLibName = staticLibName + '_' + PlatformDependent.normalizedArch();
+         ClassLoader cl = PlatformDependent.getClassLoader(Native.class);
+         try {
 diff --git a/transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/NativeLongArray.java b/transport-classes-kqueue/src/main/java/net/elytrium/netty/transport/fstack/kqueue/NativeLongArray.java
 similarity index 94%
 rename from transport-classes-kqueue/src/main/java/io/netty/channel/kqueue/NativeLongArray.java
@@ -2005,7 +2045,7 @@ index 9d1a25b8f4..05460243ed 100644
  
  import io.netty.util.internal.UnstableApi;
 diff --git a/transport-native-epoll/pom.xml b/transport-native-epoll/pom.xml
-index cad13b4b77..1bbddbba49 100644
+index cad13b4b77..355107e582 100644
 --- a/transport-native-epoll/pom.xml
 +++ b/transport-native-epoll/pom.xml
 @@ -17,17 +17,17 @@
@@ -2030,6 +2070,24 @@ index cad13b4b77..1bbddbba49 100644
      <!-- Needed as we use SelfSignedCertificate in our tests -->
      <argLine.java9.extras>--add-exports java.base/sun.security.x509=ALL-UNNAMED</argLine.java9.extras>
      <unix.common.lib.name>netty-unix-common</unix.common.lib.name>
+@@ -149,7 +149,7 @@
+               <execution>
+                 <id>build-native-lib</id>
+                 <configuration>
+-                  <name>netty_transport_native_epoll_${os.detected.arch}</name>
++                  <name>fstack_netty_transport_native_epoll_${os.detected.arch}</name>
+                   <nativeSourceDirectory>${nativeSourceDirectory}</nativeSourceDirectory>
+                   <libDirectory>${project.build.outputDirectory}</libDirectory>
+                   <!-- We use Maven's artifact classifier instead.
+@@ -185,7 +185,7 @@
+                       <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                     </manifest>
+                     <manifestEntries>
+-                      <Bundle-NativeCode>META-INF/native/libnetty_transport_native_epoll_${os.detected.arch}.so; osname=Linux; processor=${os.detected.arch},*</Bundle-NativeCode>
++                      <Bundle-NativeCode>META-INF/native/libfstack_netty_transport_native_epoll_${os.detected.arch}.so; osname=Linux; processor=${os.detected.arch},*</Bundle-NativeCode>
+                       <Fragment-Host>io.netty.transport-classes-epoll</Fragment-Host>
+                       <Automatic-Module-Name>${javaModuleName}</Automatic-Module-Name>
+                     </manifestEntries>
 @@ -202,7 +202,7 @@
    
        <dependencies>
@@ -2039,6 +2097,24 @@ index cad13b4b77..1bbddbba49 100644
            <artifactId>netty-transport-native-unix-common</artifactId>
            <version>${project.version}</version>
            <classifier>${jni.classifier}</classifier>
+@@ -299,7 +299,7 @@
+               <execution>
+                 <id>build-native-lib</id>
+                 <configuration>
+-                  <name>netty_transport_native_epoll_aarch_64</name>
++                  <name>fstack_netty_transport_native_epoll_aarch_64</name>
+                   <nativeSourceDirectory>${nativeSourceDirectory}</nativeSourceDirectory>
+                   <libDirectory>${project.build.outputDirectory}</libDirectory>
+                   <!-- We use Maven's artifact classifier instead.
+@@ -337,7 +337,7 @@
+                       <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                     </manifest>
+                     <manifestEntries>
+-                      <Bundle-NativeCode>META-INF/native/libnetty_transport_native_epoll_aarch_64.so; osname=Linux; processor=aarch_64,*</Bundle-NativeCode>
++                      <Bundle-NativeCode>META-INF/native/libfstack_netty_transport_native_epoll_aarch_64.so; osname=Linux; processor=aarch_64,*</Bundle-NativeCode>
+                       <Fragment-Host>io.netty.transport-classes-epoll</Fragment-Host>
+                       <Automatic-Module-Name>${javaModuleName}</Automatic-Module-Name>
+                     </manifestEntries>
 @@ -354,7 +354,7 @@
  
        <dependencies>
@@ -2116,7 +2192,7 @@ index 62e656f0b1..67e675f043 100644
      netty_jni_util_free_dynamic_name(&nettyClassName);
  
 diff --git a/transport-native-epoll/src/main/c/netty_epoll_native.c b/transport-native-epoll/src/main/c/netty_epoll_native.c
-index 82ff4e6dbb..f1281dcf79 100644
+index 82ff4e6dbb..d3792a5a21 100644
 --- a/transport-native-epoll/src/main/c/netty_epoll_native.c
 +++ b/transport-native-epoll/src/main/c/netty_epoll_native.c
 @@ -58,8 +58,8 @@
@@ -2164,6 +2240,29 @@ index 82ff4e6dbb..f1281dcf79 100644
      NETTY_JNI_UTIL_FIND_CLASS(env, nativeDatagramPacketCls, nettyClassName, done);
      netty_jni_util_free_dynamic_name(&nettyClassName);
  
+@@ -872,18 +872,18 @@ static void netty_epoll_native_JNI_OnUnload(JNIEnv* env) {
+ // https://mail.openjdk.java.net/pipermail/core-libs-dev/2013-February/014549.html
+ 
+ // Invoked by the JVM when statically linked
+-JNIEXPORT jint JNI_OnLoad_netty_transport_native_epoll(JavaVM* vm, void* reserved) {
+-    return netty_jni_util_JNI_OnLoad(vm, reserved, "netty_transport_native_epoll", netty_epoll_native_JNI_OnLoad);
++JNIEXPORT jint JNI_OnLoad_fstack_netty_transport_native_epoll(JavaVM* vm, void* reserved) {
++    return netty_jni_util_JNI_OnLoad(vm, reserved, "fstack_netty_transport_native_epoll", netty_epoll_native_JNI_OnLoad);
+ }
+ 
+ // Invoked by the JVM when statically linked
+-JNIEXPORT void JNI_OnUnload_netty_transport_native_epoll(JavaVM* vm, void* reserved) {
++JNIEXPORT void JNI_OnUnload_fstack_netty_transport_native_epoll(JavaVM* vm, void* reserved) {
+     netty_jni_util_JNI_OnUnload(vm, reserved, netty_epoll_native_JNI_OnUnload);
+ }
+ 
+ #ifndef NETTY_BUILD_STATIC
+ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+-    return netty_jni_util_JNI_OnLoad(vm, reserved, "netty_transport_native_epoll", netty_epoll_native_JNI_OnLoad);
++    return netty_jni_util_JNI_OnLoad(vm, reserved, "fstack_netty_transport_native_epoll", netty_epoll_native_JNI_OnLoad);
+ }
+ 
+ JNIEXPORT void JNI_OnUnload(JavaVM* vm, void* reserved) {
 diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollAbstractDomainSocketEchoTest.java b/transport-native-epoll/src/test/java/net/elytrium/netty/transport/fstack/epoll/EpollAbstractDomainSocketEchoTest.java
 similarity index 89%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollAbstractDomainSocketEchoTest.java
@@ -3582,7 +3681,7 @@ index 09e04e9614..ad1520029a 100644
  
  public class NativeTest {
 diff --git a/transport-native-kqueue/pom.xml b/transport-native-kqueue/pom.xml
-index e1cc0e79a5..1108e637f8 100644
+index e1cc0e79a5..7afb398d94 100644
 --- a/transport-native-kqueue/pom.xml
 +++ b/transport-native-kqueue/pom.xml
 @@ -17,13 +17,13 @@
@@ -3602,11 +3701,22 @@ index e1cc0e79a5..1108e637f8 100644
    <packaging>jar</packaging>
  
    <profiles>
-@@ -110,7 +110,7 @@
+@@ -69,7 +69,7 @@
+               <execution>
+                 <id>build-native-lib</id>
+                 <configuration>
+-                  <name>netty_transport_native_kqueue_${os.detected.arch}</name>
++                  <name>fstack_netty_transport_native_kqueue_${os.detected.arch}</name>
+                   <nativeSourceDirectory>${nativeSourceDirectory}</nativeSourceDirectory>
+                   <libDirectory>${project.build.outputDirectory}</libDirectory>
+                   <!-- We use Maven's artifact classifier instead.
+@@ -109,8 +109,8 @@
+                       <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                      </manifest>
                      <manifestEntries>
-                       <Bundle-NativeCode>META-INF/native/libnetty_transport_native_kqueue_${os.detected.arch}.jnilib; osname=MacOSX; processor=${os.detected.arch}</Bundle-NativeCode>
+-                      <Bundle-NativeCode>META-INF/native/libnetty_transport_native_kqueue_${os.detected.arch}.jnilib; osname=MacOSX; processor=${os.detected.arch}</Bundle-NativeCode>
 -                      <Fragment-Host>io.netty.transport-classes-kqueue</Fragment-Host>
++                      <Bundle-NativeCode>META-INF/native/libfstack_netty_transport_native_kqueue_${os.detected.arch}.jnilib; osname=MacOSX; processor=${os.detected.arch}</Bundle-NativeCode>
 +                      <Fragment-Host>net.elytrium.fstack-netty-transport.transport-classes-kqueue</Fragment-Host>
                        <Automatic-Module-Name>${javaModuleName}</Automatic-Module-Name>
                      </manifestEntries>
@@ -3620,11 +3730,22 @@ index e1cc0e79a5..1108e637f8 100644
            <artifactId>netty-transport-native-unix-common</artifactId>
            <version>${project.version}</version>
            <classifier>${jni.classifier}</classifier>
-@@ -217,7 +217,7 @@
+@@ -178,7 +178,7 @@
+               <execution>
+                 <id>build-native-lib</id>
+                 <configuration>
+-                  <name>netty_transport_native_kqueue_aarch_64</name>
++                  <name>fstack_netty_transport_native_kqueue_aarch_64</name>
+                   <nativeSourceDirectory>${nativeSourceDirectory}</nativeSourceDirectory>
+                   <libDirectory>${project.build.outputDirectory}</libDirectory>
+                   <!-- We use Maven's artifact classifier instead.
+@@ -216,8 +216,8 @@
+                       <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                      </manifest>
                      <manifestEntries>
-                       <Bundle-NativeCode>META-INF/native/libnetty_transport_native_kqueue_aarch_64.jnilib; osname=MacOSX; processor=aarch_64</Bundle-NativeCode>
+-                      <Bundle-NativeCode>META-INF/native/libnetty_transport_native_kqueue_aarch_64.jnilib; osname=MacOSX; processor=aarch_64</Bundle-NativeCode>
 -                      <Fragment-Host>io.netty.transport-classes-kqueue</Fragment-Host>
++                      <Bundle-NativeCode>META-INF/native/libfstack_netty_transport_native_kqueue_aarch_64.jnilib; osname=MacOSX; processor=aarch_64</Bundle-NativeCode>
 +                      <Fragment-Host>net.elytrium.fstack-netty-transport.transport-classes-kqueue</Fragment-Host>
                        <Automatic-Module-Name>${javaModuleName}</Automatic-Module-Name>
                      </manifestEntries>
@@ -3638,11 +3759,22 @@ index e1cc0e79a5..1108e637f8 100644
            <artifactId>netty-transport-native-unix-common</artifactId>
            <version>${project.version}</version>
            <classifier>${jni.classifier}</classifier>
-@@ -322,7 +322,7 @@
+@@ -284,7 +284,7 @@
+               <execution>
+                 <id>build-native-lib</id>
+                 <configuration>
+-                  <name>netty_transport_native_kqueue_${os.detected.arch}</name>
++                  <name>fstack_netty_transport_native_kqueue_${os.detected.arch}</name>
+                   <nativeSourceDirectory>${nativeSourceDirectory}</nativeSourceDirectory>
+                   <libDirectory>${project.build.outputDirectory}</libDirectory>
+                   <!-- We use Maven's artifact classifier instead.
+@@ -321,8 +321,8 @@
+                       <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                      </manifest>
                      <manifestEntries>
-                       <Bundle-NativeCode>META-INF/native/libnetty_transport_native_kqueue_${os.detected.arch}.jnilib; osname=OpenBSD; processor=${os.detected.arch}</Bundle-NativeCode>
+-                      <Bundle-NativeCode>META-INF/native/libnetty_transport_native_kqueue_${os.detected.arch}.jnilib; osname=OpenBSD; processor=${os.detected.arch}</Bundle-NativeCode>
 -                      <Fragment-Host>io.netty.transport-classes-kqueue</Fragment-Host>
++                      <Bundle-NativeCode>META-INF/native/libfstack_netty_transport_native_kqueue_${os.detected.arch}.jnilib; osname=OpenBSD; processor=${os.detected.arch}</Bundle-NativeCode>
 +                      <Fragment-Host>net.elytrium.fstack-netty-transport.transport-classes-kqueue</Fragment-Host>
                      </manifestEntries>
                      <index>true</index>
@@ -3656,11 +3788,22 @@ index e1cc0e79a5..1108e637f8 100644
            <artifactId>netty-transport-native-unix-common</artifactId>
            <version>${project.version}</version>
            <classifier>${jni.classifier}</classifier>
-@@ -426,7 +426,7 @@
+@@ -388,7 +388,7 @@
+               <execution>
+                 <id>build-native-lib</id>
+                 <configuration>
+-                  <name>netty_transport_native_kqueue_${os.detected.arch}</name>
++                  <name>fstack_netty_transport_native_kqueue_${os.detected.arch}</name>
+                   <nativeSourceDirectory>${nativeSourceDirectory}</nativeSourceDirectory>
+                   <libDirectory>${project.build.outputDirectory}</libDirectory>
+                   <!-- We use Maven's artifact classifier instead.
+@@ -425,8 +425,8 @@
+                       <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                      </manifest>
                      <manifestEntries>
-                       <Bundle-NativeCode>META-INF/native/libnetty_transport_native_kqueue_${os.detected.arch}.jnilib; osname=FreeBSD; processor=${os.detected.arch}</Bundle-NativeCode>
+-                      <Bundle-NativeCode>META-INF/native/libnetty_transport_native_kqueue_${os.detected.arch}.jnilib; osname=FreeBSD; processor=${os.detected.arch}</Bundle-NativeCode>
 -                      <Fragment-Host>io.netty.transport-classes-kqueue</Fragment-Host>
++                      <Bundle-NativeCode>META-INF/native/libfstack_netty_transport_native_kqueue_${os.detected.arch}.jnilib; osname=FreeBSD; processor=${os.detected.arch}</Bundle-NativeCode>
 +                      <Fragment-Host>net.elytrium.fstack-netty-transport.transport-classes-kqueue</Fragment-Host>
                      </manifestEntries>
                      <index>true</index>
@@ -3758,7 +3901,7 @@ index e254a961ff..0853beba44 100644
  static void netty_kqueue_eventarray_evSet(JNIEnv* env, jclass clzz, jlong keventAddress, jint ident, jshort filter, jshort flags, jint fflags) {
      EV_SET((struct kevent*) keventAddress, ident, filter, flags, fflags, 0, NULL);
 diff --git a/transport-native-kqueue/src/main/c/netty_kqueue_native.c b/transport-native-kqueue/src/main/c/netty_kqueue_native.c
-index cd162380a6..cc18ca3457 100644
+index cd162380a6..3d6984cae5 100644
 --- a/transport-native-kqueue/src/main/c/netty_kqueue_native.c
 +++ b/transport-native-kqueue/src/main/c/netty_kqueue_native.c
 @@ -43,8 +43,8 @@
@@ -3772,6 +3915,29 @@ index cd162380a6..cc18ca3457 100644
  
  // Currently only macOS supports EVFILT_SOCK, and it is currently only available in internal APIs.
  // To make compiling easier we redefine the values here if they are not present.
+@@ -444,18 +444,18 @@ static void netty_kqueue_native_JNI_OnUnload(JNIEnv* env) {
+ // https://mail.openjdk.java.net/pipermail/core-libs-dev/2013-February/014549.html
+ 
+ // Invoked by the JVM when statically linked
+-JNIEXPORT jint JNI_OnLoad_netty_transport_native_kqueue(JavaVM* vm, void* reserved) {
+-    return netty_jni_util_JNI_OnLoad(vm, reserved, "netty_transport_native_kqueue", netty_kqueue_native_JNI_OnLoad);
++JNIEXPORT jint JNI_OnLoad_fstack_netty_transport_native_kqueue(JavaVM* vm, void* reserved) {
++    return netty_jni_util_JNI_OnLoad(vm, reserved, "fstack_netty_transport_native_kqueue", netty_kqueue_native_JNI_OnLoad);
+ }
+ 
+ // Invoked by the JVM when statically linked
+-JNIEXPORT void JNI_OnUnload_netty_transport_native_kqueue(JavaVM* vm, void* reserved) {
++JNIEXPORT void JNI_OnUnload_fstack_netty_transport_native_kqueue(JavaVM* vm, void* reserved) {
+     netty_jni_util_JNI_OnUnload(vm, reserved, netty_kqueue_native_JNI_OnUnload);
+ }
+ 
+ #ifndef NETTY_BUILD_STATIC
+ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+-    return netty_jni_util_JNI_OnLoad(vm, reserved, "netty_transport_native_kqueue", netty_kqueue_native_JNI_OnLoad);
++    return netty_jni_util_JNI_OnLoad(vm, reserved, "fstack_netty_transport_native_kqueue", netty_kqueue_native_JNI_OnLoad);
+ }
+ 
+ JNIEXPORT void JNI_OnUnload(JavaVM* vm, void* reserved) {
 diff --git a/transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueAbstractDomainSocketEchoTest.java b/transport-native-kqueue/src/test/java/net/elytrium/netty/transport/fstack/kqueue/KQueueAbstractDomainSocketEchoTest.java
 similarity index 88%
 rename from transport-native-kqueue/src/test/java/io/netty/channel/kqueue/KQueueAbstractDomainSocketEchoTest.java
@@ -5550,10 +5716,10 @@ index 903ee1319f..9d4118ba45 100644
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.util.internal.ObjectUtil;
 diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Unix.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Unix.java
-similarity index 98%
+similarity index 93%
 rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/Unix.java
 rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Unix.java
-index e1fbb13b62..7bec765469 100644
+index e1fbb13b62..49c792ff97 100644
 --- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Unix.java
 +++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Unix.java
 @@ -13,7 +13,7 @@
@@ -5565,6 +5731,33 @@ index e1fbb13b62..7bec765469 100644
  
  import io.netty.util.internal.ClassInitializerUtil;
  import io.netty.util.internal.UnstableApi;
+@@ -60,7 +60,7 @@ public final class Unix {
+ 
+     /**
+      * Returns {@code true} if and only if the <a href="https://netty.io/wiki/native-transports.html">{@code
+-     * netty_transport_native_unix}</a> is available.
++     * fstack_netty_transport_native_unix}</a> is available.
+      */
+     @Deprecated
+     public static boolean isAvailable() {
+@@ -68,7 +68,7 @@ public final class Unix {
+     }
+ 
+     /**
+-     * Ensure that <a href="https://netty.io/wiki/native-transports.html">{@code netty_transport_native_unix}</a> is
++     * Ensure that <a href="https://netty.io/wiki/native-transports.html">{@code fstack_netty_transport_native_unix}</a> is
+      * available.
+      *
+      * @throws UnsatisfiedLinkError if unavailable
+@@ -80,7 +80,7 @@ public final class Unix {
+ 
+     /**
+      * Returns the cause of unavailability of <a href="https://netty.io/wiki/native-transports.html">
+-     * {@code netty_transport_native_unix}</a>.
++     * {@code fstack_netty_transport_native_unix}</a>.
+      *
+      * @return the cause if unavailable. {@code null} if available.
+      */
 diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannel.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/UnixChannel.java
 similarity index 94%
 rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/UnixChannel.java
@@ -5661,5 +5854,5 @@ index 83895ad40f..6ecc5f6c5c 100644
  import static org.junit.jupiter.api.Assertions.assertFalse;
  import static org.junit.jupiter.api.Assertions.assertTrue;
 -- 
-2.35.0.windows.1
+2.35.3
 
