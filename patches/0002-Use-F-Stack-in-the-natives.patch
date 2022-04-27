@@ -1,4 +1,4 @@
-From 149641f3b13bfb0767376f4cf25b20d53e34a784 Mon Sep 17 00:00:00 2001
+From 4f7aba758a2383217046d5b803737aa9b94c4d50 Mon Sep 17 00:00:00 2001
 From: Petr Ilin <hevav@hevav.dev>
 Date: Wed, 27 Apr 2022 13:17:49 +0300
 Subject: [PATCH] Use F-Stack in the natives.
@@ -68,7 +68,7 @@ index 67e675f043..2250d407a9 100644
  }
  
 diff --git a/transport-native-epoll/src/main/c/netty_epoll_native.c b/transport-native-epoll/src/main/c/netty_epoll_native.c
-index d3792a5a21..324481319c 100644
+index d3792a5a21..33e7302667 100644
 --- a/transport-native-epoll/src/main/c/netty_epoll_native.c
 +++ b/transport-native-epoll/src/main/c/netty_epoll_native.c
 @@ -43,6 +43,10 @@
@@ -99,8 +99,8 @@ index d3792a5a21..324481319c 100644
 +    return ff_read(fd, value, sizeof (eventfd_t)) != sizeof (eventfd_t) ? -1 : 0;
 +}
 +
-+int ff_eventfd_write (int fd, eventfd_t value) {
-+    return ff_write(fd, (eventfd_t*)value, sizeof (eventfd_t)) != sizeof (eventfd_t) ? -1 : 0;
++int ff_eventfd_write (int fd, eventfd_t *value) {
++    return ff_write(fd, value, sizeof (eventfd_t)) != sizeof (eventfd_t) ? -1 : 0;
 +}
 +
  static void netty_epoll_native_eventFdWrite(JNIEnv* env, jclass clazz, jint fd, jlong value) {
@@ -108,7 +108,7 @@ index d3792a5a21..324481319c 100644
  
      for (;;) {
 -        jint ret = eventfd_write(fd, (eventfd_t) value);
-+        jint ret = ff_eventfd_write(fd, (eventfd_t) value);
++        jint ret = ff_eventfd_write(fd, (eventfd_t*) value);
  
          if (ret < 0) {
              // We need to read before we can write again, let's try to read and then write again and if this
