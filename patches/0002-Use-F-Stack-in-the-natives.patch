@@ -1,7 +1,7 @@
-From 7623a420fa2e4f2dde617742897c1d9deb27a242 Mon Sep 17 00:00:00 2001
+From 9bb9220dad840939c688ee88f77043a609370ae4 Mon Sep 17 00:00:00 2001
 From: Petr Ilin <hevav@hevav.dev>
 Date: Wed, 27 Apr 2022 13:17:49 +0300
-Subject: [PATCH] Natives patches
+Subject: [PATCH] Use F-Stack in the natives.
 
 
 diff --git a/pom.xml b/pom.xml
