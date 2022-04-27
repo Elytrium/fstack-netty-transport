@@ -1,4 +1,4 @@
-From 9d7b93340158ea1df875152e4e49aa1b8e164b8c Mon Sep 17 00:00:00 2001
+From 16da8f7f30c9e6c161c623dad0719501a8d48f31 Mon Sep 17 00:00:00 2001
 From: Petr Ilin <hevav@hevav.dev>
 Date: Mon, 25 Apr 2022 20:32:56 +0300
 Subject: [PATCH] Rename packages, maven changes.
@@ -441,7 +441,7 @@ diff --git a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollD
 similarity index 95%
 rename from transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDatagramChannel.java
 rename to transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDatagramChannel.java
-index 0ca449b665..35a232dcab 100644
+index 0ca449b665..b66a8695f1 100644
 --- a/transport-classes-epoll/src/main/java/io/netty/channel/epoll/EpollDatagramChannel.java
 +++ b/transport-classes-epoll/src/main/java/net/elytrium/netty/transport/fstack/epoll/EpollDatagramChannel.java
 @@ -13,7 +13,7 @@
@@ -477,16 +477,17 @@ index 0ca449b665..35a232dcab 100644
  
  /**
   * {@link DatagramChannel} implementation that uses linux EPOLL Edge-Triggered Mode for
-@@ -66,7 +66,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+@@ -66,7 +66,8 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
      private volatile boolean connected;
  
      /**
 -     * Returns {@code true} if {@link io.netty.channel.unix.SegmentedDatagramPacket} is supported natively.
-+     * Returns {@code true} if {@link net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket} is supported natively.
++     * Returns {@code true} if
++     * {@link net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket} is supported natively.
       *
       * @return {@code true} if supported, {@code false} otherwise.
       */
-@@ -309,7 +309,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+@@ -309,7 +310,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
                  // Check if sendmmsg(...) is supported which is only the case for GLIBC 2.14+
                  if (Native.IS_SUPPORTING_SENDMMSG && in.size() > 1 ||
                          // We only handle UDP_SEGMENT in sendmmsg.
@@ -495,7 +496,7 @@ index 0ca449b665..35a232dcab 100644
                      NativeDatagramPacketArray array = cleanDatagramPacketArray();
                      array.add(in, isConnected(), maxMessagesPerWrite);
                      int cnt = array.count();
-@@ -387,12 +387,12 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+@@ -387,12 +388,13 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
  
      @Override
      protected Object filterOutboundMessage(Object msg) {
@@ -506,11 +507,12 @@ index 0ca449b665..35a232dcab 100644
                          "unsupported message type: " + StringUtil.simpleClassName(msg) + EXPECTED_TYPES);
              }
 -            io.netty.channel.unix.SegmentedDatagramPacket packet = (io.netty.channel.unix.SegmentedDatagramPacket) msg;
-+            net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket packet = (net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket) msg;
++            net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket packet =
++                (net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket) msg;
              ByteBuf content = packet.content();
              return UnixChannelUtil.isBufferCopyNeededForWrite(content) ?
                      packet.replace(newDirectBuffer(packet, content)) : msg;
-@@ -579,9 +579,9 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+@@ -579,9 +581,9 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
  
      private static void addDatagramPacketToOut(DatagramPacket packet,
                                                RecyclableArrayList out) {
@@ -523,7 +525,7 @@ index 0ca449b665..35a232dcab 100644
              ByteBuf content = segmentedDatagramPacket.content();
              InetSocketAddress recipient = segmentedDatagramPacket.recipient();
              InetSocketAddress sender = segmentedDatagramPacket.sender();
-@@ -647,7 +647,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+@@ -647,7 +649,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
              byteBuf.writerIndex(bytesReceived);
              InetSocketAddress local = localAddress();
              DatagramPacket packet = msg.newDatagramPacket(byteBuf, local);
@@ -532,7 +534,7 @@ index 0ca449b665..35a232dcab 100644
                  processPacket(pipeline(), allocHandle, bytesReceived, packet);
                  byteBuf = null;
              } else {
-@@ -697,7 +697,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
+@@ -697,7 +699,7 @@ public final class EpollDatagramChannel extends AbstractEpollChannel implements
              if (received == 1) {
                  // Single packet fast-path
                  DatagramPacket packet = packets[0].newDatagramPacket(byteBuf, local);
@@ -2480,7 +2482,7 @@ diff --git a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDa
 similarity index 97%
 rename from transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramUnicastTest.java
 rename to transport-native-epoll/src/test/java/net/elytrium/netty/transport/fstack/epoll/EpollDatagramUnicastTest.java
-index ba1970f951..2dae9a5a41 100644
+index ba1970f951..5dc4af71a9 100644
 --- a/transport-native-epoll/src/test/java/io/netty/channel/epoll/EpollDatagramUnicastTest.java
 +++ b/transport-native-epoll/src/test/java/net/elytrium/netty/transport/fstack/epoll/EpollDatagramUnicastTest.java
 @@ -13,7 +13,7 @@
@@ -2492,12 +2494,14 @@ index ba1970f951..2dae9a5a41 100644
  
  import io.netty.bootstrap.Bootstrap;
  import io.netty.buffer.ByteBuf;
-@@ -169,7 +169,7 @@ public class EpollDatagramUnicastTest extends DatagramUnicastInetTest {
+@@ -169,7 +169,9 @@ public class EpollDatagramUnicastTest extends DatagramUnicastInetTest {
              } else {
                  buffer = Unpooled.directBuffer(bufferCapacity).writeZero(bufferCapacity);
              }
 -            cc.writeAndFlush(new io.netty.channel.unix.SegmentedDatagramPacket(buffer, segmentSize, addr)).sync();
-+            cc.writeAndFlush(new net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket(buffer, segmentSize, addr)).sync();
++            cc.writeAndFlush(
++                new net.elytrium.netty.transport.fstack.unix.SegmentedDatagramPacket(buffer, segmentSize, addr)
++            ).sync();
  
              if (!latch.await(10, TimeUnit.SECONDS)) {
                  Throwable error = errorRef.get();
@@ -5716,10 +5720,10 @@ index 903ee1319f..9d4118ba45 100644
  import io.netty.buffer.ByteBufAllocator;
  import io.netty.util.internal.ObjectUtil;
 diff --git a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Unix.java b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Unix.java
-similarity index 93%
+similarity index 92%
 rename from transport-native-unix-common/src/main/java/io/netty/channel/unix/Unix.java
 rename to transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Unix.java
-index e1fbb13b62..49c792ff97 100644
+index e1fbb13b62..8019ceb006 100644
 --- a/transport-native-unix-common/src/main/java/io/netty/channel/unix/Unix.java
 +++ b/transport-native-unix-common/src/main/java/net/elytrium/netty/transport/fstack/unix/Unix.java
 @@ -13,7 +13,7 @@
@@ -5740,16 +5744,17 @@ index e1fbb13b62..49c792ff97 100644
       */
      @Deprecated
      public static boolean isAvailable() {
-@@ -68,7 +68,7 @@ public final class Unix {
+@@ -68,7 +68,8 @@ public final class Unix {
      }
  
      /**
 -     * Ensure that <a href="https://netty.io/wiki/native-transports.html">{@code netty_transport_native_unix}</a> is
-+     * Ensure that <a href="https://netty.io/wiki/native-transports.html">{@code fstack_netty_transport_native_unix}</a> is
++     * Ensure that <a href="https://netty.io/wiki/native-transports.html">
++     *   {@code fstack_netty_transport_native_unix}</a> is
       * available.
       *
       * @throws UnsatisfiedLinkError if unavailable
-@@ -80,7 +80,7 @@ public final class Unix {
+@@ -80,7 +81,7 @@ public final class Unix {
  
      /**
       * Returns the cause of unavailability of <a href="https://netty.io/wiki/native-transports.html">

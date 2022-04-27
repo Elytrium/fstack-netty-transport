@@ -1,0 +1,800 @@
+From 7623a420fa2e4f2dde617742897c1d9deb27a242 Mon Sep 17 00:00:00 2001
+From: Petr Ilin <hevav@hevav.dev>
+Date: Wed, 27 Apr 2022 13:17:49 +0300
+Subject: [PATCH] Natives patches
+
+
+diff --git a/pom.xml b/pom.xml
+index 68c4381447..d948924524 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -572,6 +572,7 @@
+     <skipNativeImageTestsuite>true</skipNativeImageTestsuite>
+     <skipShadingTestsuite>false</skipShadingTestsuite>
+     <skipDeploy>false</skipDeploy>
++    <jni.compiler.args.fstack-libs>-Wl,--whole-archive -L/usr/local/lib -l:librte_common_cpt.a -l:librte_common_dpaax.a -l:librte_common_iavf.a -l:librte_common_octeontx.a -l:librte_common_octeontx2.a -l:librte_common_sfc_efx.a -l:librte_bus_dpaa.a -l:librte_bus_fslmc.a -l:librte_bus_ifpga.a -l:librte_bus_pci.a -l:librte_bus_vdev.a -l:librte_bus_vmbus.a -l:librte_common_qat.a -l:librte_mempool_bucket.a -l:librte_mempool_dpaa.a -l:librte_mempool_dpaa2.a -l:librte_mempool_octeontx.a -l:librte_mempool_octeontx2.a -l:librte_mempool_ring.a -l:librte_mempool_stack.a -l:librte_net_af_packet.a -l:librte_net_af_xdp.a -l:librte_net_ark.a -l:librte_net_atlantic.a -l:librte_net_avp.a -l:librte_net_axgbe.a -l:librte_net_bond.a -l:librte_net_bnx2x.a -l:librte_net_bnxt.a -l:librte_net_cxgbe.a -l:librte_net_dpaa.a -l:librte_net_dpaa2.a -l:librte_net_e1000.a -l:librte_net_ena.a -l:librte_net_enetc.a -l:librte_net_enic.a -l:librte_net_failsafe.a -l:librte_net_fm10k.a -l:librte_net_i40e.a -l:librte_net_hinic.a -l:librte_net_hns3.a -l:librte_net_iavf.a -l:librte_net_ice.a -l:librte_net_igc.a -l:librte_net_ixgbe.a -l:librte_net_kni.a -l:librte_net_liquidio.a -l:librte_net_memif.a -l:librte_net_netvsc.a -l:librte_net_nfp.a -l:librte_net_null.a -l:librte_net_octeontx.a -l:librte_net_octeontx2.a -l:librte_net_pcap.a -l:librte_net_pfe.a -l:librte_net_qede.a -l:librte_net_ring.a -l:librte_net_sfc.a -l:librte_net_softnic.a -l:librte_net_tap.a -l:librte_net_thunderx.a -l:librte_net_txgbe.a -l:librte_net_vdev_netvsc.a -l:librte_net_vhost.a -l:librte_net_virtio.a -l:librte_net_vmxnet3.a -l:librte_raw_dpaa2_cmdif.a -l:librte_raw_dpaa2_qdma.a -l:librte_raw_ioat.a -l:librte_raw_ntb.a -l:librte_raw_octeontx2_dma.a -l:librte_raw_octeontx2_ep.a -l:librte_raw_skeleton.a -l:librte_crypto_bcmfs.a -l:librte_crypto_caam_jr.a -l:librte_crypto_ccp.a -l:librte_crypto_dpaa_sec.a -l:librte_crypto_dpaa2_sec.a -l:librte_crypto_nitrox.a -l:librte_crypto_null.a -l:librte_crypto_octeontx.a -l:librte_crypto_octeontx2.a -l:librte_crypto_openssl.a -l:librte_crypto_scheduler.a -l:librte_crypto_virtio.a -l:librte_compress_octeontx.a -l:librte_compress_zlib.a -l:librte_regex_octeontx2.a -l:librte_vdpa_ifc.a -l:librte_event_dlb.a -l:librte_event_dlb2.a -l:librte_event_dpaa.a -l:librte_event_dpaa2.a -l:librte_event_octeontx2.a -l:librte_event_opdl.a -l:librte_event_skeleton.a -l:librte_event_sw.a -l:librte_event_dsw.a -l:librte_event_octeontx.a -l:librte_baseband_null.a -l:librte_baseband_turbo_sw.a -l:librte_baseband_fpga_lte_fec.a -l:librte_baseband_fpga_5gnr_fec.a -l:librte_baseband_acc100.a -l:librte_node.a -l:librte_graph.a -l:librte_bpf.a -l:librte_flow_classify.a -l:librte_pipeline.a -l:librte_table.a -l:librte_port.a -l:librte_fib.a -l:librte_ipsec.a -l:librte_vhost.a -l:librte_stack.a -l:librte_security.a -l:librte_sched.a -l:librte_reorder.a -l:librte_rib.a -l:librte_regexdev.a -l:librte_rawdev.a -l:librte_pdump.a -l:librte_power.a -l:librte_member.a -l:librte_lpm.a -l:librte_latencystats.a -l:librte_kni.a -l:librte_jobstats.a -l:librte_ip_frag.a -l:librte_gso.a -l:librte_gro.a -l:librte_eventdev.a -l:librte_efd.a -l:librte_distributor.a -l:librte_cryptodev.a -l:librte_compressdev.a -l:librte_cfgfile.a -l:librte_bitratestats.a -l:librte_bbdev.a -l:librte_acl.a -l:librte_timer.a -l:librte_hash.a -l:librte_metrics.a -l:librte_cmdline.a -l:librte_pci.a -l:librte_ethdev.a -l:librte_meter.a -l:librte_net.a -l:librte_mbuf.a -l:librte_mempool.a -l:librte_rcu.a -l:librte_ring.a -l:librte_eal.a -l:librte_telemetry.a -l:librte_kvargs.a -Wl,--no-whole-archive -Wl,--as-needed -lrte_node -lrte_graph -lrte_bpf -lrte_flow_classify -lrte_pipeline -lrte_table -lrte_port -lrte_fib -lrte_ipsec -lrte_vhost -lrte_stack -lrte_security -lrte_sched -lrte_reorder -lrte_rib -lrte_regexdev -lrte_rawdev -lrte_pdump -lrte_power -lrte_member -lrte_lpm -lrte_latencystats -lrte_kni -lrte_jobstats -lrte_ip_frag -lrte_gso -lrte_gro -lrte_eventdev -lrte_efd -lrte_distributor -lrte_cryptodev -lrte_compressdev -lrte_cfgfile -lrte_bitratestats -lrte_bbdev -lrte_acl -lrte_timer -lrte_hash -lrte_metrics -lrte_cmdline -lrte_pci -lrte_ethdev -lrte_meter -lrte_net -lrte_mbuf -lrte_mempool -lrte_rcu -lrte_ring -lrte_eal -lrte_telemetry -lrte_kvargs -pthread -lm -ldl -lnuma -lbsd -lmd -lcrypto -ldl -pthread -L/usr/lib64 -lbpf -lz -lpcap -lnl-genl-3 -lnl-3 -ldbus-1 -lelf -lz -ljansson -L../../f-stack/lib -Wl,--whole-archive,-lfstack,--no-whole-archive -Wl,--no-whole-archive -lrt -lm -ldl -lcrypto -pthread -lnuma</jni.compiler.args.fstack-libs>
+   </properties>
+ 
+   <modules>
+diff --git a/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c b/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c
+index 67e675f043..2250d407a9 100644
+--- a/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c
++++ b/transport-native-epoll/src/main/c/netty_epoll_linuxsocket.c
+@@ -28,6 +28,9 @@
+ #include <netinet/udp.h> // SOL_UDP
+ #include <sys/sendfile.h>
+ #include <linux/tcp.h> // TCP_NOTSENT_LOWAT is a linux specific define
++#include "ff_config.h"
++#include "ff_api.h"
++#include "ff_epoll.h"
+ #include "netty_epoll_linuxsocket.h"
+ #include "netty_unix_errors.h"
+ #include "netty_unix_filedescriptor.h"
+@@ -419,8 +422,8 @@ static void netty_epoll_linuxsocket_setTcpMd5Sig(JNIEnv* env, jclass clazz, jint
+         }
+     }
+ 
+-    if (setsockopt(fd, IPPROTO_TCP, TCP_MD5SIG, &md5sig, sizeof(md5sig)) < 0) {
+-        netty_unix_errors_throwIOExceptionErrorNo(env, "setsockopt() failed: ", errno);
++    if (ff_setsockopt(fd, IPPROTO_TCP, TCP_MD5SIG, &md5sig, sizeof(md5sig)) < 0) {
++        netty_unix_errors_throwIOExceptionErrorNo(env, "ff_setsockopt() failed: ", errno);
+     }
+ }
+ 
+diff --git a/transport-native-epoll/src/main/c/netty_epoll_native.c b/transport-native-epoll/src/main/c/netty_epoll_native.c
+index d3792a5a21..324481319c 100644
+--- a/transport-native-epoll/src/main/c/netty_epoll_native.c
++++ b/transport-native-epoll/src/main/c/netty_epoll_native.c
+@@ -43,6 +43,10 @@
+ // Needed for UDP_SEGMENT
+ #include <netinet/udp.h>
+ 
++#include "ff_config.h"
++#include "ff_api.h"
++#include "ff_epoll.h"
++
+ #include "netty_epoll_linuxsocket.h"
+ #include "netty_unix_buffer.h"
+ #include "netty_unix_errors.h"
+@@ -159,7 +163,7 @@ static inline jint epollCtl(JNIEnv* env, jint efd, int op, jint fd, jint flags)
+         .events = events
+     };
+ 
+-    return epoll_ctl(efd, op, fd, &ev);
++    return ff_epoll_ctl(efd, op, fd, &ev);
+ }
+ // JNI Registered Methods Begin
+ static jint netty_epoll_native_eventFd(JNIEnv* env, jclass clazz) {
+@@ -180,11 +184,19 @@ static jint netty_epoll_native_timerFd(JNIEnv* env, jclass clazz) {
+     return timerFD;
+ }
+ 
++int ff_eventfd_read (int fd, eventfd_t *value) {
++    return ff_read(fd, value, sizeof (eventfd_t)) != sizeof (eventfd_t) ? -1 : 0;
++}
++
++int ff_eventfd_write (int fd, eventfd_t value) {
++    return ff_write(fd, (eventfd_t*)value, sizeof (eventfd_t)) != sizeof (eventfd_t) ? -1 : 0;
++}
++
+ static void netty_epoll_native_eventFdWrite(JNIEnv* env, jclass clazz, jint fd, jlong value) {
+     uint64_t val;
+ 
+     for (;;) {
+-        jint ret = eventfd_write(fd, (eventfd_t) value);
++        jint ret = ff_eventfd_write(fd, (eventfd_t) value);
+ 
+         if (ret < 0) {
+             // We need to read before we can write again, let's try to read and then write again and if this
+@@ -192,13 +204,13 @@ static void netty_epoll_native_eventFdWrite(JNIEnv* env, jclass clazz, jint fd,
+             //
+             // See https://man7.org/linux/man-pages/man2/eventfd.2.html.
+             if (errno == EAGAIN) {
+-                if (eventfd_read(fd, &val) == 0 || errno == EAGAIN) {
++                if (ff_eventfd_read(fd, &val) == 0 || errno == EAGAIN) {
+                     // Try again
+                     continue;
+                 }
+-                netty_unix_errors_throwChannelExceptionErrorNo(env, "eventfd_read(...) failed: ", errno);
++                netty_unix_errors_throwChannelExceptionErrorNo(env, "ff_eventfd_read(...) failed: ", errno);
+             } else {
+-                netty_unix_errors_throwChannelExceptionErrorNo(env, "eventfd_write(...) failed: ", errno);
++                netty_unix_errors_throwChannelExceptionErrorNo(env, "ff_eventfd_write(...) failed: ", errno);
+             }
+         }
+         break;
+@@ -208,9 +220,9 @@ static void netty_epoll_native_eventFdWrite(JNIEnv* env, jclass clazz, jint fd,
+ static void netty_epoll_native_eventFdRead(JNIEnv* env, jclass clazz, jint fd) {
+     uint64_t eventfd_t;
+ 
+-    if (eventfd_read(fd, &eventfd_t) != 0) {
++    if (ff_eventfd_read(fd, &eventfd_t) != 0) {
+         // something is serious wrong
+-        netty_unix_errors_throwRuntimeException(env, "eventfd_read() failed");
++        netty_unix_errors_throwRuntimeException(env, "ff_eventfd_read() failed");
+     }
+ }
+ 
+@@ -220,22 +232,22 @@ static jint netty_epoll_native_epollCreate(JNIEnv* env, jclass clazz) {
+         efd = epoll_create1(EPOLL_CLOEXEC);
+     } else {
+         // size will be ignored anyway but must be positive
+-        efd = epoll_create(126);
++        efd = ff_epoll_create(126);
+     }
+     if (efd < 0) {
+         int err = errno;
+         if (epoll_create1) {
+             netty_unix_errors_throwChannelExceptionErrorNo(env, "epoll_create1() failed: ", err);
+         } else {
+-            netty_unix_errors_throwChannelExceptionErrorNo(env, "epoll_create() failed: ", err);
++            netty_unix_errors_throwChannelExceptionErrorNo(env, "ff_epoll_create() failed: ", err);
+         }
+         return efd;
+     }
+     if (!epoll_create1) {
+-        if (fcntl(efd, F_SETFD, FD_CLOEXEC) < 0) {
++        if (ff_fcntl(efd, F_SETFD, FD_CLOEXEC) < 0) {
+             int err = errno;
+-            close(efd);
+-            netty_unix_errors_throwChannelExceptionErrorNo(env, "fcntl() failed: ", err);
++            ff_close(efd);
++            netty_unix_errors_throwChannelExceptionErrorNo(env, "ff_fcntl() failed: ", err);
+             return err;
+         }
+     }
+@@ -247,7 +259,7 @@ static jint netty_epoll_native_epollWait(JNIEnv* env, jclass clazz, jint efd, jl
+     int result, err;
+ 
+     do {
+-        result = epoll_wait(efd, ev, len, timeout);
++        result = ff_epoll_wait(efd, ev, len, timeout);
+         if (result >= 0) {
+             return result;
+         }
+@@ -323,7 +335,7 @@ static jint netty_epoll_native_epollBusyWait0(JNIEnv* env, jclass clazz, jint ef
+ 
+     // Zeros = poll (aka return immediately).
+     do {
+-        result = epoll_wait(efd, ev, len, 0);
++        result = ff_epoll_wait(efd, ev, len, 0);
+         if (result == 0) {
+             // Since we're always polling epoll_wait with no timeout,
+             // signal CPU that we're in a busy loop
+@@ -356,7 +368,7 @@ static jint netty_epoll_native_epollCtlMod0(JNIEnv* env, jclass clazz, jint efd,
+ static jint netty_epoll_native_epollCtlDel0(JNIEnv* env, jclass clazz, jint efd, jint fd) {
+     // Create an empty event to workaround a bug in older kernels which can not handle NULL.
+     struct epoll_event event = { 0 };
+-    int res = epoll_ctl(efd, EPOLL_CTL_DEL, fd, &event);
++    int res = ff_epoll_ctl(efd, EPOLL_CTL_DEL, fd, &event);
+     if (res < 0) {
+         return -errno;
+     }
+@@ -481,7 +493,7 @@ static jint netty_epoll_native_recvmsg0(JNIEnv* env, jclass clazz, jint fd, jboo
+     ssize_t res;
+     int err;
+     do {
+-        res = recvmsg(fd, &msg, 0);
++        res = ff_recvmsg(fd, &msg, 0);
+         // keep on reading if it was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+     if (res < 0) {
+@@ -572,13 +584,13 @@ static jboolean netty_epoll_native_isSupportingSendmmsg(JNIEnv* env, jclass claz
+ }
+ 
+ static jboolean netty_epoll_native_isSupportingUdpSegment(JNIEnv* env, jclass clazz) {
+-    int fd = socket(AF_INET, SOCK_DGRAM, 0);
++    int fd = ff_socket(AF_INET, SOCK_DGRAM, 0);
+     if (fd == -1) {
+         return JNI_FALSE;
+     }
+     int gso_size = 512;
+-    int ret = setsockopt(fd, SOL_UDP, UDP_SEGMENT, &gso_size, sizeof(gso_size));
+-    close(fd);
++    int ret = ff_setsockopt(fd, SOL_UDP, UDP_SEGMENT, &gso_size, sizeof(gso_size));
++    ff_close(fd);
+     return ret == -1 ? JNI_FALSE : JNI_TRUE;
+ }
+ 
+diff --git a/transport-native-kqueue/pom.xml b/transport-native-kqueue/pom.xml
+index 7afb398d94..5f78a63582 100644
+--- a/transport-native-kqueue/pom.xml
++++ b/transport-native-kqueue/pom.xml
+@@ -79,6 +79,7 @@
+                   <configureArgs>
+                     <arg>${jni.compiler.args.ldflags}</arg>
+                     <arg>${jni.compiler.args.cflags}</arg>
++                    <arg>LIBS=${jni.compiler.args.fstack-libs}</arg>
+                     <!-- support for __attribute__((weak_import)) by the linker was added in 10.2 (but 10.6 is the minimum we can use on 10.14) so ensure we
+                          explicitly set the target platform. Otherwise we may get fatal link errors due to weakly linked
+                          methods which are not expected to be present on MacOS (e.g. accept4). -->
+@@ -188,6 +189,7 @@
+                   <configureArgs>
+                     <arg>${jni.compiler.args.ldflags}</arg>
+                     <arg>${jni.compiler.args.cflags}</arg>
++                    <arg>LIBS=${jni.compiler.args.fstack-libs}</arg>
+                     <arg>MACOSX_DEPLOYMENT_TARGET=11.0</arg>
+                     <configureArg>--host=aarch64-apple-darwin</configureArg>
+                     <configureArg>--libdir=${project.build.directory}/native-build/target/lib</configureArg>
+@@ -296,6 +298,7 @@
+                   <configureArgs>
+                     <arg>${jni.compiler.args.ldflags}</arg>
+                     <arg>${jni.compiler.args.cflags}</arg>
++                    <arg>LIBS=${jni.compiler.args.fstack-libs}</arg>
+                   </configureArgs>
+                 </configuration>
+                 <goals>
+@@ -400,6 +403,7 @@
+                   <configureArgs>
+                     <arg>${jni.compiler.args.ldflags}</arg>
+                     <arg>${jni.compiler.args.cflags}</arg>
++                    <arg>LIBS=${jni.compiler.args.fstack-libs}</arg>
+                   </configureArgs>
+                 </configuration>
+                 <goals>
+diff --git a/transport-native-kqueue/src/main/c/netty_kqueue_bsdsocket.c b/transport-native-kqueue/src/main/c/netty_kqueue_bsdsocket.c
+index 25d16edfed..3ed2e35f6c 100644
+--- a/transport-native-kqueue/src/main/c/netty_kqueue_bsdsocket.c
++++ b/transport-native-kqueue/src/main/c/netty_kqueue_bsdsocket.c
+@@ -26,6 +26,9 @@
+ #include <netinet/in.h>
+ #include <netinet/tcp.h>
+ 
++#include "ff_config.h"
++#include "ff_api.h"
++
+ #include "netty_kqueue_bsdsocket.h"
+ #include "netty_unix_errors.h"
+ #include "netty_unix_filedescriptor.h"
+@@ -111,7 +114,7 @@ static jint netty_kqueue_bsdsocket_connectx(JNIEnv* env, jclass clazz,
+                 "Source address specified, but could not be converted to sockaddr.");
+             return -EINVAL;
+         }
+-        endpoints.sae_srcaddr = (const struct sockaddr*) &srcaddr;
++        endpoints.sae_srcaddr = (const struct linux_sockaddr*) &srcaddr;
+         endpoints.sae_srcaddrlen = srcaddrlen;
+     }
+ 
+@@ -121,7 +124,7 @@ static jint netty_kqueue_bsdsocket_connectx(JNIEnv* env, jclass clazz,
+         netty_unix_errors_throwIOException(env, "Destination address could not be converted to sockaddr.");
+         return -EINVAL;
+     }
+-    endpoints.sae_dstaddr = (const struct sockaddr*) &dstaddr;
++    endpoints.sae_dstaddr = (const struct linux_sockaddr*) &dstaddr;
+     endpoints.sae_dstaddrlen = dstaddrlen;
+ 
+     int socket = (int) socketFd;
+@@ -154,7 +157,7 @@ static void netty_kqueue_bsdsocket_setAcceptFilter(JNIEnv* env, jclass clazz, ji
+ 
+     netty_unix_socket_setOption(env, fd, SOL_SOCKET, SO_ACCEPTFILTER, &af, sizeof(af));
+ #else // No know replacement on MacOS
+-    netty_unix_errors_throwChannelExceptionErrorNo(env, "setsockopt() failed: ", EINVAL);
++    netty_unix_errors_throwChannelExceptionErrorNo(env, "ff_setsockopt() failed: ", EINVAL);
+ #endif
+ }
+ 
+@@ -162,7 +165,7 @@ static jobjectArray netty_kqueue_bsdsocket_getAcceptFilter(JNIEnv* env, jclass c
+ #ifdef SO_ACCEPTFILTER
+     struct accept_filter_arg af;
+     if (netty_unix_socket_getOption(env, fd, SOL_SOCKET, SO_ACCEPTFILTER, &af, sizeof(af)) == -1) {
+-        netty_unix_errors_throwChannelExceptionErrorNo(env, "getsockopt() failed: ", errno);
++        netty_unix_errors_throwChannelExceptionErrorNo(env, "ff_getsockopt() failed: ", errno);
+         return NULL;
+     }
+     jobjectArray resultArray = (*env)->NewObjectArray(env, 2, stringClass, NULL);
+diff --git a/transport-native-kqueue/src/main/c/netty_kqueue_native.c b/transport-native-kqueue/src/main/c/netty_kqueue_native.c
+index 3d6984cae5..9b68ff2fcd 100644
+--- a/transport-native-kqueue/src/main/c/netty_kqueue_native.c
++++ b/transport-native-kqueue/src/main/c/netty_kqueue_native.c
+@@ -27,6 +27,9 @@
+ #include <sys/sysctl.h>
+ #include <sys/time.h>
+ 
++#include "ff_config.h"
++#include "ff_api.h"
++
+ #include "netty_kqueue_bsdsocket.h"
+ #include "netty_kqueue_eventarray.h"
+ #include "netty_unix_buffer.h"
+@@ -93,19 +96,19 @@ static const char* staticPackagePrefix = NULL;
+ static int register_unix_called = 0;
+ 
+ static jint netty_kqueue_native_kqueueCreate(JNIEnv* env, jclass clazz) {
+-    jint kq = kqueue();
++    jint kq = ff_kqueue();
+     if (kq < 0) {
+-      netty_unix_errors_throwChannelExceptionErrorNo(env, "kqueue() failed: ", errno);
++      netty_unix_errors_throwChannelExceptionErrorNo(env, "ff_kqueue() failed: ", errno);
+     }
+     return kq;
+ }
+ 
+ static jint netty_kqueue_native_keventChangeSingleUserEvent(jint kqueueFd, struct kevent* userEvent) {
+     int result, err;
+-    result = kevent(kqueueFd, userEvent, 1, NULL, 0, NULL);
++    result = ff_kevent(kqueueFd, userEvent, 1, NULL, 0, NULL);
+     if (result < 0) {
+         // https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2
+-        // When kevent() call fails with EINTR error, all changes in the changelist have been applied.
++        // When ff_kevent() call fails with EINTR error, all changes in the changelist have been applied.
+         return (err = errno) == EINTR ? 0 : -err;
+     }
+ 
+@@ -137,7 +140,7 @@ static jint netty_kqueue_native_keventWait(JNIEnv* env, jclass clazz, jint kqueu
+     if (tvSec == 0 && tvNsec == 0) {
+         // Zeros = poll (aka return immediately).
+         for (;;) {
+-            result = kevent(kqueueFd, changeList, changeListLength, eventList, eventListLength, &timeoutTs);
++            result = ff_kevent(kqueueFd, changeList, changeListLength, eventList, eventListLength, &timeoutTs);
+             if (result >= 0) {
+                 return result;
+             }
+@@ -146,7 +149,7 @@ static jint netty_kqueue_native_keventWait(JNIEnv* env, jclass clazz, jint kqueu
+             }
+ 
+             // https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2
+-            // When kevent() call fails with EINTR error, all changes in the changelist have been applied.
++            // When ff_kevent() call fails with EINTR error, all changes in the changelist have been applied.
+             changeListLength = 0;
+         }
+     }
+@@ -154,7 +157,7 @@ static jint netty_kqueue_native_keventWait(JNIEnv* env, jclass clazz, jint kqueu
+     // Wait with a timeout value.
+     netty_unix_util_clock_gettime(waitClockId, &beforeTs);
+     for (;;) {
+-        result = kevent(kqueueFd, changeList, changeListLength, eventList, eventListLength, &timeoutTs);
++        result = ff_kevent(kqueueFd, changeList, changeListLength, eventList, eventListLength, &timeoutTs);
+         if (result >= 0) {
+             return result;
+         }
+@@ -170,7 +173,7 @@ static jint netty_kqueue_native_keventWait(JNIEnv* env, jclass clazz, jint kqueu
+ 
+         beforeTs = nowTs;
+         // https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2
+-        // When kevent() call fails with EINTR error, all changes in the changelist have been applied.
++        // When ff_kevent() call fails with EINTR error, all changes in the changelist have been applied.
+         changeListLength = 0;
+     }
+ }
+diff --git a/transport-native-unix-common/pom.xml b/transport-native-unix-common/pom.xml
+index 0fb1c63987..eff83019c8 100644
+--- a/transport-native-unix-common/pom.xml
++++ b/transport-native-unix-common/pom.xml
+@@ -156,6 +156,7 @@
+                       <env key="CFLAGS" value="-O3 -Werror -Wno-attributes -fPIC -fno-omit-frame-pointer -Wunused-variable -fvisibility=hidden" />
+                       <env key="LDFLAGS" value="-Wl,--no-as-needed -lrt -Wl,-platform_version,macos,10.2,10.2" />
+                       <env key="LIB_NAME" value="${nativeLibName}" />
++                      <env key="LIBS" value="${jni.compiler.args.fstack-libs}" />
+                       <!-- support for __attribute__((weak_import)) by the linker was added in 10.2 so ensure we
+                            explicitly set the target platform. Otherwise we may get fatal link errors due to weakly linked
+                            methods which are not expected to be present on MacOS (e.g. accept4). -->
+@@ -229,6 +230,7 @@
+                       <env key="CFLAGS" value="-target arm64-apple-macos11 -O3 -Werror -Wno-attributes -fPIC -fno-omit-frame-pointer -Wunused-variable -fvisibility=hidden" />
+                       <env key="LDFLAGS" value="-arch arm64 -Wl,--no-as-needed -lrt -Wl,-platform_version,macos,11.0,11.0" />
+                       <env key="LIB_NAME" value="${nativeLibName}" />
++                      <env key="LIBS" value="${jni.compiler.args.fstack-libs}" />
+                       <env key="MACOSX_DEPLOYMENT_TARGET" value="11.0" />
+                     </exec>
+                   </target>
+@@ -300,6 +302,7 @@
+                       <env key="JNI_PLATFORM" value="${jni.platform}" />
+                       <env key="CFLAGS" value="-O3 -Werror -Wno-attributes -fPIC -fno-omit-frame-pointer -Wunused-variable -fvisibility=hidden" />
+                       <env key="LDFLAGS" value="-Wl,--no-as-needed -lrt" />
++                      <env key="LIBS" value="${jni.compiler.args.fstack-libs}" />
+                       <env key="LIB_NAME" value="${nativeLibName}" />
+                     </exec>
+                   </target>
+@@ -370,6 +373,7 @@
+                       <env key="JNI_PLATFORM" value="${jni.platform}" />
+                       <env key="CFLAGS" value="-O3 -Werror -Wno-attributes -fPIC -fno-omit-frame-pointer -Wunused-variable -fvisibility=hidden" />
+                       <env key="LDFLAGS" value="-Wl,--no-as-needed -lrt" />
++                      <env key="LIBS" value="${jni.compiler.args.fstack-libs}" />
+                       <env key="LIB_NAME" value="${nativeLibName}" />
+                     </exec>
+                   </target>
+@@ -444,6 +448,7 @@
+                       <env key="JNI_PLATFORM" value="${jni.platform}" />
+                       <env key="CFLAGS" value="-O3 -Werror -Wno-attributes -fPIC -fno-omit-frame-pointer -Wunused-variable -fvisibility=hidden" />
+                       <env key="LDFLAGS" value="-Wl,--no-as-needed -lrt" />
++                      <env key="LIBS" value="${jni.compiler.args.fstack-libs}" />
+                       <env key="LIB_NAME" value="${nativeLibName}" />
+                     </exec>
+                   </target>
+@@ -518,6 +523,7 @@
+                       <env key="JNI_PLATFORM" value="${jni.platform}" />
+                       <env key="CFLAGS" value="-O3 -Werror -Wno-attributes -fPIC -fno-omit-frame-pointer -Wunused-variable -fvisibility=hidden" />
+                       <env key="LDFLAGS" value="-Wl,--no-as-needed -lrt" />
++                      <env key="LIBS" value="${jni.compiler.args.fstack-libs}" />
+                       <env key="LIB_NAME" value="${nativeLibName}" />
+                     </exec>
+                   </target>
+diff --git a/transport-native-unix-common/src/main/c/netty_unix_filedescriptor.c b/transport-native-unix-common/src/main/c/netty_unix_filedescriptor.c
+index 729f2ea554..4203082a07 100644
+--- a/transport-native-unix-common/src/main/c/netty_unix_filedescriptor.c
++++ b/transport-native-unix-common/src/main/c/netty_unix_filedescriptor.c
+@@ -21,6 +21,9 @@
+ #include <sys/uio.h>
+ #include <limits.h>
+ 
++#include "ff_config.h"
++#include "ff_api.h"
++
+ #include "netty_unix_errors.h"
+ #include "netty_unix_filedescriptor.h"
+ #include "netty_unix_jni.h"
+@@ -41,7 +44,7 @@ static jint _write(JNIEnv* env, jclass clazz, jint fd, void* buffer, jint pos, j
+     ssize_t res;
+     int err;
+     do {
+-       res = write(fd, buffer + pos, (size_t) (limit - pos));
++       res = ff_write(fd, buffer + pos, (size_t) (limit - pos));
+        // keep on writing if it was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -55,7 +58,7 @@ static jlong _writev(JNIEnv* env, jclass clazz, jint fd, struct iovec* iov, jint
+     ssize_t res;
+     int err;
+     do {
+-        res = writev(fd, iov, length);
++        res = ff_writev(fd, iov, length);
+         // keep on writing if it was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -69,7 +72,7 @@ static jint _read(JNIEnv* env, jclass clazz, jint fd, void* buffer, jint pos, ji
+     ssize_t res;
+     int err;
+     do {
+-        res = read(fd, buffer + pos, (size_t) (limit - pos));
++        res = ff_read(fd, buffer + pos, (size_t) (limit - pos));
+         // Keep on reading if we was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -81,7 +84,7 @@ static jint _read(JNIEnv* env, jclass clazz, jint fd, void* buffer, jint pos, ji
+ 
+ // JNI Registered Methods Begin
+ static jint netty_unix_filedescriptor_close(JNIEnv* env, jclass clazz, jint fd) {
+-   if (close(fd) < 0) {
++   if (ff_close(fd) < 0) {
+        // There is really nothing "sane" we can do when EINTR was reported on close. So just ignore it and "assume"
+        // everything is fine == we closed the file descriptor.
+        //
+@@ -241,16 +244,16 @@ static jlong netty_unix_filedescriptor_newPipe(JNIEnv* env, jclass clazz) {
+         }
+     } else {
+          if (pipe(fd) == 0) {
+-            if (fcntl(fd[0], F_SETFD, O_NONBLOCK) < 0) {
++            if (ff_fcntl(fd[0], F_SETFD, O_NONBLOCK) < 0) {
+                 int err = errno;
+-                close(fd[0]);
+-                close(fd[1]);
++                ff_close(fd[0]);
++                ff_close(fd[1]);
+                 return -err;
+             }
+-            if (fcntl(fd[1], F_SETFD, O_NONBLOCK) < 0) {
++            if (ff_fcntl(fd[1], F_SETFD, O_NONBLOCK) < 0) {
+                 int err = errno;
+-                close(fd[0]);
+-                close(fd[1]);
++                ff_close(fd[0]);
++                ff_close(fd[1]);
+                 return -err;
+             }
+          } else {
+diff --git a/transport-native-unix-common/src/main/c/netty_unix_socket.c b/transport-native-unix-common/src/main/c/netty_unix_socket.c
+index 69f57d7101..aefaacdfe4 100644
+--- a/transport-native-unix-common/src/main/c/netty_unix_socket.c
++++ b/transport-native-unix-common/src/main/c/netty_unix_socket.c
+@@ -26,6 +26,9 @@
+ #include <netinet/in.h>
+ #include <netinet/tcp.h>
+ 
++#include "ff_config.h"
++#include "ff_api.h"
++
+ #include "netty_unix_errors.h"
+ #include "netty_unix_jni.h"
+ #include "netty_unix_socket.h"
+@@ -55,7 +58,7 @@ static const unsigned char ipv4MappedWildcardAddress[] = { 0x00, 0x00, 0x00, 0x0
+ static const unsigned char ipv4MappedAddress[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff };
+ 
+ // Optional external methods
+-extern int accept4(int sockFd, struct sockaddr* addr, socklen_t* addrlen, int flags) __attribute__((weak)) __attribute__((weak_import));
++extern int accept4(int sockFd, struct linux_sockaddr* addr, socklen_t* addrlen, int flags) __attribute__((weak)) __attribute__((weak_import));
+ 
+ // macro to calculate the length of a sockaddr_un struct for a given path length.
+ // see sys/un.h#SUN_LEN, this is modified to allow nul bytes
+@@ -63,14 +66,14 @@ extern int accept4(int sockFd, struct sockaddr* addr, socklen_t* addrlen, int fl
+ 
+ static int nettyNonBlockingSocket(int domain, int type, int protocol) {
+ #ifdef SOCK_NONBLOCK
+-    return socket(domain, type | SOCK_NONBLOCK, protocol);
++    return ff_socket(domain, type | SOCK_NONBLOCK, protocol);
+ #else
+-    int socketFd = socket(domain, type, protocol);
++    int socketFd = ff_socket(domain, type, protocol);
+     int flags;
+     // Don't initialize flags until we know the socket is good so errno is preserved.
+     if (socketFd < 0 ||
+-        (flags = fcntl(socketFd, F_GETFL, 0)) < 0 ||
+-         fcntl(socketFd, F_SETFL, flags | O_NONBLOCK) < 0) {
++        (flags = ff_fcntl(socketFd, F_GETFL, 0)) < 0 ||
++         ff_fcntl(socketFd, F_SETFL, flags | O_NONBLOCK) < 0) {
+       return -1;
+     }
+     return socketFd;
+@@ -225,9 +228,9 @@ static jboolean netty_unix_socket_isIPv6Preferred0(JNIEnv* env, jclass clazz, jb
+     memset(&addr, 0, sizeof(addr));
+     addr.sin6_family = AF_INET6;
+     addr.sin6_addr.s6_addr[15] = 1; /* [::1]:0 */
+-    int res = bind(fd, (struct sockaddr *)&addr, sizeof(addr));
++    int res = ff_bind(fd, (struct linux_sockaddr *)&addr, sizeof(addr));
+ 
+-    close(fd);
++    ff_close(fd);
+     return res == 0 ? JNI_TRUE : JNI_FALSE;
+ }
+ 
+@@ -235,11 +238,11 @@ static jboolean netty_unix_socket_isIPv6Preferred0(JNIEnv* env, jclass clazz, jb
+ static jboolean netty_unix_socket_isIPv6(JNIEnv* env, jclass clazz, jint fd) {
+     struct sockaddr_storage addr;
+     socklen_t addrlen = sizeof(addr);
+-    if (getsockname(fd, (struct sockaddr*) &addr, &addrlen) == 0) {
+-        return ((struct sockaddr*) &addr)->sa_family == AF_INET6;
++    if (ff_getsockname(fd, (struct linux_sockaddr*) &addr, &addrlen) == 0) {
++        return ((struct linux_sockaddr*) &addr)->sa_family == AF_INET6;
+     }
+ 
+-    netty_unix_errors_throwChannelExceptionErrorNo(env, "getsockname(...) failed: ", errno);
++    netty_unix_errors_throwChannelExceptionErrorNo(env, "ff_getsockname(...) failed: ", errno);
+     return JNI_FALSE;
+ }
+ 
+@@ -252,11 +255,11 @@ static void netty_unix_socket_optionHandleError(JNIEnv* env, int err, char* meth
+ }
+ 
+ static void netty_unix_socket_setOptionHandleError(JNIEnv* env, int err) {
+-    netty_unix_socket_optionHandleError(env, err, "setsockopt() failed: ");
++    netty_unix_socket_optionHandleError(env, err, "ff_setsockopt() failed: ");
+ }
+ 
+ static int netty_unix_socket_setOption0(jint fd, int level, int optname, const void* optval, socklen_t len) {
+-    return setsockopt(fd, level, optname, optval, len);
++    return ff_setsockopt(fd, level, optname, optval, len);
+ }
+ 
+ static jint _socket(JNIEnv* env, jclass clazz, int domain, int type) {
+@@ -270,7 +273,7 @@ static jint _socket(JNIEnv* env, jclass clazz, int domain, int type) {
+             if (errno != EAFNOSUPPORT) {
+                 netty_unix_socket_setOptionHandleError(env, errno);
+                 // Something went wrong so close the fd and return here. setOption(...) itself throws the exception already.
+-                close(fd);
++                ff_close(fd);
+                 return -1;
+             }
+             // else we failed to enable dual stack mode.
+@@ -337,7 +340,7 @@ static jint _sendTo(JNIEnv* env, jint fd, jboolean ipv6, void* buffer, jint pos,
+     ssize_t res;
+     int err;
+     do {
+-       res = sendto(fd, buffer + pos, (size_t) (limit - pos), flags, (struct sockaddr*) &addr, addrSize);
++       res = ff_sendto(fd, buffer + pos, (size_t) (limit - pos), flags, (struct linux_sockaddr*) &addr, addrSize);
+        // keep on writing if it was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -364,7 +367,7 @@ static jint _sendToDomainSocket(JNIEnv* env, jint fd, void* buffer, jint pos, ji
+     ssize_t res;
+     int err;
+     do {
+-        res = sendto(fd, buffer + pos, (size_t) (limit - pos), 0, (struct sockaddr*) &addr, _UNIX_ADDR_LENGTH(socket_path_len));
++        res = ff_sendto(fd, buffer + pos, (size_t) (limit - pos), 0, (struct linux_sockaddr*) &addr, _UNIX_ADDR_LENGTH(socket_path_len));
+         // keep on writing if it was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -383,7 +386,7 @@ static jobject _recvFrom(JNIEnv* env, jint fd, void* buffer, jint pos, jint limi
+     int err;
+ 
+     do {
+-        res = recvfrom(fd, buffer + pos, (size_t) (limit - pos), 0, (struct sockaddr*) &addr, &addrlen);
++        res = ff_recvfrom(fd, buffer + pos, (size_t) (limit - pos), 0, (struct linux_sockaddr*) &addr, &addrlen);
+         // Keep on reading if we was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -397,10 +400,10 @@ static jobject _recvFrom(JNIEnv* env, jint fd, void* buffer, jint pos, jint limi
+             return NULL;
+         }
+         if (err == ECONNREFUSED) {
+-            netty_unix_errors_throwPortUnreachableException(env, "recvfrom() failed");
++            netty_unix_errors_throwPortUnreachableException(env, "ff_recvfrom() failed");
+             return NULL;
+         }
+-        netty_unix_errors_throwIOExceptionErrorNo(env, "recvfrom() failed: ", err);
++        netty_unix_errors_throwIOExceptionErrorNo(env, "ff_recvfrom() failed: ", err);
+         return NULL;
+     }
+ 
+@@ -415,7 +418,7 @@ static jobject _recvFromDomainSocket(JNIEnv* env, jint fd, void* buffer, jint po
+ 
+     do {
+         bzero(&addr, sizeof(addr)); // Zap addr so we can strlen(addr.sun_path) later. See unix(4).
+-        res = recvfrom(fd, buffer + pos, (size_t) (limit - pos), 0, (struct sockaddr*) &addr, &addrlen);
++        res = ff_recvfrom(fd, buffer + pos, (size_t) (limit - pos), 0, (struct linux_sockaddr*) &addr, &addrlen);
+         // Keep on reading if it was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -436,11 +439,11 @@ static jobject _recvFromDomainSocket(JNIEnv* env, jint fd, void* buffer, jint po
+ }
+ 
+ void netty_unix_socket_getOptionHandleError(JNIEnv* env, int err) {
+-    netty_unix_socket_optionHandleError(env, err, "getsockopt() failed: ");
++    netty_unix_socket_optionHandleError(env, err, "ff_getsockopt() failed: ");
+ }
+ 
+ int netty_unix_socket_getOption0(jint fd, int level, int optname, void* optval, socklen_t optlen) {
+-    return getsockopt(fd, level, optname, optval, &optlen);
++    return ff_getsockopt(fd, level, optname, optval, &optlen);
+ }
+ 
+ int netty_unix_socket_getOption(JNIEnv* env, jint fd, int level, int optname, void* optval, socklen_t optlen) {
+@@ -471,7 +474,7 @@ static jint netty_unix_socket_shutdown(JNIEnv* env, jclass clazz, jint fd, jbool
+     } else {
+         return -EINVAL;
+     }
+-    if (shutdown(fd, mode) < 0) {
++    if (ff_shutdown(fd, mode) < 0) {
+         return -errno;
+     }
+     return 0;
+@@ -484,14 +487,14 @@ static jint netty_unix_socket_bind(JNIEnv* env, jclass clazz, jint fd, jboolean
+         return -1;
+     }
+ 
+-    if (bind(fd, (struct sockaddr*) &addr, addrSize) == -1) {
++    if (ff_bind(fd, (struct linux_sockaddr*) &addr, addrSize) == -1) {
+         return -errno;
+     }
+     return 0;
+ }
+ 
+ static jint netty_unix_socket_listen(JNIEnv* env, jclass clazz, jint fd, jint backlog) {
+-    if (listen(fd, backlog) == -1) {
++    if (ff_listen(fd, backlog) == -1) {
+         return -errno;
+     }
+     return 0;
+@@ -508,7 +511,7 @@ static jint netty_unix_socket_connect(JNIEnv* env, jclass clazz, jint fd, jboole
+     int res;
+     int err;
+     do {
+-        res = connect(fd, (struct sockaddr*) &addr, addrSize);
++        res = ff_connect(fd, (struct linux_sockaddr*) &addr, addrSize);
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+     if (res < 0) {
+@@ -556,7 +559,7 @@ static jint netty_unix_socket_disconnect(JNIEnv* env, jclass clazz, jint fd, jbo
+     int res;
+     int err;
+     do {
+-        res = connect(fd, (struct sockaddr*) &addr, len);
++        res = ff_connect(fd, (struct linux_sockaddr*) &addr, len);
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+     // EAFNOSUPPORT is harmless in this case.
+@@ -578,10 +581,10 @@ static jint netty_unix_socket_accept(JNIEnv* env, jclass clazz, jint fd, jbyteAr
+     for (;;) {
+ #ifdef SOCK_NONBLOCK
+         if (accept4) {
+-            socketFd = accept4(fd, (struct sockaddr*) &addr, &address_len, SOCK_NONBLOCK | SOCK_CLOEXEC);
++            socketFd = accept4(fd, (struct linux_sockaddr*) &addr, &address_len, SOCK_NONBLOCK | SOCK_CLOEXEC);
+         } else {
+ #endif
+-            socketFd = accept(fd, (struct sockaddr*) &addr, &address_len);
++            socketFd = ff_accept(fd, (struct linux_sockaddr*) &addr, &address_len);
+ #ifdef SOCK_NONBLOCK
+         }
+ #endif
+@@ -604,7 +607,7 @@ static jint netty_unix_socket_accept(JNIEnv* env, jclass clazz, jint fd, jbyteAr
+     if (accept4)  {
+         return socketFd;
+     }
+-    if (fcntl(socketFd, F_SETFD, FD_CLOEXEC) == -1 || fcntl(socketFd, F_SETFL, O_NONBLOCK) == -1) {
++    if (ff_fcntl(socketFd, F_SETFD, FD_CLOEXEC) == -1 || fcntl(socketFd, F_SETFL, O_NONBLOCK) == -1) {
+         // accept4 was not present so need two more sys-calls ...
+         return -errno;
+     }
+@@ -614,7 +617,7 @@ static jint netty_unix_socket_accept(JNIEnv* env, jclass clazz, jint fd, jbyteAr
+ static jbyteArray netty_unix_socket_remoteAddress(JNIEnv* env, jclass clazz, jint fd) {
+     struct sockaddr_storage addr;
+     socklen_t len = sizeof(addr);
+-    if (getpeername(fd, (struct sockaddr*) &addr, &len) == -1) {
++    if (ff_getpeername(fd, (struct linux_sockaddr*) &addr, &len) == -1) {
+         return NULL;
+     }
+     return netty_unix_socket_createInetSocketAddressArray(env, &addr);
+@@ -623,7 +626,7 @@ static jbyteArray netty_unix_socket_remoteAddress(JNIEnv* env, jclass clazz, jin
+ static jbyteArray netty_unix_socket_localAddress(JNIEnv* env, jclass clazz, jint fd) {
+     struct sockaddr_storage addr;
+     socklen_t len = sizeof(addr);
+-    if (getsockname(fd, (struct sockaddr*) &addr, &len) == -1) {
++    if (ff_getsockname(fd, (struct linux_sockaddr*) &addr, &len) == -1) {
+         return NULL;
+     }
+     return netty_unix_socket_createInetSocketAddressArray(env, &addr);
+@@ -680,7 +683,7 @@ static jint netty_unix_socket_sendToAddresses(JNIEnv* env, jclass clazz, jint fd
+     ssize_t res;
+     int err;
+     do {
+-       res = sendmsg(fd, &m, flags);
++       res = ff_sendmsg(fd, &m, flags);
+        // keep on writing if it was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -722,7 +725,7 @@ static jint netty_unix_socket_sendToAddressesDomainSocket(JNIEnv* env, jclass cl
+     ssize_t res;
+     int err;
+     do {
+-        res = sendmsg(fd, &m, 0);
++        res = ff_sendmsg(fd, &m, 0);
+         // keep on writing if it was interrupted
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -770,7 +773,7 @@ static jint netty_unix_socket_bindDomainSocket(JNIEnv* env, jclass clazz, jint f
+         return -errno;
+     }
+ 
+-    int res = bind(fd, (struct sockaddr*) &addr, _UNIX_ADDR_LENGTH(socket_path_len));
++    int res = ff_bind(fd, (struct linux_sockaddr*) &addr, _UNIX_ADDR_LENGTH(socket_path_len));
+     (*env)->ReleaseByteArrayElements(env, socketPath, socket_path, 0);
+ 
+     if (res == -1) {
+@@ -797,7 +800,7 @@ static jint netty_unix_socket_connectDomainSocket(JNIEnv* env, jclass clazz, jin
+     int res;
+     int err;
+     do {
+-        res = connect(fd, (struct sockaddr*) &addr, _UNIX_ADDR_LENGTH(socket_path_len));
++        res = ff_connect(fd, (struct linux_sockaddr*) &addr, _UNIX_ADDR_LENGTH(socket_path_len));
+     } while (res == -1 && ((err = errno) == EINTR));
+ 
+     (*env)->ReleaseByteArrayElements(env, socketPath, socket_path, 0);
+@@ -827,7 +830,7 @@ static jint netty_unix_socket_recvFd(JNIEnv* env, jclass clazz, jint fd) {
+ 
+     for (;;) {
+         do {
+-            res = recvmsg(fd, &descriptorMessage, 0);
++            res = ff_recvmsg(fd, &descriptorMessage, 0);
+             // Keep on reading if we was interrupted
+         } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -847,9 +850,9 @@ static jint netty_unix_socket_recvFd(JNIEnv* env, jclass clazz, jint fd) {
+         if ((cmsg->cmsg_len == CMSG_LEN(sizeof(int))) && (cmsg->cmsg_level == SOL_SOCKET) && (cmsg->cmsg_type == SCM_RIGHTS)) {
+             socketFd = *((int *) CMSG_DATA(cmsg));
+             // set as non blocking as we want to use it with kqueue/epoll
+-            if (fcntl(socketFd, F_SETFL, O_NONBLOCK) == -1) {
++            if (ff_fcntl(socketFd, F_SETFL, O_NONBLOCK) == -1) {
+                 err = errno;
+-                close(socketFd);
++                ff_close(socketFd);
+                 return -err;
+             }
+             return socketFd;
+@@ -880,7 +883,7 @@ static jint netty_unix_socket_sendFd(JNIEnv* env, jclass clazz, jint socketFd, j
+         ssize_t res;
+         int err;
+         do {
+-            res = sendmsg(socketFd, &descriptorMessage, 0);
++            res = ff_sendmsg(socketFd, &descriptorMessage, 0);
+         // keep on writing if it was interrupted
+         } while (res == -1 && ((err = errno) == EINTR));
+ 
+@@ -935,7 +938,7 @@ static void netty_unix_socket_setSoLinger(JNIEnv* env, jclass clazz, jint fd, ji
+ static void netty_unix_socket_setTrafficClass(JNIEnv* env, jclass clazz, jint fd, jboolean ipv6, jint optval) {
+     if (ipv6 == JNI_TRUE) {
+         // This call will put an exception on the stack to be processed once the JNI calls completes if
+-        // setsockopt failed and return a negative value.
++        // ff_setsockopt failed and return a negative value.
+         int rc = netty_unix_socket_setOption(env, fd, IPPROTO_IPV6, IPV6_TCLASS, &optval, sizeof(optval));
+ 
+         if (rc >= 0) {
+-- 
+2.35.3
+
